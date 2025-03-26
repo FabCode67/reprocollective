@@ -1,7 +1,6 @@
 // src/components/layout/Sidebar.tsx
 'use client';
 
-import { useState } from 'react';
 import { restaurants } from '@/lib/data';
 import { cn } from "@/lib/utils";
 
