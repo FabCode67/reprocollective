@@ -7,17 +7,22 @@ export interface QRCodeData {
   locationAddress: string;
   websiteUrl: string;
   accountNumber: string;
+  locationId: string;
 }
 
 export async function generateQRCode(data: QRCodeData): Promise<string> {
-  const qrCodeContent = JSON.stringify({
+  // Create a URL with encoded location information
+  const encodedData = encodeURIComponent(JSON.stringify({
+    locationId: data.locationId,
     location: {
       name: data.locationName,
       address: data.locationAddress
     },
     websiteUrl: data.websiteUrl,
     accountNumber: data.accountNumber
-  });
+  }));
+
+  const qrCodeContent = `${data.websiteUrl}/donate?location=${encodedData}`;
 
   try {
     // Generate QR code as a data URL
@@ -39,11 +44,12 @@ export async function generateQRCode(data: QRCodeData): Promise<string> {
 }
 
 export async function generateAllLocationQRCodes(locations: any[]): Promise<any[]> {
-  const websiteUrl = 'https://reprocollective-webapp.vercel.app'; // Replace with actual website URL
+  const websiteUrl = process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://repro-collective.com';
 
   const locationsWithQRCodes = await Promise.all(
     locations.map(async (location) => {
       const qrCodeDataUrl = await generateQRCode({
+        locationId: location.id,
         locationName: location.name,
         locationAddress: location.address,
         websiteUrl: websiteUrl,
@@ -58,4 +64,15 @@ export async function generateAllLocationQRCodes(locations: any[]): Promise<any[
   );
 
   return locationsWithQRCodes;
+}
+
+// Utility to parse location data from QR code
+export function parseLocationFromQRCode(encodedData: string): QRCodeData | null {
+  try {
+    const decodedData = decodeURIComponent(encodedData);
+    return JSON.parse(decodedData);
+  } catch (error) {
+    console.error('Error parsing QR code data:', error);
+    return null;
+  }
 }
