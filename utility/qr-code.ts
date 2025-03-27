@@ -44,7 +44,7 @@ export async function generateQRCode(data: QRCodeData): Promise<string> {
 }
 
 export async function generateAllLocationQRCodes(locations: any[]): Promise<any[]> {
-  const websiteUrl = process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://repro-collective.com';
+  const websiteUrl = process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://reprocollective-webapp.vercel.app';
 
   const locationsWithQRCodes = await Promise.all(
     locations.map(async (location) => {
