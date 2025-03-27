@@ -5,7 +5,7 @@ import Navbar from '@/components/layouts/Navbar';
 import { getLocationsWithQRCodes, Location } from '@/lib/data';
 import DonationModal from '@/components/DonationModel';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { QrCode, Loader2, CheckCircle, Globe, Heart } from 'lucide-react';
+import { Loader2, CheckCircle, Globe, Heart } from 'lucide-react';
 import Image from 'next/image';
 import TestimonialsPage from '@/components/testmonials';
 
@@ -82,7 +82,7 @@ const HomePage: React.FC = () => {
           ${activeSection === 'locations' ? 'block' : 'hidden lg:block'}
           overflow-y-auto
         `}>
-          <h2 className="text-2xl font-bold mb-4 text-sky-600">Doner's Locations</h2>
+          <h2 className="text-2xl font-bold mb-4 text-sky-600">{"Doner's Locations"}</h2>
           {locations.map((location) => (
             <Card
               key={location.id}
@@ -93,7 +93,7 @@ const HomePage: React.FC = () => {
                 <CardTitle className="flex justify-between items-center">
                   <span className="text-sky-700">{location.name}</span>
                   <Image
-                    src={location.qrCodeDataUrl}
+                    src={location.qrCodeDataUrl || '/logo.png'}
                     alt={`QR Code for ${location.name}`}
                     width={50}
                     height={50}

@@ -139,7 +139,7 @@ const TestimonialsPage: React.FC = () => {
                 </div>
 
                 <blockquote className="text-xl md:text-2xl text-gray-800 italic mb-6">
-                  {"{activeTestimonial.quote}"}
+                  {activeTestimonial.quote}
                 </blockquote>
 
                 <div className="space-y-4">

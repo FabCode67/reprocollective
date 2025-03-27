@@ -7,7 +7,7 @@ import {
   NavigationMenuLink
 } from '@/components/ui/navigation-menu';
 import { buttonVariants } from '@/components/ui/button';
-import { BellRing, Menu, X } from 'lucide-react';
+import { BellRing, X } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
