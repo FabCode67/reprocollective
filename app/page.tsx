@@ -1,204 +1,113 @@
 'use client';
 
-import { useState } from 'react';
-import { 
-  ArrowRight, 
-  HeartHandshake, 
-  Trophy, 
-  Target, 
-  Hotel,
-} from 'lucide-react';
-import { Navbar } from '@/components/layouts/Navbar';
-import { Sidebar } from '@/components/layouts/Sidebar';
-import { DonationModal } from '@/components/ui/DonationModal';
-import { restaurants } from '@/lib/data';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import renderRestaurantDetails from '@/components/RestoInfo';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogDescription 
-} from '@/components/ui/dialog';
-import About from './about/page';
+import React, { useState, useEffect } from 'react';
+import Navbar from '@/components/layouts/Navbar';
+import { getLocationsWithQRCodes, Location } from '@/lib/data';
+import DonationModal from '@/components/DonationModel';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { QrCode, Loader2 } from 'lucide-react';
+import Image from 'next/image';
 
-export default function HomePage() {
-  const [selectedRestaurantId, setSelectedRestaurantId] = useState<string | null>(null);
-  const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
-  const [isRestaurantSelectionModalOpen, setIsRestaurantSelectionModalOpen] = useState(false);
+const HomePage: React.FC = () => {
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const selectedRestaurant = restaurants.find(
-    (r) => r.id === selectedRestaurantId
-  );
+  useEffect(() => {
+    async function loadLocations() {
+      try {
+        const loadedLocations = await getLocationsWithQRCodes();
+        setLocations(loadedLocations);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error loading locations:', error);
+        setIsLoading(false);
+      }
+    }
 
-  const totalCommunityDonations = restaurants.reduce(
-    (sum, restaurant) => sum + restaurant.totalDonated, 
-    0
-  );
+    loadLocations();
+  }, []);
 
-  const handleRestaurantSelect = (restaurantId: string) => {
-    setSelectedRestaurantId(restaurantId);
-    setIsRestaurantSelectionModalOpen(false);
-    setIsDonationModalOpen(true);
-  };
-
-  const renderWelcomeContent = () => (
-    <div className="grid md:grid-cols-2 gap-8 h-full">
-      {/* Left Side: Mission & Impact */}
-      <div className="flex flex-col justify-center space-y-6 p-6">
-        <div className="space-y-4">
-          <h1 className="text-4xl font-bold text-red-600">
-            Repro Collective
-          </h1>
-          <p className="text-black text-lg">
-            Empowering local restaurants through community-driven support and sustainable giving.
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          <div className="flex items-center space-x-4 bg-red-50 p-4 rounded-lg">
-            <HeartHandshake className="text-red-600" size={40} />
-            <div>
-              <h3 className="font-bold text-black">Community Impact</h3>
-              <p className="text-sm text-black">
-                Total Donations: ${totalCommunityDonations.toLocaleString()}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-4 bg-black/5 p-4 rounded-lg">
-            <Hotel className="text-red-600" size={40} />
-            <div>
-              <h3 className="font-bold text-black">Local Restaurants Supported</h3>
-              <p className="text-sm text-black">
-                {restaurants.length} Restaurants Across the Community
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex space-x-4">
-          <Button 
-            variant="default" 
-            className="bg-red-600 hover:bg-red-700 flex items-center"
-            onClick={() => setIsRestaurantSelectionModalOpen(true)}
-          >
-            Start Donating <ArrowRight className="ml-2" size={20} />
-          </Button>
-          <Button 
-            variant="outline" 
-            className="border-red-600 text-red-600 hover:bg-red-50"
-          >
-            Learn More
-          </Button>
-        </div>
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader2 className="animate-spin text-sky-500" size={48} />
       </div>
+    );
+  }
 
-      {/* Right Side: Donation Progress */}
-      <div className="flex flex-col justify-center space-y-6 p-6 bg-red-50/50 rounded-lg">
-        <div className="text-center">
-          <Trophy className="mx-auto text-red-600 mb-4" size={60} />
-          <h2 className="text-2xl font-bold text-black mb-2">
-            Our Collective Goal
-          </h2>
-          <p className="text-black mb-4">
-            Join our mission to support local restaurants and create sustainable communities.
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          {restaurants.map((restaurant) => (
-            <div key={restaurant.id} className="space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-black font-medium">{restaurant.name}</span>
-                <span className="text-sm text-black">
-                  ${restaurant.totalDonated} / ${restaurant.donationGoal}
-                </span>
-              </div>
-              <Progress 
-                value={(restaurant.totalDonated / restaurant.donationGoal) * 100} 
-                className="h-2"
-              />
-            </div>
+  return (
+    <div className="min-h-screen bg-white text-gray-900">
+      <Navbar />
+      
+      <div className="container mx-auto mt-20 flex">
+        {/* Locations Sidebar */}
+        <div className="w-1/3 pr-6 overflow-y-auto">
+          <h2 className="text-2xl font-bold mb-4 text-sky-600">Donation Locations</h2>
+          {locations.map((location) => (
+            <Card 
+              key={location.id} 
+              className="mb-4 hover:shadow-lg transition-shadow cursor-pointer"
+              onClick={() => setSelectedLocation(location)}
+            >
+              <CardHeader>
+                <CardTitle className="flex justify-between items-center">
+                  {location.name}
+                  <QrCode className="text-sky-500" />
+                </CardTitle>
+                <CardDescription>{location.address}</CardDescription>
+              </CardHeader>
+              <CardContent className="flex justify-between items-center">
+                <p>{location.description}</p>
+                {location.qrCodeDataUrl && (
+                  <Image 
+                    src={location.qrCodeDataUrl} 
+                    alt={`QR Code for ${location.name}`} 
+                    width={80} 
+                    height={80} 
+                  />
+                )}
+              </CardContent>
+            </Card>
           ))}
         </div>
 
-        <div className="flex items-center space-x-2 bg-black/5 p-4 rounded-lg">
-          <Target className="text-red-600" size={30} />
-          <p className="text-sm text-black">
-            Every donation brings us closer to supporting local restaurants.
+        {/* Main Content */}
+        <div className="w-2/3 pl-6 border-l">
+          <h1 className="text-4xl font-bold mb-4 text-sky-600">
+            Repro Collective
+          </h1>
+          <p className="text-lg mb-6">
+            We are dedicated to making a positive impact in our community. 
+            By donating at our partner locations, you help support our mission 
+            of sustainable development and social change.
           </p>
+
+          <div className="bg-sky-50 p-6 rounded-lg">
+            <h3 className="text-2xl font-semibold mb-4 text-sky-700">
+              How to Donate
+            </h3>
+            <ol className="list-decimal pl-5 space-y-2">
+              <li>Visit one of our partner locations</li>
+              <li>Scan the QR code displayed</li>
+              <li>Choose your donation amount</li>
+              <li>Select Mobile Money or Equity</li>
+              <li>Complete your donation</li>
+            </ol>
+          </div>
         </div>
       </div>
-    </div>
-  );
 
-  return (
-    <div className="flex flex-col h-screen">
-      <Navbar />
-      
-      <div className="flex flex-1 mt-16">
-        <Sidebar 
-          onRestaurantSelect={setSelectedRestaurantId}
-          selectedRestaurantId={selectedRestaurantId}
-        />
-        
-        <main className="flex-1 bg-gray-50">
-          {selectedRestaurant ? (
-            renderRestaurantDetails(selectedRestaurant, setIsDonationModalOpen, setSelectedRestaurantId)
-          ) : (
-            renderWelcomeContent()
-          )}
-        </main>
-      </div>
-
-      {/* Restaurant Selection Modal */}
-      <Dialog 
-        open={isRestaurantSelectionModalOpen} 
-        onOpenChange={setIsRestaurantSelectionModalOpen}
-      >
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>Select a Restaurant to Support</DialogTitle>
-            <DialogDescription>
-              {"Choose a local restaurant you'd like to donate to and make a difference."}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            {restaurants.map((restaurant) => (
-              <div 
-                key={restaurant.id} 
-                className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-100 cursor-pointer"
-                onClick={() => handleRestaurantSelect(restaurant.id)}
-              >
-                <div>
-                  <h3 className="font-bold">{restaurant.name}</h3>
-                  <p className="text-sm text-gray-600">
-                    ${restaurant.totalDonated} raised / ${restaurant.donationGoal} goal
-                  </p>
-                </div>
-                <Progress 
-                  value={(restaurant.totalDonated / restaurant.donationGoal) * 100} 
-                  className="w-1/3 h-2"
-                />
-              </div>
-            ))}
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {selectedRestaurant && (
-        <DonationModal 
-          open={isDonationModalOpen}
-          onOpenChange={setIsDonationModalOpen}
-          restaurantName={selectedRestaurant.name}
+      {/* Donation Modal */}
+      {selectedLocation && (
+        <DonationModal
+          location={selectedLocation}
+          isOpen={!!selectedLocation}
+          onClose={() => setSelectedLocation(null)}
         />
       )}
-
-
-      <About />
     </div>
   );
-}
+};
+
+export default HomePage;

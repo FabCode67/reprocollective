@@ -1,37 +1,62 @@
-// src/components/layout/Navbar.tsx
-'use client';
-
+import React from 'react';
 import Link from 'next/link';
-import { cn } from "@/lib/utils";
+import { 
+  NavigationMenu, 
+  NavigationMenuList, 
+  NavigationMenuItem, 
+  NavigationMenuLink 
+} from '@/components/ui/navigation-menu';
+import { buttonVariants } from '@/components/ui/button';
 
-const NAV_ITEMS = [
-  { href: '/', label: 'Home' },
-  { href: '#about', label: 'About Us' },
-  { href: '/testimonials', label: 'Testimonials' },
-];
-
-export function Navbar() {
+const Navbar: React.FC = () => {
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white border-b border-red-500 z-50">
+    <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
       <div className="container mx-auto flex justify-between items-center p-4">
-        <div className="text-2xl font-bold text-red-600">
-          Restaurant Donations
-        </div>
-        <div className="flex space-x-6">
-          {NAV_ITEMS.map((item) => (
-            <Link 
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "text-black hover:text-red-600 transition-colors",
-                "font-medium"
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </div>
+        {/* Logo */}
+        <Link href="/" className="flex items-center">
+          <img 
+            src="/images/logo.png" 
+            alt="Repro Collective Logo" 
+            className="h-10 w-auto"
+          />
+        </Link>
+
+        {/* Navigation Menu */}
+        <NavigationMenu>
+          <NavigationMenuList className="flex space-x-4">
+            <NavigationMenuItem>
+              <Link href="/" passHref legacyBehavior>
+                <NavigationMenuLink className={buttonVariants({ variant: 'ghost' })}>
+                  Home
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="/about" passHref legacyBehavior>
+                <NavigationMenuLink className={buttonVariants({ variant: 'ghost' })}>
+                  About
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="/testimonials" passHref legacyBehavior>
+                <NavigationMenuLink className={buttonVariants({ variant: 'ghost' })}>
+                  Testimonials
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="#donate" passHref legacyBehavior>
+                <NavigationMenuLink className={buttonVariants({ variant: 'default', className: 'bg-sky-500 hover:bg-sky-600' })}>
+                  Donate Now
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;
