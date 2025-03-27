@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { 
   Dialog, 
@@ -10,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Location } from '@/lib/data';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Building2, MapPin, QrCode } from 'lucide-react';
 
 interface DonationModalProps {
   location: Location;
@@ -35,13 +38,41 @@ const DonationModal: React.FC<DonationModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px] bg-white">
         <DialogHeader>
-          <DialogTitle>Donate to Repro Collective</DialogTitle>
+          <DialogTitle className="flex items-center">
+            <QrCode className="mr-2 text-sky-500" />
+            Donate to Repro Collective
+          </DialogTitle>
           <DialogDescription>
-            Support {location.name} location
+            Support our mission through {location.name}
           </DialogDescription>
         </DialogHeader>
         
-        <div className="grid gap-4 py-4">
+        <div className="space-y-4 py-4">
+          {/* Location Details */}
+          <div className="flex items-center space-x-3 bg-sky-50 p-3 rounded-lg">
+            <Building2 className="text-sky-500" />
+            <div>
+              <h4 className="font-semibold">{location.name}</h4>
+              <p className="text-sm text-gray-600 flex items-center">
+                <MapPin className="mr-1 w-4 h-4" /> {location.address}
+              </p>
+            </div>
+          </div>
+
+          {/* Account Number */}
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="account" className="text-right">
+              Account
+            </Label>
+            <Input
+              id="account"
+              value={location.accountNumber}
+              readOnly
+              className="col-span-3 bg-gray-100"
+            />
+          </div>
+          
+          {/* Donation Amount */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="amount" className="text-right">
               Amount
@@ -56,6 +87,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
             />
           </div>
           
+          {/* Payment Method */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right">Payment</Label>
             <div className="col-span-3 flex space-x-2">
