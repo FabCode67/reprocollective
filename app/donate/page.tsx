@@ -5,12 +5,43 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { parseLocationFromQRCode } from '@/utility/qr-code';
 import DonationModal from '@/components/DonationModel';
 import { getLocationsWithQRCodes, Location as DataLocation } from '@/lib/data';
+import { 
+  Toaster, 
+  toast 
+} from 'sonner';
+import { 
+  Info, 
+  CheckCircle, 
+  AlertTriangle, 
+  XCircle, 
+  Loader2
+} from 'lucide-react';
 
 const DonatePageContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, setLocations] = useState<DataLocation[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<DataLocation | null>(null);
+
+  // Toast notification types
+  const toastTypes = {
+    success: (message: string) => toast.success(message, {
+      icon: <CheckCircle className="text-green-500" />,
+      className: 'bg-green-50 border-green-200'
+    }),
+    error: (message: string) => toast.error(message, {
+      icon: <XCircle className="text-red-500" />,
+      className: 'bg-red-50 border-red-200'
+    }),
+    info: (message: string) => toast.info(message, {
+      icon: <Info className="text-blue-500" />,
+      className: 'bg-blue-50 border-blue-200'
+    }),
+    warning: (message: string) => toast.warning(message, {
+      icon: <AlertTriangle className="text-yellow-500" />,
+      className: 'bg-yellow-50 border-yellow-200'
+    })
+  };
 
   useEffect(() => {
     async function loadLocationsAndProcessQRCode() {
@@ -28,11 +59,20 @@ const DonatePageContent = () => {
 
             if (matchedLocation) {
               setSelectedLocation(matchedLocation);
+              
+              // Show info toast when location is found via QR code
+              toastTypes.info(`Scanned location: ${matchedLocation.name}`);
+            } else {
+              // Show warning if location not found
+              toastTypes.warning('Location not found. Please try again.');
             }
+          } else {
+            toastTypes.error('Invalid QR code. Please scan a valid code.');
           }
         }
       } catch (error) {
         console.error('Error processing location:', error);
+        toastTypes.error('An error occurred while processing the location.');
       }
     }
 
@@ -42,15 +82,36 @@ const DonatePageContent = () => {
   const handleModalClose = () => {
     setSelectedLocation(null);
     router.push('/');
+    toastTypes.success('Donation process completed. Thank you for your support!');
+  };
+
+  const handleDonationSuccess = (amount?: number) => {
+      if (amount !== undefined) {
+          toastTypes.success(`Thank you for your donation of $${amount}!`);
+      } else {
+          toastTypes.success('Thank you for your donation!');
+      }
+  };
+
+  const handleDonationError = (errorMessage: string) => {
+    toastTypes.error(`Donation failed: ${errorMessage}`);
   };
 
   return (
     <>
+      <Toaster 
+        position="top-right" 
+        richColors 
+        expand={true}
+      />
+      
       {selectedLocation && (
         <DonationModal
           location={selectedLocation}
           isOpen={!!selectedLocation}
           onClose={handleModalClose}
+          onSuccess={handleDonationSuccess}
+          onError={handleDonationError}
         />
       )}
     </>
@@ -59,7 +120,10 @@ const DonatePageContent = () => {
 
 const DonatePage = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={
+        <div className="flex justify-center items-center min-h-screen">
+        <Loader2 className="animate-spin text-sky-500" size={48} />
+      </div>}>
       <DonatePageContent />
     </Suspense>
   );

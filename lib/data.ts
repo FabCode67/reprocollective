@@ -14,22 +14,22 @@ export interface Location {
 const baseLocations: Location[] = [
   {
     id: 'resto-1',
-    name: 'Green Leaf Restaurant',
-    address: '123 Main Street, Nairobi',
+    name: 'Camellia Restaurant',
+    address: 'KN 67 St, Kigali, Rwanda',
     accountNumber: '0786684390',
     description: 'A popular dining spot supporting Repro Collective\'s mission'
   },
   {
-    id: 'hotel-1',
-    name: 'Skyline Hotel',
-    address: '456 Riverside Drive, Mombasa',
-    accountNumber: '0786684390',
+    id: 'Marriott-1',
+    name: 'Marriott Hotel',
+    address: 'Kacyiru, Kigali, Rwanda',
+    accountNumber: '0788709997',
     description: 'Luxury hotel partnering with Repro Collective'
   },
   {
     id: 'cafe-1',
-    name: 'Urban Grind Cafe',
-    address: '789 City Center, Kisumu',
+    name: 'MACOCO corner cafe',
+    address: 'Kigali Heights, Rwanda',
     accountNumber: '0786684390',
     description: 'Community-focused cafe supporting our cause'
   }
