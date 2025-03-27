@@ -1,31 +1,22 @@
-export interface Restaurant {
+// src/types/donation.ts
+export interface DonationLocation {
   id: string;
   name: string;
-  description: string;
-  totalDonated: number;
-  imageUrl: string;
-  donationGoal: number;
   address: string;
-  contactInfo: {
-    phone: string;
-    email: string;
-    website?: string;
-  };
-  location: {
-    latitude: number;
-    longitude: number;
-    city: string;
-    neighborhood: string;
-  };
-  services: string[];
-  topMenuItems: Array<{
-    name: string;
-    description: string;
-    price: number;
-  }>;
-  socialImpact: {
-    jobsSustained: number;
-    localIngredients: boolean;
-    communityPrograms: string[];
-  };
+  accountNumber: string;
+  qrCodeReference: string;
+  description?: string;
+  imageUrl?: string;
+}
+
+export interface PaymentMethod {
+  id: string;
+  name: string;
+  icon: string;
+}
+
+export interface DonationDetails {
+  amount: number;
+  location: DonationLocation;
+  paymentMethod: PaymentMethod;
 }
