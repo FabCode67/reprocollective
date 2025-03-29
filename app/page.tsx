@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Loader2, CheckCircle, Globe, Heart } from 'lucide-react';
 import Image from 'next/image';
 import TestimonialsPage from '@/components/testmonials';
+import DarkHeroImage from '@/components/DarkImage';
 
 const HomePage: React.FC = () => {
   const [locations, setLocations] = useState<Location[]>([]);
@@ -82,6 +83,7 @@ const HomePage: React.FC = () => {
           ${activeSection === 'locations' ? 'block' : 'hidden lg:block'}
           overflow-y-auto
         `}>
+          <DarkHeroImage />
           <h2 className="text-2xl font-bold mb-4 text-sky-600">{"Doner's Locations"}</h2>
           {locations.map((location) => (
             <Card
@@ -92,13 +94,16 @@ const HomePage: React.FC = () => {
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">
                   <span className="text-sky-700">{location.name}</span>
-                  <Image
+                  {/* <Image
                     src={location.qrCodeDataUrl || '/logo.png'}
                     alt={`QR Code for ${location.name}`}
                     width={50}
                     height={50}
                     className="self-end sm:self-auto border-2 border-sky-100 rounded"
-                  />
+                  /> */}
+
+                  {/* display money earned  */}
+                  <span className="text-sky-700 text-xs font-semibold">$ 70000</span>
                 </CardTitle>
                 <CardDescription className="text-gray-600">{location.address}</CardDescription>
               </CardHeader>
