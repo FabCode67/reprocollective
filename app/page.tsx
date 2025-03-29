@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
 
       <div className="container max-w-7xl p-4 mx-auto mt-20 lg:flex">
         {/* Mobile Section Toggle */}
-        <div className="lg:hidden flex mb-4">
+        <div className="lg:hidden flex mb-1">
         <button 
             onClick={() => setActiveSection('locations')}
             className={`
@@ -79,12 +79,12 @@ const HomePage: React.FC = () => {
 
         {/* Locations Sidebar */}
         <div className={`
-          w-full lg:w-1/3 lg:pr-6  mt-12
+          w-full lg:w-1/3 lg:pr-6  mt-0
           ${activeSection === 'locations' ? 'block' : 'hidden lg:block'}
           overflow-y-auto
         `}>
           <DarkHeroImage />
-          <h2 className="text-2xl font-bold mb-4 text-sky-600">{"Doner's Locations"}</h2>
+          <h2 className="text-2xl font-bold mb-4 text-sky-600">{"Doner's station"}</h2>
           {locations.map((location) => (
             <Card
               key={location.id}
@@ -103,7 +103,7 @@ const HomePage: React.FC = () => {
                   /> */}
 
                   {/* display money earned  */}
-                  <span className="text-sky-700 text-xs font-semibold">$ 70000</span>
+                  <span className="text-sky-700 text-xs font-semibold">70000 Rwf</span>
                 </CardTitle>
                 <CardDescription className="text-gray-600">{location.address}</CardDescription>
               </CardHeader>
@@ -130,14 +130,6 @@ const HomePage: React.FC = () => {
                 </div>
                 <button className="bg-sky-500 text-white md:w-fit w-full px-2 py-1 text-sm rounded-md">Donate</button>
               </CardContent>
-
-
-
-
-
-
-
-
             </Card>
           ))}
         </div>

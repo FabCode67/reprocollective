@@ -157,19 +157,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                     </div> */}
 
                     {/* Donation Amount */}
-                    {/* <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="amount" className="text-right">
-                            Amount
-                        </Label>
-                        <Input
-                            id="amount"
-                            type="number"
-                            placeholder="Enter donation amount"
-                            className="col-span-3"
-                            value={donationAmount}
-                            onChange={(e) => setDonationAmount(e.target.value)}
-                        />
-                    </div> */}
+                    
 
                     {/* Payment Method Selection */}
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -195,7 +183,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                                         : 'bg-white hover:bg-gray-100 border border-sky-600'
                                 }
                             >
-                                Equity
+                                CARD
                             </Button>
                         </div>
                     </div>
@@ -225,7 +213,8 @@ const DonationModal: React.FC<DonationModalProps> = ({
                                 </Label>
                                 <Input
                                     id="cardNumber"
-                                    placeholder="Card number"
+                                    placeholder="1234 5678 9012 3456"
+                                    type="text"
                                     className="col-span-3"
                                     value={cardNumber}
                                     onChange={(e) => setCardNumber(e.target.value)}
@@ -257,6 +246,19 @@ const DonationModal: React.FC<DonationModalProps> = ({
                             </div>
                         </div>
                     )}
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="amount" className="text-right">
+                            Amount
+                        </Label>
+                        <Input
+                            id="amount"
+                            type="number"
+                            placeholder="Enter donation amount"
+                            className="col-span-3"
+                            value={donationAmount}
+                            onChange={(e) => setDonationAmount(e.target.value)}
+                        />
+                    </div>
                 </div>
 
                 <Button

@@ -29,13 +29,31 @@ const Navbar: React.FC = () => {
         </Link>
 
         {/* Mobile Menu Toggle */}
-        <div className="lg:hidden">
-          <button 
-            onClick={toggleMenu} 
+        <div className="lg:hidden flex items-center my-auto gap-4">
+          {/* // report button */}
+          <button
+            onClick={toggleMenu}
+            className="text-gray-600 hover:text-gray-900 focus:outline-none"
+          >
+            Report
+          </button>
+          <div
+            className={`
+                    ${buttonVariants({ variant: 'default', className: 'bg-sky-500 hover:bg-sky-600' })} 
+                    w-fit lg:w-auto text-center
+                  `}
+          >
+            Donate Now
+          </div>
+          <button
+            onClick={toggleMenu}
             className="text-gray-600 hover:text-gray-900 focus:outline-none"
           >
             {isMenuOpen ? <X size={24} /> : <BellRing size={24} />}
           </button>
+
+
+
         </div>
 
         {/* Navigation Menu */}
@@ -56,7 +74,7 @@ const Navbar: React.FC = () => {
           ">
             <NavigationMenuItem className="w-full lg:w-auto">
               <Link href="/" passHref legacyBehavior>
-                <NavigationMenuLink 
+                <NavigationMenuLink
                   className={`
                     ${buttonVariants({ variant: 'ghost' })} 
                     w-full lg:w-auto text-center
@@ -68,7 +86,7 @@ const Navbar: React.FC = () => {
             </NavigationMenuItem>
             <NavigationMenuItem className="w-full lg:w-auto">
               <Link href="#about" passHref legacyBehavior>
-                <NavigationMenuLink 
+                <NavigationMenuLink
                   className={`
                     ${buttonVariants({ variant: 'ghost' })} 
                     w-full lg:w-auto text-center
@@ -80,7 +98,7 @@ const Navbar: React.FC = () => {
             </NavigationMenuItem>
             <NavigationMenuItem className="w-full lg:w-auto">
               <Link href="#testimonials" passHref legacyBehavior>
-                <NavigationMenuLink 
+                <NavigationMenuLink
                   className={`
                     ${buttonVariants({ variant: 'ghost' })} 
                     w-full lg:w-auto text-center
@@ -90,9 +108,21 @@ const Navbar: React.FC = () => {
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
-            {/* <NavigationMenuItem className="w-full lg:w-auto">
+            <NavigationMenuItem className="w-full lg:w-auto">
+              <Link href="#reports" passHref legacyBehavior>
+                <NavigationMenuLink
+                  className={`
+                    ${buttonVariants({ variant: 'ghost' })} 
+                    w-full lg:w-auto text-center
+                  `}
+                >
+                  Reports
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem className="w-full lg:w-auto">
               <Link href="#donate" passHref legacyBehavior>
-                <NavigationMenuLink 
+                <NavigationMenuLink
                   className={`
                     ${buttonVariants({ variant: 'default', className: 'bg-sky-500 hover:bg-sky-600' })} 
                     w-full lg:w-auto text-center
@@ -101,8 +131,18 @@ const Navbar: React.FC = () => {
                   Donate Now
                 </NavigationMenuLink>
               </Link>
-            </NavigationMenuItem> */}
+            </NavigationMenuItem>
+            <NavigationMenuItem className="w-full lg:w-auto">
+          <div className="hidden lg:flex items-center gap-4 mt-4 lg:mt-0">
+            <button
+              className="text-gray-600 hover:text-gray-900 focus:outline-none"
+            >
+              {isMenuOpen ? <X size={24} /> : <BellRing size={24} />}
+            </button>
+          </div>
+          </NavigationMenuItem>
           </NavigationMenuList>
+         
         </NavigationMenu>
       </div>
     </nav>
