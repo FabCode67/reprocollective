@@ -40,13 +40,13 @@ const HomePage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <><div className="min-h-screen bg-white text-gray-900">
       <Navbar />
 
       <div className="container max-w-7xl p-4 mx-auto mt-20 lg:flex">
         {/* Mobile Section Toggle */}
         <div className="lg:hidden flex mb-1">
-        <button 
+          <button
             onClick={() => setActiveSection('locations')}
             className={`
               w-1/2 p-2 text-center 
@@ -55,7 +55,7 @@ const HomePage: React.FC = () => {
           >
             HOME
           </button>
-          <button 
+          <button
             onClick={() => setActiveSection('info')}
             className={`
               w-1/2 p-2 text-center 
@@ -64,7 +64,7 @@ const HomePage: React.FC = () => {
           >
             About
           </button>
-          <button 
+          <button
             onClick={() => setActiveSection('testimonials')}
             className={`
               w-1/2 p-2 text-center 
@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
             Testimonials
           </button>
 
-          
+
         </div>
 
         {/* Locations Sidebar */}
@@ -95,12 +95,12 @@ const HomePage: React.FC = () => {
                 <CardTitle className="flex justify-between items-center">
                   <span className="text-sky-700">{location.name}</span>
                   {/* <Image
-                    src={location.qrCodeDataUrl || '/logo.png'}
-                    alt={`QR Code for ${location.name}`}
-                    width={50}
-                    height={50}
-                    className="self-end sm:self-auto border-2 border-sky-100 rounded"
-                  /> */}
+              src={location.qrCodeDataUrl || '/logo.png'}
+              alt={`QR Code for ${location.name}`}
+              width={50}
+              height={50}
+              className="self-end sm:self-auto border-2 border-sky-100 rounded"
+            /> */}
 
                   {/* display money earned  */}
                   <span className="text-sky-700 text-xs font-semibold">70000 Rwf</span>
@@ -109,24 +109,23 @@ const HomePage: React.FC = () => {
               </CardHeader>
 
               <CardContent className="flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0">
-                              {/* // display momo pay number and equity account number */}
+                {/* // display momo pay number and equity account number */}
 
                 <div className="flex items-center space-x-2">
-                <div className="flex items-center space-x-2">
-                  <Image src="/mtn.webp" alt="momo" width={35} height={35} />
-                  <span className=" text-xs text-gray-600">5553422</span>
-                </div>  
-                {/* drwa small horisontal line             */}
-                <div className="border-l border-gray-300 h-6"></div>
-                <div className="flex items-center space-x-2">
-                  <Image
-                    src="/equity.png"
-                    alt="equity"
-                    width={35}
-                    height={35}
-                  />
-                  <span className=" text-xs text-gray-600">444-5555-7777-2232</span>
-                </div>
+                  <div className="flex items-center space-x-2">
+                    <Image src="/mtn.webp" alt="momo" width={35} height={35} />
+                    <span className=" text-xs text-gray-600">5553422</span>
+                  </div>
+                  {/* drwa small horisontal line             */}
+                  <div className="border-l border-gray-300 h-6"></div>
+                  <div className="flex items-center space-x-2">
+                    <Image
+                      src="/equity.png"
+                      alt="equity"
+                      width={35}
+                      height={35} />
+                    <span className=" text-xs text-gray-600">444-5555-7777-2232</span>
+                  </div>
                 </div>
                 <button className="bg-sky-500 text-white md:w-fit w-full px-2 py-1 text-sm rounded-md">Donate</button>
               </CardContent>
@@ -146,9 +145,9 @@ const HomePage: React.FC = () => {
                 Repro Collective
               </h1>
               <p className="text-base lg:text-lg mb-6 text-gray-700 leading-relaxed">
-                We believe in transformative change through strategic, compassionate giving. 
-                Every donation is a powerful step towards sustainable development, 
-                empowering communities to break cycles of vulnerability and create 
+                We believe in transformative change through strategic, compassionate giving.
+                Every donation is a powerful step towards sustainable development,
+                empowering communities to break cycles of vulnerability and create
                 lasting, meaningful impact.
               </p>
             </div>
@@ -183,26 +182,22 @@ const HomePage: React.FC = () => {
                 Our Vision
               </h3>
               <p className="text-base lg:text-lg leading-relaxed">
-                We envision a world where every contribution, no matter how small, 
-                creates ripples of positive transformation. By connecting donors 
+                We envision a world where every contribution, no matter how small,
+                creates ripples of positive transformation. By connecting donors
                 directly with community needs, we bridge compassion with practical solutions.
               </p>
             </div>
           </div>
         </div>
-        
+
       </div>
-      {
-        <div className={`
+      {<div className={`
           ${activeSection === 'testimonials' ? 'block' : 'hidden'}
         `}>
-          <TestimonialsPage />
-      </div>
-      }
-
-      <div className="lg:block hidden">
         <TestimonialsPage />
-      </div>
+      </div>}
+
+
 
       {/* Donation Modal */}
       {selectedLocation && (
@@ -211,10 +206,11 @@ const HomePage: React.FC = () => {
           isOpen={!!selectedLocation}
           onClose={() => setSelectedLocation(null)}
           onError={(error) => console.error('Donation Error:', error)}
-          onSuccess={() => console.log('Donation Success')}
-        />
+          onSuccess={() => console.log('Donation Success')} />
       )}
-    </div>
+    </div><section id='testimonials' className="lg:block hidden">
+        <TestimonialsPage />
+      </section></>
   );
 };
 

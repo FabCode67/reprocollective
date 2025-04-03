@@ -79,7 +79,7 @@ const TestimonialsPage: React.FC = () => {
   };
 
   return (
-    <div id='testimonials' className="min-h-screen bg-white text-gray-900">
+    <section id='testimonials' className="min-h-screen bg-white text-gray-900">
       <Navbar />
 
       <div className="container max-w-7xl mx-auto px-4 py-16 md:py-24">
@@ -157,7 +157,7 @@ const TestimonialsPage: React.FC = () => {
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
