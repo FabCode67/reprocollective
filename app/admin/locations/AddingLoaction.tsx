@@ -71,10 +71,9 @@ const AddLocationDialog: React.FC<AddLocationDialogProps> = ({ isOpen, onClose, 
     setIsLoading(true);
     
     try {
-      const response = await axios.post('http://localhost:4040/api/locations', formData);
-      
-    
-
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/locations`
+        , formData);
         toast.success('Location added successfully', {
             description: 'The new location has been added successfully.',
         });

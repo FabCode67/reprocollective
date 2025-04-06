@@ -108,8 +108,10 @@ const DonationModal: React.FC<DonationModalProps> = ({
             };
 
             // Call the payment initiation API
-            const response = await axios.post('http://localhost:4040/api/payments/initiate', paymentData);
-            
+            const response = await axios.post(
+                `${
+                process.env.NEXT_PUBLIC_API_URL}/donations/initiate
+                }`, paymentData)
 
             // Handle successful payment initiation
             if (response.data.success) {

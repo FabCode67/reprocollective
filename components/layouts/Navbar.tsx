@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/navigation-menu';
 import { buttonVariants } from '@/components/ui/button';
 import { BellRing, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,6 +16,7 @@ const Navbar: React.FC = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const router = useRouter();
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow-lg z-50">
@@ -32,7 +34,11 @@ const Navbar: React.FC = () => {
         <div className="lg:hidden flex items-center my-auto gap-4">
           {/* // report button */}
           <button
-            onClick={toggleMenu}
+            onClick={
+              () => {
+                router.push('/reports');
+              }
+            }
             className="text-gray-600 hover:text-gray-900 focus:outline-none"
           >
             Report
@@ -109,7 +115,7 @@ const Navbar: React.FC = () => {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem className="w-full lg:w-auto">
-              <Link href="#reports" passHref legacyBehavior>
+              <Link href="/reports" passHref legacyBehavior>
                 <NavigationMenuLink
                   className={`
                     ${buttonVariants({ variant: 'ghost' })} 
