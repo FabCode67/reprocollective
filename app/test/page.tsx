@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4040/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 interface DonationLocation {
   id: string;

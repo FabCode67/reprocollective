@@ -20,7 +20,9 @@ export default function LocationsPage() {
   const fetchLocations = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(' http://localhost:4040/api/locations');
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/locations`,
+      );
       setLocations(response.data);
     } catch (error) {
       console.error('Error fetching locations:', error);

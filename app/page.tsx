@@ -35,7 +35,9 @@ const HomePage: React.FC = () => {
   const fetchLocation = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get('http://localhost:4040/api/locations');
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/locations` 
+        );
         const enrichedLocation: EnrichedLocation[] = response.data.map((loc:{
           id: string;
           name: string;
