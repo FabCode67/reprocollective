@@ -12,13 +12,14 @@ import { Button } from '@/components/ui/button';
 import { Location } from '@/lib/data';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Building2, MapPin, QrCode, CreditCard, Phone } from 'lucide-react';
+import { Building2, MapPin, QrCode, CreditCard, Phone, User, Mail } from 'lucide-react';
+import axios from 'axios';
 
 interface DonationModalProps {
     location: Location;
     isOpen: boolean;
     onClose: () => void;
-    onSuccess: (amount?: number) => void;
+    onSuccess: (amount?: number, transactionId?: string) => void;
     onError: (error: string) => void;
 }
 
@@ -30,92 +31,128 @@ const DonationModal: React.FC<DonationModalProps> = ({
     onError
 }) => {
     const [donationAmount, setDonationAmount] = useState<string>('');
-    const [paymentMethod, setPaymentMethod] = useState<'mobile-money' | 'equity'>('mobile-money');
+    const [paymentMethod, setPaymentMethod] = useState<'mtn' | 'card' | 'bank_transfer'>('mtn');
     const [isProcessing, setIsProcessing] = useState<boolean>(false);
     
-    // Payment details states
-    const [phoneNumber, setPhoneNumber] = useState<string>('');
+    // Donor information
+    const [donorName, setDonorName] = useState<string>('');
+    const [donorPhone, setDonorPhone] = useState<string>('');
+    const [donorEmail, setDonorEmail] = useState<string>('');
+
+    // Additional card information for 'card' payment method
     const [cardNumber, setCardNumber] = useState<string>('');
     const [expiryDate, setExpiryDate] = useState<string>('');
     const [cvv, setCvv] = useState<string>('');
 
-    const handleDonate = async () => {
+    const validateForm = () => {
         // Validate donation amount
         const amount = parseFloat(donationAmount);
         if (isNaN(amount) || amount <= 0) {
             onError('Please enter a valid donation amount');
-            return;
+            return false;
         }
 
-        // Validate payment details based on selected method
-        if (paymentMethod === 'mobile-money') {
-            if (!phoneNumber || phoneNumber.length < 10) {
-                onError('Please enter a valid phone number');
-                return;
-            }
-        } else if (paymentMethod === 'equity') {
+        // Validate donor information
+        if (!donorName.trim()) {
+            onError('Please enter your name');
+            return false;
+        }
+
+        if (!donorPhone || donorPhone.length < 10) {
+            onError('Please enter a valid phone number');
+            return false;
+        }
+
+        // Email validation (optional but validate if provided)
+        if (donorEmail && !donorEmail.includes('@')) {
+            onError('Please enter a valid email address');
+            return false;
+        }
+
+        // Additional validation for card payment method
+        if (paymentMethod === 'card') {
             if (!cardNumber || cardNumber.length < 16) {
                 onError('Please enter a valid card number');
-                return;
+                return false;
             }
             if (!expiryDate || !expiryDate.includes('/')) {
                 onError('Please enter a valid expiry date (MM/YY)');
-                return;
+                return false;
             }
             if (!cvv || cvv.length < 3) {
                 onError('Please enter a valid CVV');
-                return;
+                return false;
             }
+        }
+
+        return true;
+    };
+
+    const handleDonate = async () => {
+        if (!validateForm()) {
+            return;
         }
 
         setIsProcessing(true);
 
         try {
-            // Simulate donation process (replace with actual API call)
-            await simulateDonation(amount, paymentMethod, location);
+            // Prepare payment data based on backend API requirements
+            const paymentData = {
+                locationCode: location.qrCode, // Assuming location has a code property
+                amount: parseFloat(donationAmount),
+                donorName,
+                donorPhone,
+                donorEmail: donorEmail || undefined, // Only include if provided
+                paymentMethod,
+                currency: paymentMethod === 'card' ? 'USD' : 'RWF' // Default currency based on payment method
+            };
+
+            // Call the payment initiation API
+            const response = await axios.post('http://localhost:4040/api/payments/initiate', paymentData);
             
-            // Clear form fields after successful donation
-            setDonationAmount('');
-            setPhoneNumber('');
-            setCardNumber('');
-            setExpiryDate('');
-            setCvv('');
-            
-            // Call onSuccess callback
-            onSuccess(amount);
-            
-            // Close the modal
-            onClose();
+
+            // Handle successful payment initiation
+            if (response.data.success) {
+                // Clear form fields
+                resetForm();
+                
+                // If there's a payment URL (for card payments or redirects), redirect to it
+                if (response.data.paymentUrl) {
+                    console.log('Redirecting to payment URL:', response.data.paymentUrl);
+
+                    // Redirect to the payment URL (for card payments or redirects)
+                    window.open(response.data.paymentUrl, '_blank');
+
+                    
+                } else {
+                    // Otherwise, consider it successful or pending based on status
+                    onSuccess(parseFloat(donationAmount), response.data.transactionId);
+                    onClose();
+                }
+            } else {
+                onError(response.data.message || 'Payment initiation failed');
+            }
         } catch (error) {
-            // Handle and log any errors
-            const errorMessage = error instanceof Error 
-                ? error.message 
+            // Handle API call errors
+            console.error("Payment error:", error);
+            const errorMessage = axios.isAxiosError(error) && error.response?.data
+                ? error.response.data.error || error.response.data.details || 'An unexpected error occurred during donation'
                 : 'An unexpected error occurred during donation';
             
-            // Call onError callback with specific error message
             onError(errorMessage);
         } finally {
             setIsProcessing(false);
         }
     };
 
-    // Simulated donation function (replace with actual API call)
-    const simulateDonation = async (
-        amount: number, 
-        method: 'mobile-money' | 'equity', 
-        location: Location
-    ): Promise<boolean> => {
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
-        // Randomly simulate success/failure (remove in production)
-        const simulatedSuccess = Math.random() > 0.2;
-        
-        if (!simulatedSuccess) {
-            throw new Error(`Donation to ${location.name} failed. Please try again.`);
-        }
-
-        return true;
+    const resetForm = () => {
+        setDonationAmount('');
+        setDonorName('');
+        setDonorPhone('');
+        setDonorEmail('');
+        setCardNumber('');
+        setExpiryDate('');
+        setCvv('');
     };
 
     return (
@@ -138,73 +175,98 @@ const DonationModal: React.FC<DonationModalProps> = ({
                         <div>
                             <h4 className="font-semibold">{location.name}</h4>
                             <p className="text-sm text-gray-600 flex items-center">
-                                <MapPin className="mr-1 w-4 h-4" /> {location.address}
+                                <MapPin className="mr-1 w-4 h-4" /> {location.location}
                             </p>
                         </div>
                     </div>
 
-                    {/* Account Number */}
-                    {/* <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="account" className="text-right">
-                            Account
+                    {/* Donor Information */}
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="donorName" className="text-right">
+                            <User className="w-4 h-4 inline mr-1" />
+                            Name
                         </Label>
                         <Input
-                            id="account"
-                            value={location.accountNumber}
-                            readOnly
-                            className="col-span-3 bg-gray-100"
+                            id="donorName"
+                            placeholder="Your full name"
+                            className="col-span-3"
+                            value={donorName}
+                            onChange={(e) => setDonorName(e.target.value)}
                         />
-                    </div> */}
+                    </div>
 
-                    {/* Donation Amount */}
-                    
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="donorPhone" className="text-right">
+                            <Phone className="w-4 h-4 inline mr-1" />
+                            Phone
+                        </Label>
+                        <Input
+                            id="donorPhone"
+                            type="tel"
+                            placeholder="Your phone number"
+                            className="col-span-3"
+                            value={donorPhone}
+                            onChange={(e) => setDonorPhone(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="donorEmail" className="text-right">
+                            <Mail className="w-4 h-4 inline mr-1" />
+                            Email
+                        </Label>
+                        <Input
+                            id="donorEmail"
+                            type="email"
+                            placeholder="Your email (optional)"
+                            className="col-span-3"
+                            value={donorEmail}
+                            onChange={(e) => setDonorEmail(e.target.value)}
+                        />
+                    </div>
 
                     {/* Payment Method Selection */}
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label className="text-right">Payment</Label>
-                        <div className="col-span-3 flex space-x-2">
+                        <div className="col-span-3 flex flex-wrap gap-2">
                             <Button
-                                variant={paymentMethod === 'mobile-money' ? 'default' : 'outline'}
-                                onClick={() => setPaymentMethod('mobile-money')}
+                                variant={paymentMethod === 'mtn' ? 'default' : 'outline'}
+                                onClick={() => setPaymentMethod('mtn')}
                                 className={
-                                    paymentMethod === 'mobile-money'
+                                    paymentMethod === 'mtn'
                                         ? 'bg-sky-500 hover:bg-sky-600'
                                         : 'bg-white hover:bg-gray-100 border border-sky-600'
                                 }
                             >
-                                Mobile Money
+                                MTN Mobile
                             </Button>
                             <Button
-                                variant={paymentMethod === 'equity' ? 'default' : 'outline'}
-                                onClick={() => setPaymentMethod('equity')}
+                                variant={paymentMethod === 'card' ? 'default' : 'outline'}
+                                onClick={() => setPaymentMethod('card')}
                                 className={
-                                    paymentMethod === 'equity'
+                                    paymentMethod === 'card'
                                         ? 'bg-sky-500 hover:bg-sky-600'
                                         : 'bg-white hover:bg-gray-100 border border-sky-600'
                                 }
                             >
-                                CARD
+                                Card
+                            </Button>
+                            <Button
+                                variant={paymentMethod === 'bank_transfer' ? 'default' : 'outline'}
+                                onClick={() => setPaymentMethod('bank_transfer')}
+                                className={
+                                    paymentMethod === 'bank_transfer'
+                                        ? 'bg-sky-500 hover:bg-sky-600'
+                                        : 'bg-white hover:bg-gray-100 border border-sky-600'
+                                }
+                            >
+                                Bank Transfer
                             </Button>
                         </div>
                     </div>
 
                     {/* Payment Method Specific Fields */}
-                    {paymentMethod === 'mobile-money' ? (
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="phoneNumber" className="text-right">
-                                <Phone className="w-4 h-4 inline mr-1" />
-                                Phone
-                            </Label>
-                            <Input
-                                id="phoneNumber"
-                                type="tel"
-                                placeholder="Enter your phone number"
-                                className="col-span-3"
-                                value={phoneNumber}
-                                onChange={(e) => setPhoneNumber(e.target.value)}
-                            />
-                        </div>
-                    ) : (
+                    {paymentMethod === 'card' && (
                         <div className="space-y-3">
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="cardNumber" className="text-right">
@@ -246,6 +308,8 @@ const DonationModal: React.FC<DonationModalProps> = ({
                             </div>
                         </div>
                     )}
+
+                    {/* Donation Amount */}
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="amount" className="text-right">
                             Amount
@@ -263,7 +327,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
 
                 <Button
                     onClick={handleDonate}
-                    disabled={ isProcessing}
+                    disabled={isProcessing}
                     className="w-full bg-sky-500 hover:bg-sky-600"
                 >
                     {isProcessing ? 'Processing...' : 'Donate Now'}

@@ -2,33 +2,79 @@
 
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/layouts/Navbar';
-import { getLocationsWithQRCodes, Location } from '@/lib/data';
+import { getLocationsWithQRCodes } from '@/lib/data';
 import DonationModal from '@/components/DonationModel';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, CheckCircle, Globe, Heart } from 'lucide-react';
 import Image from 'next/image';
 import TestimonialsPage from '@/components/testmonials';
 import DarkHeroImage from '@/components/DarkImage';
+import axios from 'axios';
+
+interface Location {
+  id: string;
+  name: string;
+  location: string;
+  accountNumber: string;
+  description: string;
+  qrCodeDataUrl?: string;
+}
+
+interface EnrichedLocation extends Location {
+  address: string;
+}
 
 const HomePage: React.FC = () => {
-  const [locations, setLocations] = useState<Location[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  const [activeSection, setActiveSection] = useState<'location' | 'info' | 'testimonials'>('location');
+
+  const [location, setLocation] = useState<Location[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeSection, setActiveSection] = useState<'locations' | 'info' | 'testimonials'>('locations');
+
+  // Function to fetch location from API
+  const fetchLocation = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get('http://localhost:4040/api/locations');
+        const enrichedLocation: EnrichedLocation[] = response.data.map((loc:{
+          id: string;
+          name: string;
+          location: string;
+          accountNumber: string;
+          description: string;
+          qrCodeDataUrl?: string;
+        }) => ({
+          ...loc,
+          address: loc.location || 'Unknown Address',
+          accountNumber: loc.accountNumber || 'N/A',
+          description: loc.description || 'No description available',
+        }));
+        setLocation(enrichedLocation);
+      } catch (error) {
+        console.error('Error fetching location:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+  // Load location on component mount
+  useEffect(() => {
+    fetchLocation();
+  }, []);
 
   useEffect(() => {
-    async function loadLocations() {
+    async function loadLocation() {
       try {
-        const loadedLocations = await getLocationsWithQRCodes();
-        setLocations(loadedLocations);
+        const loadedLocation = await getLocationsWithQRCodes();
+        setLocation(loadedLocation);
         setIsLoading(false);
       } catch (error) {
-        console.error('Error loading locations:', error);
+        console.error('Error loading location:', error);
         setIsLoading(false);
       }
     }
 
-    loadLocations();
+    loadLocation();
   }, []);
 
   if (isLoading) {
@@ -47,10 +93,10 @@ const HomePage: React.FC = () => {
         {/* Mobile Section Toggle */}
         <div className="lg:hidden flex mb-1">
           <button
-            onClick={() => setActiveSection('locations')}
+            onClick={() => setActiveSection('location')}
             className={`
               w-1/2 p-2 text-center 
-              ${activeSection === 'locations' ? 'bg-sky-500 text-white' : 'bg-gray-200'}
+              ${activeSection === 'location' ? 'bg-sky-500 text-white' : 'bg-gray-200'}
             `}
           >
             HOME
@@ -77,15 +123,15 @@ const HomePage: React.FC = () => {
 
         </div>
 
-        {/* Locations Sidebar */}
+        {/* Location Sidebar */}
         <div className={`
           w-full lg:w-1/3 lg:pr-6  mt-0
-          ${activeSection === 'locations' ? 'block' : 'hidden lg:block'}
+          ${activeSection === 'location' ? 'block' : 'hidden lg:block'}
           overflow-y-auto
         `}>
           <DarkHeroImage />
           <h2 className="text-2xl font-bold mb-4 text-sky-600">{"Doner's station"}</h2>
-          {locations.map((location) => (
+          {location.map((location) => (
             <Card
               key={location.id}
               className="md:mb-4 mb-2 hover:shadow-lg transition-shadow cursor-pointer border-sky-100 px-0 hover:border-sky-300"
@@ -105,7 +151,7 @@ const HomePage: React.FC = () => {
                   {/* display money earned  */}
                   <span className="text-sky-700 text-xs font-semibold">70000 Rwf</span>
                 </CardTitle>
-                <CardDescription className="text-gray-600">{location.address}</CardDescription>
+                <CardDescription className="text-gray-600">{location.location}</CardDescription>
               </CardHeader>
 
               <CardContent className="flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0">
