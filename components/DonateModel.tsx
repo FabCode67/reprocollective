@@ -43,7 +43,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment/initiate`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/initiate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
