@@ -15,7 +15,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 // import Navbar from '@/components/layouts/Navbar';
-import RootLayout from '@/components/layouts/Dashboardlayout';
 import Navbar from '@/components/layouts/Navbar';
 
 interface DonationLocation {

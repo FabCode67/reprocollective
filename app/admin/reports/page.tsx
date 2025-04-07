@@ -118,7 +118,10 @@ export default function PartnerDistributionAdmin() {
   const fetchPartners = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get('http://localhost:4040/api/partners');
+      const response = await axios.get(`
+        ${
+          process.env.NEXT_PUBLIC_API_URL
+        }/partners`);
       setPartners(response.data.partners);
       setIsLoading(false);
     } catch (err) {
@@ -132,7 +135,7 @@ export default function PartnerDistributionAdmin() {
   const initializeDefaultPartners = async () => {
     try {
       setIsLoading(true);
-      await axios.post('http://localhost:4040/api/partners/init-default');
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/partners/init-default`);
       setSuccess('Default partners initialized successfully');
       fetchPartners();
       setIsLoading(false);
@@ -147,7 +150,8 @@ export default function PartnerDistributionAdmin() {
   const addPartner = async () => {
     try {
       setIsLoading(true);
-      await axios.post('/api/partners', newPartner);
+      await axios.post(`
+        ${process.env.NEXT_PUBLIC_API_URL}/api/partners`, newPartner);
       setSuccess('Partner added successfully');
       setShowAddPartnerDialog(false);
       setNewPartner({
@@ -176,7 +180,9 @@ export default function PartnerDistributionAdmin() {
 
     try {
       setIsLoading(true);
-      const response = await axios.post('http://localhost:4040/api/distributions/calculate', {
+      const response = await axios.post(`${
+        process.env.NEXT_PUBLIC_API_URL
+      }/distributions/calculate`, {
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
       });
@@ -198,7 +204,9 @@ export default function PartnerDistributionAdmin() {
 
     try {
       setIsLoading(true);
-      await axios.post('http://localhost:4040/api/distributions/process', {
+      await axios.post(`${
+        process.env.NEXT_PUBLIC_API_URL
+      }/distributions/process`, {
         partnerId: processingDistribution.partnerId,
         amount: processingDistribution.amount,
         fromDate: processingDistribution.fromDate,
@@ -228,7 +236,9 @@ export default function PartnerDistributionAdmin() {
   const fetchDistributionHistory = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get('http://localhost:4040/api/distributions/history');
+      const response = await axios.get(`${
+        process.env.NEXT_PUBLIC_API_URL
+      }/distributions/history`);
       setDistributions(response.data.distributions);
       setIsLoading(false);
     } catch (err) {
@@ -242,7 +252,9 @@ export default function PartnerDistributionAdmin() {
   const fetchDistributionSummary = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get('http://localhost:4040/api/distributions/summary');
+      const response = await axios.get(`${
+        process.env.NEXT_PUBLIC_API_URL
+      }/distributions/summary`);
       setDistributionSummary(response.data);
       setIsLoading(false);
     } catch (err) {

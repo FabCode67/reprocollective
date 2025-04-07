@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BarChart3, Home, MapPin, Menu, QrCode, X } from 'lucide-react';
+import { BarChart3, Home, MapPin, Menu, QrCode, X, Coins } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Sidebar() {
@@ -31,6 +31,11 @@ export default function Sidebar() {
       icon: <BarChart3 className="mr-2 h-5 w-5" />, 
       path: '/admin/reports' 
     },
+    {
+      name: "Transactions",
+      icon: <Coins className="mr-2 h-5 w-5" />,
+      path: "/admin/transactions",
+    }
   ];
 
   return (
@@ -56,7 +61,7 @@ export default function Sidebar() {
           <div className="bg-sky-600 text-white p-2 rounded-md">
             <QrCode className="h-6 w-6" />
           </div>
-          <h1 className="text-xl font-bold text-sky-700">ReproActive</h1>
+          <h1 className="text-xl font-bold text-sky-700">ReproCollective</h1>
         </Link>
 
         {/* Navigation */}
