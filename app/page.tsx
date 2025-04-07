@@ -18,6 +18,7 @@ interface Location {
   accountNumber: string;
   description: string;
   qrCodeDataUrl?: string;
+  totalAmount?: number;
 }
 
 interface EnrichedLocation extends Location {
@@ -151,7 +152,9 @@ const HomePage: React.FC = () => {
             /> */}
 
                   {/* display money earned  */}
-                  <span className="text-sky-700 text-xs font-semibold">70000 Rwf</span>
+                  <span className="text-sky-700 text-xs font-semibold">
+                    {location.totalAmount}RWF
+                  </span>
                 </CardTitle>
                 <CardDescription className="text-gray-600">{location.location}</CardDescription>
               </CardHeader>
