@@ -120,3 +120,39 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+
+@media print {
+  /* Hide navigation and buttons during print */
+  nav, button {
+    display: none !important;
+  }
+  
+  /* Ensure tables break properly */
+  table {
+    page-break-inside: auto;
+  }
+  
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+  
+  /* Ensure full width */
+  .container {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  
+  /* Remove backgrounds for better printing */
+  * {
+    background-color: white !important;
+    color: black !important;
+  }
+  
+  /* Make sure all content is visible */
+  .card, .tabs-content {
+    overflow: visible !important;
+  }
+}

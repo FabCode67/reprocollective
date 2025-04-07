@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL
+// const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 interface DonationLocation {
   id: string;
@@ -42,7 +42,7 @@ const DonatePage: React.FC = () => {
   const fetchLocationDetails = async (code: string) => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_URL}/locations/${code}`);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/locations/${code}`);
       setLocation(response.data);
       setLoading(false);
     } catch (error) {
@@ -64,7 +64,7 @@ const DonatePage: React.FC = () => {
       setProcessing(true);
       setError(null);
       
-      const response = await axios.post(`${API_URL}/payments/initiate`, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/payments/initiate`, {
         locationCode,
         amount: parseFloat(amount),
         donorName,

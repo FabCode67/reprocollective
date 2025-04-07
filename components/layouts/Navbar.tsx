@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
           <button
             onClick={
               () => {
-                router.push('/reports');
+                router.push('/report');
               }
             }
             className="text-gray-600 hover:text-gray-900 focus:outline-none"
@@ -115,7 +115,7 @@ const Navbar: React.FC = () => {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem className="w-full lg:w-auto">
-              <Link href="/reports" passHref legacyBehavior>
+              <Link href="/report" passHref legacyBehavior>
                 <NavigationMenuLink
                   className={`
                     ${buttonVariants({ variant: 'ghost' })} 

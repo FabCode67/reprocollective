@@ -1,18 +1,14 @@
 // src/components/Header.tsx
 'use client';
 
-import { Bell, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
+  DropdownMenu,
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
+// import { Input } from '@/components/ui/input';
 
 export default function Header() {
   return (
@@ -23,14 +19,14 @@ export default function Header() {
         </div>
         
         <div className="flex items-center gap-4">
-          <Input className="max-w-[180px] hidden sm:block" placeholder="Search..." />
+          {/* <Input className="max-w-[180px] hidden sm:block" placeholder="Search..." />
           
           <div className="relative">
             <Button variant="ghost" size="icon" className="text-gray-500">
               <Bell className="h-5 w-5" />
               <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
             </Button>
-          </div>
+          </div> */}
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -46,14 +42,14 @@ export default function Header() {
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+            {/* <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-red-600">Log out</DropdownMenuItem>
-            </DropdownMenuContent>
+            </DropdownMenuContent> */}
           </DropdownMenu>
         </div>
       </div>
