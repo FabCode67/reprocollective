@@ -231,12 +231,12 @@ const DonatePage: React.FC = () => {
                 processing ? 'opacity-75 cursor-not-allowed' : ''
               }`}
             >
-              {processing ? 'Processing...' : 'Make Donation'}
+              {processing ? 'Processing...' : 'Make Contribution'}
             </button>
           </form>
           
           <p className="text-xs text-gray-500 mt-6 text-center">
-           {" Your donation will directly support Repro Active's initiatives. Thank you for your generosity!"}
+           {" Your contribution will directly support Repro Collective's initiatives. Thank you for your generosity!"}
           </p>
         </div>
       </div>

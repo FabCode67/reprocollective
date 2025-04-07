@@ -393,7 +393,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                         disabled={isProcessing}
                         className="w-full bg-sky-500 hover:bg-sky-600"
                     >
-                        {isProcessing ? 'Processing...' : 'Donate Now'}
+                        {isProcessing ? 'Processing...' : 'Contribute Now'}
                     </Button>
                 </DialogContent>
             </Dialog>

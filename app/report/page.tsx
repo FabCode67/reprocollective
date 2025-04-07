@@ -101,7 +101,7 @@ export default function DonationReportPage() {
         queryParams.append('search', searchTerm);
       }
       
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}donations/reports?${queryParams.toString()}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/donations/reports?${queryParams.toString()}`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch contibution reports');
@@ -121,7 +121,7 @@ export default function DonationReportPage() {
   // Fetch all locations for the filter dropdown
   const fetchLocations = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}locations`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/locations`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch locations');
