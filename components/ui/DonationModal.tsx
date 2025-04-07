@@ -30,7 +30,7 @@ export function DonationModal({
   onOpenChange, 
   restaurantName 
 }: DonationModalProps) {
-  const [paymentMethod, setPaymentMethod] = useState('');
+  const [, setPaymentMethod] = useState('');
   const [amount, setAmount] = useState('');
 
   const handleDonate = () => {
