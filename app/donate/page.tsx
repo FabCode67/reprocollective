@@ -87,14 +87,14 @@ const DonatePageContent = () => {
 
   const handleDonationSuccess = (amount?: number) => {
       if (amount !== undefined) {
-          toastTypes.success(`Thank you for your donation of $${amount}!`);
+          toastTypes.success(`Thank you for your contrubution of $${amount}!`);
       } else {
-          toastTypes.success('Thank you for your donation!');
+          toastTypes.success('Thank you for your contrubution!');
       }
   };
 
   const handleDonationError = (errorMessage: string) => {
-    toastTypes.error(`Donation failed: ${errorMessage}`);
+    toastTypes.error(`Contribution failed: ${errorMessage}`);
   };
 
   return (

@@ -161,8 +161,8 @@ export default function LocationsPage() {
         {/* All Locations Table */}
         <Card>
           <CardHeader>
-            <CardTitle>All Donation Locations</CardTitle>
-            <CardDescription>Complete list of all registered donation points</CardDescription>
+            <CardTitle>All contribution Locations</CardTitle>
+            <CardDescription>Complete list of all registered contribution points</CardDescription>
           </CardHeader>
           <CardContent>
             {isLoading ? (

@@ -38,7 +38,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
                         <>
                             <CheckCircle className="w-16 h-16 text-green-500 mb-2" />
                             <DialogTitle className="text-xl font-bold text-green-700">
-                                Donation Successful!
+                                Contribution Successful!
                             </DialogTitle>
                             <DialogDescription className="text-center">
                                 {message || 'Thank you for your generous contribution to Repro Collective.'}
@@ -48,10 +48,10 @@ const ResultModal: React.FC<ResultModalProps> = ({
                         <>
                             <AlertCircle className="w-16 h-16 text-red-500 mb-2" />
                             <DialogTitle className="text-xl font-bold text-red-700">
-                                Donation Failed
+                                Contribution Failed
                             </DialogTitle>
                             <DialogDescription className="text-center">
-                                {message || 'We encountered an error processing your donation.'}
+                                {message || 'We encountered an error processing your contribution.'}
                             </DialogDescription>
                         </>
                     )}

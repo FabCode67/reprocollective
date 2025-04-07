@@ -28,7 +28,7 @@ const DashboardContent = () => {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
-            <p className="text-gray-500">{"Welcome back! Here's what's happening with your donations today."}</p>
+            <p className="text-gray-500">{"Welcome back! Here's what's happening with your contributions today."}</p>
           </div>
           <div className="mt-4 md:mt-0 flex gap-2">
             <Input className="max-w-[180px]" placeholder="Search..." />
@@ -40,7 +40,7 @@ const DashboardContent = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-500">Total Donations</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-500">Total Contributions</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">$12,540</div>
@@ -76,7 +76,7 @@ const DashboardContent = () => {
           
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-500">Average Donation</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-500">Average Contributions</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">$38.50</div>
@@ -110,12 +110,12 @@ const DashboardContent = () => {
                     <div className="bg-sky-50 p-4 rounded-md">
                       <div className="text-gray-500 text-sm">MTN Mobile Money</div>
                       <div className="text-xl font-bold">$7,840</div>
-                      <div className="text-xs text-gray-500">62% of donations</div>
+                      <div className="text-xs text-gray-500">62% of contributions</div>
                     </div>
                     <div className="bg-sky-50 p-4 rounded-md">
                       <div className="text-gray-500 text-sm">Bank Cards</div>
                       <div className="text-xl font-bold">$4,700</div>
-                      <div className="text-xs text-gray-500">38% of donations</div>
+                      <div className="text-xs text-gray-500">38% of contributions</div>
                     </div>
                   </div>
                 </div>
@@ -129,7 +129,7 @@ const DashboardContent = () => {
           <Card>
             <CardHeader>
               <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>Latest donations across all locations</CardDescription>
+              <CardDescription>Latest contributions across all locations</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -276,8 +276,8 @@ const DashboardContent = () => {
         {/* Locations Table */}
         <Card>
           <CardHeader>
-            <CardTitle>All Donation Locations</CardTitle>
-            <CardDescription>Overview of all registered donation points</CardDescription>
+            <CardTitle>All contribution Locations</CardTitle>
+            <CardDescription>Overview of all registered contribution points</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
@@ -285,7 +285,7 @@ const DashboardContent = () => {
                 <TableRow>
                   <TableHead>Location Name</TableHead>
                   <TableHead>Address</TableHead>
-                  <TableHead>Total Donations</TableHead>
+                  <TableHead>Total contributions</TableHead>
                   <TableHead>Amount</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
@@ -319,7 +319,7 @@ const DashboardContent = () => {
           <Card>
             <CardHeader>
               <CardTitle>Location Performance</CardTitle>
-              <CardDescription>Donation amounts by location</CardDescription>
+              <CardDescription>contribution amounts by location</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
@@ -333,7 +333,7 @@ const DashboardContent = () => {
                       value={location.amount / 650 * 100} 
                       className="h-2 bg-gray-100" 
                     />
-                    <div className="text-xs text-gray-500">{location.count} donations</div>
+                    <div className="text-xs text-gray-500">{location.count} contributions</div>
                   </div>
                 ))}
               </div>
@@ -347,7 +347,7 @@ const DashboardContent = () => {
   const ReportsContent = () => {
     // Mock data for monthly reports
     const monthlyReports = [
-      { id: 'R001', name: 'Monthly Donation Summary - March 2025', date: 'Apr 1, 2025', type: 'PDF', size: '1.2 MB' },
+      { id: 'R001', name: 'Monthly contribution Summary - March 2025', date: 'Apr 1, 2025', type: 'PDF', size: '1.2 MB' },
       { id: 'R002', name: 'Donor Demographics Report - Q1 2025', date: 'Mar 31, 2025', type: 'Excel', size: '2.4 MB' },
       { id: 'R003', name: 'Payment Method Analysis', date: 'Mar 25, 2025', type: 'PDF', size: '0.8 MB' },
       { id: 'R004', name: 'Location Performance Report', date: 'Mar 20, 2025', type: 'PDF', size: '1.5 MB' },
@@ -360,7 +360,7 @@ const DashboardContent = () => {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Reports</h1>
-            <p className="text-gray-500">Generate, view and download donation reports</p>
+            <p className="text-gray-500">Generate, view and download contribution reports</p>
           </div>
           <div className="mt-4 md:mt-0 flex gap-2">
             <Button className="bg-sky-600 hover:bg-sky-700">Generate New Report</Button>
@@ -373,8 +373,8 @@ const DashboardContent = () => {
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center">
                 <BarChart3 className="h-8 w-8 text-sky-600 mb-2" />
-                <h3 className="font-bold">Donation Summary</h3>
-                <p className="text-sm text-gray-500 mb-4">Overview of all donations with trends and patterns</p>
+                <h3 className="font-bold">contribution Summary</h3>
+                <p className="text-sm text-gray-500 mb-4">Overview of all contributions with trends and patterns</p>
                 <Button className="w-full">Generate</Button>
               </div>
             </CardContent>
@@ -452,7 +452,7 @@ const DashboardContent = () => {
                 <div className="bg-gray-50 p-4 rounded-md">
                   <div className="flex justify-between items-center">
                     <div>
-                      <div className="font-medium">Monthly Donation Summary</div>
+                      <div className="font-medium">Monthly contribution Summary</div>
                       <div className="text-sm text-gray-500">Scheduled: First day of each month</div>
                     </div>
                     <Badge className="bg-green-100 text-green-800">Active</Badge>

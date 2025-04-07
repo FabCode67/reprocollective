@@ -197,7 +197,7 @@ const HomePage: React.FC = () => {
               </h1>
               <p className="text-base lg:text-lg mb-6 text-gray-700 leading-relaxed">
                 We believe in transformative change through strategic, compassionate giving.
-                Every donation is a powerful step towards sustainable development,
+                Every contribution is a powerful step towards sustainable development,
                 empowering communities to break cycles of vulnerability and create
                 lasting, meaningful impact.
               </p>
@@ -206,14 +206,14 @@ const HomePage: React.FC = () => {
             <div className="bg-sky-50 p-6 rounded-lg shadow-sm">
               <h3 className="text-xl lg:text-2xl font-semibold mb-4 text-sky-700 flex items-center">
                 <CheckCircle className="mr-3 text-green-500" size={28} />
-                Your Donation Journey
+                Your Contribution Journey
               </h3>
               <ol className="list-decimal pl-5 space-y-3 text-sm lg:text-base text-gray-700">
                 <li>
-                  <strong>Connect:</strong> Choose a local donation point that resonates with you
+                  <strong>Connect:</strong> Choose a local contribution point that resonates with you
                 </li>
                 <li>
-                  <strong>Scan:</strong> Use the provided QR code for a seamless donation experience
+                  <strong>Scan:</strong> Use the provided QR code for a seamless contribution experience
                 </li>
                 <li>
                   <strong>Select:</strong> Customize your contribution amount
@@ -222,7 +222,7 @@ const HomePage: React.FC = () => {
                   <strong>Choose:</strong> Pick your preferred payment method
                 </li>
                 <li>
-                  <strong>Impact:</strong> Witness how your donation creates real change
+                  <strong>Impact:</strong> Witness how your contribution creates real change
                 </li>
               </ol>
             </div>
@@ -256,8 +256,8 @@ const HomePage: React.FC = () => {
           location={selectedLocation}
           isOpen={!!selectedLocation}
           onClose={() => setSelectedLocation(null)}
-          onError={(error) => console.error('Donation Error:', error)}
-          onSuccess={() => console.log('Donation Success')} />
+          onError={(error) => console.error('Contribution Error:', error)}
+          onSuccess={() => console.log('Contribution Success')} />
       )}
     </div><section id='testimonials' className="lg:block hidden">
         <TestimonialsPage />

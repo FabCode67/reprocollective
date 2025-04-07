@@ -35,7 +35,6 @@ export function DonationModal({
 
   const handleDonate = () => {
     // Implement donation logic
-    console.log('Donating', amount, 'to', restaurantName, 'via', paymentMethod);
     onOpenChange(false);
   };
 
@@ -45,7 +44,7 @@ export function DonationModal({
         <DialogHeader>
           <DialogTitle>Donate to {restaurantName}</DialogTitle>
           <DialogDescription>
-            Choose your payment method and donation amount
+            Choose your payment method and contribution amount
           </DialogDescription>
         </DialogHeader>
         
@@ -62,7 +61,7 @@ export function DonationModal({
 
           <Input 
             type="number" 
-            placeholder="Enter donation amount" 
+            placeholder="Enter contribution amount" 
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             className="w-full"
@@ -72,7 +71,7 @@ export function DonationModal({
             onClick={handleDonate} 
             className="w-full bg-red-600 hover:bg-red-700"
           >
-            Confirm Donation
+            Confirm Contribution
           </Button>
         </div>
       </DialogContent>

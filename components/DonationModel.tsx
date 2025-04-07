@@ -57,8 +57,8 @@ const DonationModal: React.FC<DonationModalProps> = ({
         // Validate donation amount
         const amount = parseFloat(donationAmount);
         if (isNaN(amount) || amount <= 0) {
-            onError('Please enter a valid donation amount');
-            setErrorMessage('Please enter a valid donation amount');
+            onError('Please enter a valid contribution amount');
+            setErrorMessage('Please enter a valid contribution amount');
             return false;
         }
 
@@ -132,7 +132,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                 // Clear form fields
                 resetForm();
                 setResultSuccess(true);
-                setResultMessage('Thank you for your generous donation to Repro Collective!');
+                setResultMessage('Thank you for your generous contribution to Repro Collective!');
                 setTransactionId(response.data.transactionId || '');
                 setFinalAmount(parseFloat(donationAmount));
                 setShowResultModal(true);
@@ -149,7 +149,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                 } else {
                     // Otherwise, consider it successful
                     setResultSuccess(true);
-                    setResultMessage('Thank you for your generous donation to Repro Collective!');
+                    setResultMessage('Thank you for your generous contribution to Repro Collective!');
                     setTransactionId(response.data.transactionId || '');
                     setFinalAmount(parseFloat(donationAmount));
                     setShowResultModal(true);
@@ -171,8 +171,8 @@ const DonationModal: React.FC<DonationModalProps> = ({
             // Handle API call errors
             console.error("Payment error:", error);
             const errorMessage = axios.isAxiosError(error) && error.response?.data
-                ? error.response.data.error || error.response.data.details || 'An unexpected error occurred during donation'
-                : 'An unexpected error occurred during donation';
+                ? error.response.data.error || error.response.data.details || 'An unexpected error occurred during contribution'
+                : 'An unexpected error occurred during contribution';
             
             // Show failure modal
             setResultSuccess(false);
@@ -380,7 +380,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                             <Input
                                 id="amount"
                                 type="number"
-                                placeholder="Enter donation amount"
+                                placeholder="Enter contribution amount"
                                 className="col-span-3"
                                 value={donationAmount}
                                 onChange={(e) => setDonationAmount(e.target.value)}
