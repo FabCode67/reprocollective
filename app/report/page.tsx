@@ -15,6 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 // import Navbar from '@/components/layouts/Navbar';
+import RootLayout from '@/components/layouts/Dashboardlayout';
 import Navbar from '@/components/layouts/Navbar';
 
 interface DonationLocation {
@@ -147,7 +148,7 @@ export default function DonationReportPage() {
 
   // Group donations by location
   const donationsByLocation = donations.reduce((acc, donation) => {
-    const locationName = donation.donationLocation.name;
+    const locationName = donation.donationLocation?.name;
     
     if (!acc[locationName]) {
       acc[locationName] = {
@@ -225,7 +226,7 @@ export default function DonationReportPage() {
         format(new Date(donation.createdAt), 'yyyy-MM-dd'),
         donation.amount.toFixed(2),
         getPaymentMethodDisplay(donation.paymentMethod),
-        donation.donationLocation.name,
+        donation.donationLocation?.name,
         donation.donorName || 'Anonymous',
         donation.donorPhone || 'N/A',
         donation.status
@@ -269,6 +270,7 @@ export default function DonationReportPage() {
     <div className="min-h-screen bg-white text-gray-900">
     <Navbar />
     <div className="container max-w-7xl p-4 mx-auto mt-20 lg:flex">
+      <div className="container max-w-7xl p-4 mx-auto mt-0 lg:flex">
         <div className="flex w-full flex-col space-y-6">
           <div className="flex items-center justify-between">
             <h1 className="text-3xl font-bold text-sky-600">Contribution Reports</h1>
@@ -347,7 +349,7 @@ export default function DonationReportPage() {
                       <SelectItem value="all">All Locations</SelectItem>
                       {locations.map((location) => (
                         <SelectItem key={location.id} value={location.id}>
-                          {location.name}
+                          {location?.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -494,8 +496,8 @@ export default function DonationReportPage() {
                             <TableCell>{getPaymentMethodDisplay(donation.paymentMethod)}</TableCell>
                             <TableCell>
                               <div className="flex flex-col">
-                                <span>{donation.donationLocation.name}</span>
-                                <span className="text-xs text-gray-500">{donation.donationLocation.location}</span>
+                                <span>{donation.donationLocation?.name}</span>
+                                <span className="text-xs text-gray-500">{donation.donationLocation?.location}</span>
                               </div>
                             </TableCell>
                             <TableCell>
@@ -549,8 +551,8 @@ export default function DonationReportPage() {
                       </TableHeader>
                       <TableBody>
                         {Object.values(donationsByLocation).map((item) => (
-                          <TableRow key={item.locationName}>
-                            <TableCell className="font-medium">{item.locationName}</TableCell>
+                          <TableRow key={item?.locationName}>
+                            <TableCell className="font-medium">{item?.locationName}</TableCell>
                             <TableCell>{item.count}</TableCell>
                             <TableCell>${item.totalAmount.toFixed(2)}</TableCell>
                           </TableRow>
@@ -615,6 +617,7 @@ export default function DonationReportPage() {
           </Tabs>
         </div>
       </div>
+    </div>
     </div>
   );
 }

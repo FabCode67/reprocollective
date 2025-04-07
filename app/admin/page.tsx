@@ -101,10 +101,10 @@ export default function DonationReportPage() {
         queryParams.append('search', searchTerm);
       }
       
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/donations/reports?${queryParams.toString()}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/donations/reports?${queryParams.toString()}`);
       
       if (!response.ok) {
-        throw new Error('Failed to fetch contribution reports');
+        throw new Error('Failed to fetch contibution reports');
       }
       
       const data: ApiResponse = await response.json();
@@ -147,7 +147,7 @@ export default function DonationReportPage() {
 
   // Group donations by location
   const donationsByLocation = donations.reduce((acc, donation) => {
-    const locationName = donation.donationLocation.name;
+    const locationName = donation.donationLocation?.name;
     
     if (!acc[locationName]) {
       acc[locationName] = {
@@ -225,7 +225,7 @@ export default function DonationReportPage() {
         format(new Date(donation.createdAt), 'yyyy-MM-dd'),
         donation.amount.toFixed(2),
         getPaymentMethodDisplay(donation.paymentMethod),
-        donation.donationLocation.name,
+        donation.donationLocation?.name,
         donation.donorName || 'Anonymous',
         donation.donorPhone || 'N/A',
         donation.status
@@ -246,7 +246,7 @@ export default function DonationReportPage() {
     const link = document.createElement('a');
     
     // Set up download attributes
-    const fileName = `contribution-report-${format(new Date(), 'yyyy-MM-dd')}.csv`;
+    const fileName = `donation-report-${format(new Date(), 'yyyy-MM-dd')}.csv`;
     link.setAttribute('href', url);
     link.setAttribute('download', fileName);
     
@@ -347,7 +347,7 @@ export default function DonationReportPage() {
                       <SelectItem value="all">All Locations</SelectItem>
                       {locations.map((location) => (
                         <SelectItem key={location.id} value={location.id}>
-                          {location.name}
+                          {location?.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -494,8 +494,8 @@ export default function DonationReportPage() {
                             <TableCell>{getPaymentMethodDisplay(donation.paymentMethod)}</TableCell>
                             <TableCell>
                               <div className="flex flex-col">
-                                <span>{donation.donationLocation.name}</span>
-                                <span className="text-xs text-gray-500">{donation.donationLocation.location}</span>
+                                <span>{donation.donationLocation?.name}</span>
+                                <span className="text-xs text-gray-500">{donation.donationLocation?.location}</span>
                               </div>
                             </TableCell>
                             <TableCell>
@@ -528,9 +528,9 @@ export default function DonationReportPage() {
             <TabsContent value="location" className="mt-6">
               <Card>
                 <CardHeader className="bg-sky-50">
-                  <CardTitle className="text-sky-700">Contributions by Location</CardTitle>
+                  <CardTitle className="text-sky-700">Contribution by Location</CardTitle>
                   <CardDescription>
-                    Summary of contributions grouped by location
+                    Summary of Contribution grouped by location
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -543,14 +543,14 @@ export default function DonationReportPage() {
                       <TableHeader className="bg-gray-50">
                         <TableRow>
                           <TableHead>Location</TableHead>
-                          <TableHead>Contributions</TableHead>
+                          <TableHead>Contribution</TableHead>
                           <TableHead>Total Amount</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {Object.values(donationsByLocation).map((item) => (
-                          <TableRow key={item.locationName}>
-                            <TableCell className="font-medium">{item.locationName}</TableCell>
+                          <TableRow key={item?.locationName}>
+                            <TableCell className="font-medium">{item?.locationName}</TableCell>
                             <TableCell>{item.count}</TableCell>
                             <TableCell>${item.totalAmount.toFixed(2)}</TableCell>
                           </TableRow>
@@ -572,9 +572,9 @@ export default function DonationReportPage() {
             <TabsContent value="payment" className="mt-6">
               <Card>
                 <CardHeader className="bg-sky-50">
-                  <CardTitle className="text-sky-700">Contributions by Payment Method</CardTitle>
+                  <CardTitle className="text-sky-700">Contribution by Payment Method</CardTitle>
                   <CardDescription>
-                    Summary of contributions grouped by payment method
+                    Summary of Contribution grouped by payment method
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -587,7 +587,7 @@ export default function DonationReportPage() {
                       <TableHeader className="bg-gray-50">
                         <TableRow>
                           <TableHead>Payment Method</TableHead>
-                          <TableHead>Contributions</TableHead>
+                          <TableHead>Contribution</TableHead>
                           <TableHead>Total Amount</TableHead>
                         </TableRow>
                       </TableHeader>
