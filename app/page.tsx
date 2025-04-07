@@ -133,7 +133,7 @@ const HomePage: React.FC = () => {
           overflow-y-auto
         `}>
           <DarkHeroImage />
-          <h2 className="text-2xl font-bold mb-4 text-sky-600">{"Doner's station"}</h2>
+          <h2 className="text-2xl font-bold mb-4 text-sky-600">{"Contributer's station"}</h2>
           {location.map((location) => (
             <Card
               key={location.id}
