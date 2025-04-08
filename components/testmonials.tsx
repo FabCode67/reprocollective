@@ -34,7 +34,7 @@ const testimonials: Testimonial[] = [
   {
     id: 1,
     name: "Emma Njeri",
-    location: "Nairobi, Kenya",
+    location: "Kigali, Rwanda",
     role: "Community Health Worker",
     quote: "Repro Collective has been a lifeline for our community. Their support has transformed how we approach reproductive health education and access.",
     impact: "Helped provide reproductive health resources to 500+ women in urban settlements",
@@ -44,7 +44,7 @@ const testimonials: Testimonial[] = [
   {
     id: 2,
     name: "David Mutua",
-    location: "Mombasa, Kenya",
+    location: "Mombasa, Rwanda",
     role: "Local Educator",
     quote: "The resources and support from Repro Collective have empowered our youth to make informed decisions about their health and future.",
     impact: "Conducted 25 youth-focused reproductive health workshops",

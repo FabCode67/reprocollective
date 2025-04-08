@@ -11,9 +11,10 @@ const SlidingHeroImages = () => {
       description: "Your donation helps transform lives in your community"
     },
     {
-      src: "/donation.jpeg",
+      src: "/slide.jpg",
       alt: "Volunteer Opportunities",
       title: "Join Our Volunteers",
+      is_black: true,
       description: "Be part of the change you want to see in the world"
     },
     {
@@ -60,8 +61,13 @@ const SlidingHeroImages = () => {
             
             {/* Dark Overlay */}
             <div className="absolute inset-0  bg-opacity-50 flex flex-col justify-center items-center p-4">
-              <h2 className="text-white text-2xl font-bold text-center mb-2">{image.title}</h2>
-              <p className="text-white text-center text-sm">{image.description}</p>
+              <h2 className={`
+                ${image.is_black ? 'text-black' : 'text-white'}
+                 text-2xl font-bold text-center mb-2`}>{image.title}</h2>
+              <p className={`
+                ${
+                  image.is_black ? 'text-blue-600' : 'text-white'
+                } text-center text-sm`}>{image.description}</p>
             </div>
           </div>
         ))}

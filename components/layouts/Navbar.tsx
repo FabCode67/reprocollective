@@ -10,6 +10,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { BellRing, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import DonationModal from '../DonateModel';
+import Image from 'next/image';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,10 +35,12 @@ const Navbar: React.FC = () => {
         <div className="container max-w-7xl mx-auto flex justify-between items-center p-4">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <img
+            <Image
               src="/logo.png"
               alt="Repro Collective Logo"
-              className="h-10 w-auto"
+              width={80}
+              height={10}
+              // className="w-[100px] h-auto"
             />
           </Link>
 
