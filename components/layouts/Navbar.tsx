@@ -7,19 +7,19 @@ import {
   NavigationMenuLink
 } from '@/components/ui/navigation-menu';
 import { buttonVariants } from '@/components/ui/button';
-import { BellRing, X } from 'lucide-react';
+// import { BellRing, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import DonationModal from '../DonateModel';
 import Image from 'next/image';
 
 const Navbar: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, ] = useState(false);
   const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
   const router = useRouter();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  // const toggleMenu = () => {
+  //   setIsMenuOpen(!isMenuOpen);
+  // };
 
   const openDonationModal = () => {
     setIsDonationModalOpen(true);
@@ -64,12 +64,12 @@ const Navbar: React.FC = () => {
             >
               Contribute Now
             </button>
-            <button
+            {/* <button
               onClick={toggleMenu}
               className="text-gray-600 hover:text-gray-900 focus:outline-none"
             >
               {isMenuOpen ? <X size={24} /> : <BellRing size={24} />}
-            </button>
+            </button> */}
           </div>
 
           {/* Navigation Menu */}
@@ -148,15 +148,15 @@ const Navbar: React.FC = () => {
                   Contribute Now
                 </button>
               </NavigationMenuItem>
-              <NavigationMenuItem className="w-full lg:w-auto">
-                <div className="hidden lg:flex items-center gap-4 mt-4 lg:mt-0">
+              {/* <NavigationMenuItem className="w-full lg:w-auto"> */}
+                {/* <div className="hidden lg:flex items-center gap-4 mt-4 lg:mt-0">
                   <button
                     className="text-gray-600 hover:text-gray-900 focus:outline-none"
                   >
                     {isMenuOpen ? <X size={24} /> : <BellRing size={24} />}
                   </button>
-                </div>
-              </NavigationMenuItem>
+                </div> */}
+              {/* </NavigationMenuItem> */}
             </NavigationMenuList>
           </NavigationMenu>
         </div>
