@@ -20,3 +20,15 @@ export interface DonationDetails {
   location: DonationLocation;
   paymentMethod: PaymentMethod;
 }
+
+export interface Report {
+  id: string;
+  title: string;
+  date: string;
+  moneyEarned: number;
+  padsBought: number;
+  padsDonated: number;
+  description: string;
+  adolescentsTrained: number;
+  content: string;
+}
