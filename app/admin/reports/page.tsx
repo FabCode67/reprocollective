@@ -321,7 +321,7 @@ export default function PartnerDistributionAdmin() {
           <Card className="border-sky-200">
             <CardHeader className="bg-sky-50">
               <CardTitle>Distribution Summary</CardTitle>
-              <CardDescription>Overview of all donations and their distribution to partners</CardDescription>
+              <CardDescription>Overview of all contribution and their distribution to partners</CardDescription>
             </CardHeader>
             <CardContent>
               {distributionSummary ? (
@@ -329,7 +329,7 @@ export default function PartnerDistributionAdmin() {
                   <div className="grid grid-cols-3 gap-6 mb-8">
                     <Card className="border-sky-200">
                       <CardHeader className="pb-2 bg-sky-50">
-                        <CardTitle className="text-lg">Total Donations</CardTitle>
+                        <CardTitle className="text-lg">Total Contribution</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <p className="text-3xl font-bold">{formatCurrency(distributionSummary.totalDonations)}</p>
