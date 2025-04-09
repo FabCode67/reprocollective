@@ -53,14 +53,14 @@ const SlidingHeroImages = () => {
   }, [images.length, isHovering]);
 
   // Manual navigation
-  interface ImageData {
-    src: string;
-    alt: string;
-    title: string;
-    description: string;
-    cta: string;
-    ctaLink: string;
-  }
+  // interface ImageData {
+  //   src: string;
+  //   alt: string;
+  //   title: string;
+  //   description: string;
+  //   cta: string;
+  //   ctaLink: string;
+  // }
 
   const goToSlide = (index: number): void => {
     setCurrentIndex(index);
