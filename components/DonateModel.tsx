@@ -16,9 +16,10 @@ import { toast } from 'sonner';
 interface DonationModalProps {
   isOpen: boolean;
   onClose: () => void;
+  location?: string;
 }
 
-const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
+const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location }) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     amount: '',
@@ -26,7 +27,8 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
     donorPhone: '',
     donorEmail: '',
     paymentMethod: '',
-    currency: 'RWF'
+    currency: 'RWF',
+    locationCode: location || '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +86,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="">
         <DialogHeader>
           <DialogTitle>Make a Contribution</DialogTitle>
           <DialogDescription>

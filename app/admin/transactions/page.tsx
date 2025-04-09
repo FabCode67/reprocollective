@@ -238,7 +238,7 @@ function TransactionsContent() {
         <h1 className="text-3xl font-bold text-black">Transactions</h1>
         <div className="space-x-2">
           <Button variant="outline" onClick={handleResetFilters}>Reset Filters</Button>
-          <Button onClick={handleApplyFilters} className="bg-sky-500 hover:bg-sky-600">Apply Filters</Button>
+          <Button onClick={handleApplyFilters} className="bg-orange-500 hover:bg-orange-600">Apply Filters</Button>
         </div>
       </div>
       
@@ -374,7 +374,7 @@ function TransactionsContent() {
           <div className="rounded-md border">
             <Table>
               <TableHeader>
-                <TableRow className="bg-sky-50">
+                <TableRow className="bg-orange-50">
                   <TableHead>Transaction ID</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead>Donor</TableHead>
@@ -389,7 +389,7 @@ function TransactionsContent() {
                   <TableRow>
                     <TableCell colSpan={7} className="h-24 text-center">
                       <div className="flex justify-center items-center">
-                        <Loader2 className="h-6 w-6 text-sky-500 animate-spin mr-2" />
+                        <Loader2 className="h-6 w-6 text-orange-500 animate-spin mr-2" />
                         Loading transactions...
                       </div>
                     </TableCell>
@@ -402,7 +402,7 @@ function TransactionsContent() {
                   </TableRow>
                 ) : (
                   transactions.map((transaction) => (
-                    <TableRow key={transaction.id} className="hover:bg-sky-50">
+                    <TableRow key={transaction.id} className="hover:bg-orange-50">
                       <TableCell className="font-medium">{transaction.transactionId}</TableCell>
                       <TableCell>{formatDate(transaction.createdAt)}</TableCell>
                       <TableCell>
@@ -455,7 +455,7 @@ function TransactionsContent() {
                         <PaginationLink
                           isActive={pageNumber === pagination.page}
                           onClick={() => handlePageChange(pageNumber)}
-                          className={pageNumber === pagination.page ? "bg-sky-500" : ""}
+                          className={pageNumber === pagination.page ? "bg-orange-500" : ""}
                         >
                           {pageNumber}
                         </PaginationLink>
@@ -499,7 +499,7 @@ const TransactionsPage = () => {
     <RootLayout>
       <Suspense fallback={
         <div className="container mx-auto py-6 flex justify-center items-center min-h-screen">
-          <Loader2 className="h-8 w-8 text-sky-500 animate-spin" />
+          <Loader2 className="h-8 w-8 text-orange-500 animate-spin" />
           <span className="ml-2">Loading transactions...</span>
         </div>
       }>

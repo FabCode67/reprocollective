@@ -33,7 +33,7 @@ export default function Header() {
               <Button variant="ghost" className="flex items-center gap-2">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="/api/placeholder/32/32" alt="Avatar" />
-                  <AvatarFallback className="bg-sky-100 text-sky-700">AD</AvatarFallback>
+                  <AvatarFallback className="bg-orange-100 text-orange-700">AD</AvatarFallback>
                 </Avatar>
                 <div className="hidden md:block text-sm text-left font-medium">
                   Admin User

@@ -19,7 +19,7 @@ const DashboardContent = () => {
       { id: '1', date: 'Apr 3, 2025', amount: 50.00, method: 'MTN Mobile Money', location: 'Kingfisher Restaurant', status: 'Completed' },
       { id: '2', date: 'Apr 2, 2025', amount: 25.00, method: 'Bank Card', location: 'City Hotel', status: 'Completed' },
       { id: '3', date: 'Apr 2, 2025', amount: 100.00, method: 'MTN Mobile Money', location: 'Sunshine School', status: 'Pending' },
-      { id: '4', date: 'Apr 1, 2025', amount: 75.00, method: 'Bank Card', location: 'Blue Sky Hotel', status: 'Failed' },
+      { id: '4', date: 'Apr 1, 2025', amount: 75.00, method: 'Bank Card', location: 'orange orange Hotel', status: 'Failed' },
     ];
   
     return (
@@ -32,7 +32,7 @@ const DashboardContent = () => {
           </div>
           <div className="mt-4 md:mt-0 flex gap-2">
             <Input className="max-w-[180px]" placeholder="Search..." />
-            <Button className="bg-sky-600 hover:bg-sky-700">Generate Report</Button>
+            <Button className="bg-orange-600 hover:bg-orange-700">Generate Report</Button>
           </div>
         </div>
   
@@ -99,7 +99,7 @@ const DashboardContent = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm font-medium">
                     <div>$12,540 raised</div>
-                    <div className="text-sky-700">$20,000 goal</div>
+                    <div className="text-orange-700">$20,000 goal</div>
                   </div>
                   <Progress value={63} className="h-2 bg-gray-100" />
                   <div className="text-center text-sm text-gray-500">63% of monthly goal reached</div>
@@ -107,12 +107,12 @@ const DashboardContent = () => {
                 
                 <div className="space-y-2">
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-sky-50 p-4 rounded-md">
+                    <div className="bg-orange-50 p-4 rounded-md">
                       <div className="text-gray-500 text-sm">MTN Mobile Money</div>
                       <div className="text-xl font-bold">$7,840</div>
                       <div className="text-xs text-gray-500">62% of contributions</div>
                     </div>
-                    <div className="bg-sky-50 p-4 rounded-md">
+                    <div className="bg-orange-50 p-4 rounded-md">
                       <div className="text-gray-500 text-sm">Bank Cards</div>
                       <div className="text-xl font-bold">$4,700</div>
                       <div className="text-xs text-gray-500">38% of contributions</div>
@@ -120,7 +120,7 @@ const DashboardContent = () => {
                   </div>
                 </div>
                 
-                <Button className="w-full bg-sky-600 hover:bg-sky-700">View Detailed Analytics</Button>
+                <Button className="w-full bg-orange-600 hover:bg-orange-700">View Detailed Analytics</Button>
               </div>
             </CardContent>
           </Card>
@@ -216,7 +216,7 @@ const DashboardContent = () => {
       { name: 'City Hotel', amount: 520, count: 12, address: '456 Beach Road, Westside', active: true },
       { name: 'Sunshine School', amount: 480, count: 15, address: '789 Education Lane, Northside', active: true },
       { name: 'Central School', amount: 350, count: 10, address: '101 Learning Ave, Eastside', active: false },
-      { name: 'Blue Sky Hotel', amount: 320, count: 8, address: '202 Mountain View, Southside', active: true },
+      { name: 'orange orange Hotel', amount: 320, count: 8, address: '202 Mountain View, Southside', active: true },
       { name: 'Green Park Restaurant', amount: 290, count: 9, address: '303 Park Street, Downtown', active: true },
     ];
   
@@ -230,7 +230,7 @@ const DashboardContent = () => {
           </div>
           <div className="mt-4 md:mt-0 flex gap-2">
             <Input className="max-w-[180px]" placeholder="Search locations..." />
-            <Button className="bg-sky-600 hover:bg-sky-700">Add New Location</Button>
+            <Button className="bg-orange-600 hover:bg-orange-700">Add New Location</Button>
           </div>
         </div>
   
@@ -363,7 +363,7 @@ const DashboardContent = () => {
             <p className="text-gray-500">Generate, view and download contribution reports</p>
           </div>
           <div className="mt-4 md:mt-0 flex gap-2">
-            <Button className="bg-sky-600 hover:bg-sky-700">Generate New Report</Button>
+            <Button className="bg-orange-600 hover:bg-orange-700">Generate New Report</Button>
           </div>
         </div>
   
@@ -372,7 +372,7 @@ const DashboardContent = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center">
-                <BarChart3 className="h-8 w-8 text-sky-600 mb-2" />
+                <BarChart3 className="h-8 w-8 text-orange-600 mb-2" />
                 <h3 className="font-bold">contribution Summary</h3>
                 <p className="text-sm text-gray-500 mb-4">Overview of all contributions with trends and patterns</p>
                 <Button className="w-full">Generate</Button>
@@ -383,7 +383,7 @@ const DashboardContent = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center">
-                <Users className="h-8 w-8 text-sky-600 mb-2" />
+                <Users className="h-8 w-8 text-orange-600 mb-2" />
                 <h3 className="font-bold">Donor Report</h3>
                 <p className="text-sm text-gray-500 mb-4">Detailed information about your donors and their behavior</p>
                 <Button className="w-full">Generate</Button>
@@ -394,7 +394,7 @@ const DashboardContent = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center">
-                <MapPin className="h-8 w-8 text-sky-600 mb-2" />
+                <MapPin className="h-8 w-8 text-orange-600 mb-2" />
                 <h3 className="font-bold">Location Analysis</h3>
                 <p className="text-sm text-gray-500 mb-4">Performance metrics by location with detailed breakdown</p>
                 <Button className="w-full">Generate</Button>

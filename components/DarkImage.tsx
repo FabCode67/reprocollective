@@ -11,7 +11,7 @@ const SlidingHeroImages = () => {
       description: "Your donation helps transform lives in your community"
     },
     {
-      src: "/slide.jpg",
+      src: "/donation.jpeg",
       alt: "Volunteer Opportunities",
       title: "Join Our Volunteers",
       is_black: true,
@@ -43,7 +43,7 @@ const SlidingHeroImages = () => {
 
 
   return (
-    <div className="relative w-full h-48 md:h-64 lg:h-72 mb-6 mt-0 overflow-hidden">
+    <div className="relative w-full min-h-[80vh] md:h-64 lg:h-72 mb-6 mt-0 overflow-hidden">
       {/* Sliding Images */}
       <div 
         className="flex transition-transform duration-500 ease-in-out h-full" 
@@ -66,7 +66,7 @@ const SlidingHeroImages = () => {
                  text-2xl font-bold text-center mb-2`}>{image.title}</h2>
               <p className={`
                 ${
-                  image.is_black ? 'text-blue-600' : 'text-white'
+                  image.is_black ? 'text-orange-600' : 'text-white'
                 } text-center text-sm`}>{image.description}</p>
             </div>
           </div>

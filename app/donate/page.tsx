@@ -34,8 +34,8 @@ const DonatePageContent = () => {
       className: 'bg-red-50 border-red-200'
     }),
     info: (message: string) => toast.info(message, {
-      icon: <Info className="text-blue-500" />,
-      className: 'bg-blue-50 border-blue-200'
+      icon: <Info className="text-orange-500" />,
+      className: 'bg-orange-50 border-orange-200'
     }),
     warning: (message: string) => toast.warning(message, {
       icon: <AlertTriangle className="text-yellow-500" />,
@@ -122,7 +122,7 @@ const DonatePage = () => {
   return (
     <Suspense fallback={
         <div className="flex justify-center items-center min-h-screen">
-        <Loader2 className="animate-spin text-sky-500" size={48} />
+        <Loader2 className="animate-spin text-orange-500" size={48} />
       </div>}>
       <DonatePageContent />
     </Suspense>

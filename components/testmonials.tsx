@@ -85,7 +85,7 @@ const TestimonialsPage: React.FC = () => {
       <div className="container max-w-7xl mx-auto px-4 py-16 md:py-24">
         {/* Page Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-sky-600 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-orange-600 mb-4">
             Voices of Impact
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -103,8 +103,8 @@ const TestimonialsPage: React.FC = () => {
                   cursor-pointer 
                   transition-all duration-300
                   ${activeTestimonial?.id === testimonial.id 
-                    ? 'border-sky-500 shadow-lg' 
-                    : 'border-gray-200 hover:border-sky-300'}
+                    ? 'border-orange-500 shadow-lg' 
+                    : 'border-gray-200 hover:border-orange-300'}
                 `}
                 onClick={() => setActiveTestimonial(testimonial)}
               >
@@ -118,7 +118,7 @@ const TestimonialsPage: React.FC = () => {
                       className="rounded-full object-cover"
                     />
                   ) : (
-                    <UserCircle2 className="text-sky-500 w-12 h-12" />
+                    <UserCircle2 className="text-orange-500 w-12 h-12" />
                   )}
                   <div>
                     <CardTitle className="text-lg">{testimonial.name}</CardTitle>
@@ -131,10 +131,10 @@ const TestimonialsPage: React.FC = () => {
 
           {/* Active Testimonial Details */}
           {activeTestimonial && (
-            <Card className="md:col-span-2 bg-sky-50 border-sky-100">
+            <Card className="md:col-span-2 bg-orange-50 border-orange-100">
               <CardContent className="p-8 space-y-6">
                 <div className="flex justify-between items-start">
-                  <Quote className="text-sky-500 w-12 h-12 mb-4" />
+                  <Quote className="text-orange-500 w-12 h-12 mb-4" />
                   <div>{renderStars(activeTestimonial.rating)}</div>
                 </div>
 
@@ -144,11 +144,11 @@ const TestimonialsPage: React.FC = () => {
 
                 <div className="space-y-4">
                   <div className="flex items-center text-gray-700">
-                    <MapPin className="mr-2 text-sky-500" />
+                    <MapPin className="mr-2 text-orange-500" />
                     <span>{activeTestimonial.location}</span>
                   </div>
                   <div className="flex items-center text-gray-700">
-                    <Globe className="mr-2 text-sky-500" />
+                    <Globe className="mr-2 text-orange-500" />
                     <span>Impact: {activeTestimonial.impact}</span>
                   </div>
                 </div>

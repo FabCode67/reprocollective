@@ -305,24 +305,24 @@ export default function PartnerDistributionAdmin() {
       )}
       
       {success && (
-        <Alert className="mb-4 bg-sky-50 border-sky-600">
+        <Alert className="mb-4 bg-orange-50 border-orange-600">
           <AlertTitle>Success</AlertTitle>
           <AlertDescription>{success}</AlertDescription>
         </Alert>
       )}
       
       <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-        <TabsList className="grid grid-cols-4 mb-4 bg-sky-100">
-          <TabsTrigger value="summary" className="data-[state=active]:bg-sky-500 data-[state=active]:text-white">Summary</TabsTrigger>
-          <TabsTrigger value="partners" className="data-[state=active]:bg-sky-500 data-[state=active]:text-white">Partners</TabsTrigger>
-          <TabsTrigger value="calculate" className="data-[state=active]:bg-sky-500 data-[state=active]:text-white">Calculate</TabsTrigger>
-          <TabsTrigger value="history" className="data-[state=active]:bg-sky-500 data-[state=active]:text-white">History</TabsTrigger>
+        <TabsList className="grid grid-cols-4 mb-4 bg-orange-100">
+          <TabsTrigger value="summary" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white">Summary</TabsTrigger>
+          <TabsTrigger value="partners" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white">Partners</TabsTrigger>
+          <TabsTrigger value="calculate" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white">Calculate</TabsTrigger>
+          <TabsTrigger value="history" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white">History</TabsTrigger>
         </TabsList>
         
         {/* Summary Tab */}
         <TabsContent value="summary">
-          <Card className="border-sky-200">
-            <CardHeader className="bg-sky-50">
+          <Card className="border-orange-200">
+            <CardHeader className="bg-orange-50">
               <CardTitle>Distribution Summary</CardTitle>
               <CardDescription>Overview of all donations and their distribution to partners</CardDescription>
             </CardHeader>
@@ -330,17 +330,17 @@ export default function PartnerDistributionAdmin() {
               {distributionSummary ? (
                 <div>
                   <div className="grid grid-cols-3 gap-6 mb-8">
-                    <Card className="border-sky-200">
-                      <CardHeader className="pb-2 bg-sky-50">
-                        <CardTitle className="text-lg">Total Donations</CardTitle>
+                    <Card className="border-orange-200">
+                      <CardHeader className="pb-2 bg-orange-50">
+                        <CardTitle className="text-lg">Total Contribution</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <p className="text-3xl font-bold">{formatCurrency(distributionSummary.totalDonations)}</p>
                       </CardContent>
                     </Card>
                     
-                    <Card className="border-sky-200">
-                      <CardHeader className="pb-2 bg-sky-50">
+                    <Card className="border-orange-200">
+                      <CardHeader className="pb-2 bg-orange-50">
                         <CardTitle className="text-lg">Total Distributed</CardTitle>
                       </CardHeader>
                       <CardContent>
@@ -348,8 +348,8 @@ export default function PartnerDistributionAdmin() {
                       </CardContent>
                     </Card>
                     
-                    <Card className="border-sky-200">
-                      <CardHeader className="pb-2 bg-sky-50">
+                    <Card className="border-orange-200">
+                      <CardHeader className="pb-2 bg-orange-50">
                         <CardTitle className="text-lg">Remaining</CardTitle>
                       </CardHeader>
                       <CardContent>
@@ -361,7 +361,7 @@ export default function PartnerDistributionAdmin() {
                   <h3 className="text-xl font-semibold mb-4">Partner Distribution Status</h3>
                   <div className="space-y-6">
                     {distributionSummary.partnerSummaries.map((partner) => (
-                      <div key={partner.partnerId} className="bg-sky-50 p-4 rounded-lg">
+                      <div key={partner.partnerId} className="bg-orange-50 p-4 rounded-lg">
                         <div className="flex items-center justify-between mb-2">
                           <div>
                             <h4 className="font-medium">{partner.partnerName}</h4>
@@ -369,15 +369,15 @@ export default function PartnerDistributionAdmin() {
                           </div>
                           <Badge 
                             variant={partner.completionPercentage >= 100 ? "default" : "secondary"}
-                            className={partner.completionPercentage >= 100 ? "bg-sky-600" : "bg-sky-200 text-black"}
+                            className={partner.completionPercentage >= 100 ? "bg-orange-600" : "bg-orange-200 text-black"}
                           >
                             {partner.completionPercentage}% Complete
                           </Badge>
                         </div>
                         <Progress 
                           value={partner.completionPercentage > 100 ? 100 : partner.completionPercentage} 
-                          className="h-2 mb-2 bg-sky-100"
-                          // indicatorClassName="bg-sky-500"
+                          className="h-2 mb-2 bg-orange-100"
+                          // indicatorClassName="bg-orange-500"
                         />
                         <div className="grid grid-cols-3 gap-4 mt-3 text-sm">
                           <div>
@@ -403,12 +403,12 @@ export default function PartnerDistributionAdmin() {
                 </div>
               )}
             </CardContent>
-            <CardFooter className="bg-sky-50">
+            <CardFooter className="bg-orange-50">
               <Button 
                 variant="outline" 
                 onClick={fetchDistributionSummary}
                 disabled={isLoading}
-                className="cursor-pointer border-sky-500 text-sky-700 hover:bg-sky-100"
+                className="cursor-pointer border-orange-500 text-orange-700 hover:bg-orange-100"
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Refresh Data
@@ -419,8 +419,8 @@ export default function PartnerDistributionAdmin() {
         
         {/* Partners Tab */}
         <TabsContent value="partners">
-          <Card className="border-sky-200">
-            <CardHeader className="bg-sky-50">
+          <Card className="border-orange-200">
+            <CardHeader className="bg-orange-50">
               <div className="flex justify-between items-center">
                 <div>
                   <CardTitle>Partner Management</CardTitle>
@@ -429,7 +429,7 @@ export default function PartnerDistributionAdmin() {
                 <div className="flex gap-2">
                   <Dialog open={showAddPartnerDialog} onOpenChange={setShowAddPartnerDialog}>
                     <DialogTrigger asChild>
-                      <Button className="bg-sky-600 hover:bg-sky-700">
+                      <Button className="bg-orange-600 hover:bg-orange-700">
                         <PlusCircle className="w-4 h-4 mr-2" />
                         Add Partner
                       </Button>
@@ -448,7 +448,7 @@ export default function PartnerDistributionAdmin() {
                             id="name" 
                             value={newPartner.name}
                             onChange={(e) => setNewPartner({...newPartner, name: e.target.value})}
-                            className="border-sky-200 focus:border-sky-500"
+                            className="border-orange-200 focus:border-orange-500"
                           />
                         </div>
                         <div className="grid gap-2">
@@ -457,7 +457,7 @@ export default function PartnerDistributionAdmin() {
                             id="description" 
                             value={newPartner.description}
                             onChange={(e) => setNewPartner({...newPartner, description: e.target.value})}
-                            className="border-sky-200 focus:border-sky-500"
+                            className="border-orange-200 focus:border-orange-500"
                           />
                         </div>
                         <div className="grid gap-2">
@@ -469,7 +469,7 @@ export default function PartnerDistributionAdmin() {
                             max="100"
                             value={newPartner.percentage}
                             onChange={(e) => setNewPartner({...newPartner, percentage: parseFloat(e.target.value)})}
-                            className="border-sky-200 focus:border-sky-500"
+                            className="border-orange-200 focus:border-orange-500"
                           />
                         </div>
                         <div className="grid gap-2">
@@ -478,7 +478,7 @@ export default function PartnerDistributionAdmin() {
                             id="contactName" 
                             value={newPartner.contactName}
                             onChange={(e) => setNewPartner({...newPartner, contactName: e.target.value})}
-                            className="border-sky-200 focus:border-sky-500"
+                            className="border-orange-200 focus:border-orange-500"
                           />
                         </div>
                         <div className="grid gap-2">
@@ -488,7 +488,7 @@ export default function PartnerDistributionAdmin() {
                             type="email"
                             value={newPartner.contactEmail}
                             onChange={(e) => setNewPartner({...newPartner, contactEmail: e.target.value})}
-                            className="border-sky-200 focus:border-sky-500"
+                            className="border-orange-200 focus:border-orange-500"
                           />
                         </div>
                         <div className="grid gap-2">
@@ -497,12 +497,12 @@ export default function PartnerDistributionAdmin() {
                             id="contactPhone" 
                             value={newPartner.contactPhone}
                             onChange={(e) => setNewPartner({...newPartner, contactPhone: e.target.value})}
-                            className="border-sky-200 focus:border-sky-500"
+                            className="border-orange-200 focus:border-orange-500"
                           />
                         </div>
                       </div>
                       <DialogFooter>
-                        <Button onClick={addPartner} disabled={isLoading} className="bg-sky-600 hover:bg-sky-700">
+                        <Button onClick={addPartner} disabled={isLoading} className="bg-orange-600 hover:bg-orange-700">
                           Add Partner
                         </Button>
                       </DialogFooter>
@@ -513,7 +513,7 @@ export default function PartnerDistributionAdmin() {
                     variant="outline" 
                     onClick={initializeDefaultPartners}
                     disabled={isLoading || partners.length > 0}
-                    className="border-sky-500 text-sky-700 hover:bg-sky-100"
+                    className="border-orange-500 text-orange-700 hover:bg-orange-100"
                   >
                     Initialize Default Partners
                   </Button>
@@ -523,7 +523,7 @@ export default function PartnerDistributionAdmin() {
             <CardContent>
               {partners.length > 0 ? (
                 <Table>
-                  <TableHeader className="bg-sky-50">
+                  <TableHeader className="bg-orange-50">
                     <TableRow>
                       <TableHead>Partner Name</TableHead>
                       <TableHead>Description</TableHead>
@@ -534,7 +534,7 @@ export default function PartnerDistributionAdmin() {
                   </TableHeader>
                   <TableBody>
                     {partners.map((partner) => (
-                      <TableRow key={partner.id} className="border-b border-sky-100">
+                      <TableRow key={partner.id} className="border-b border-orange-100">
                         <TableCell className="font-medium">{partner.name}</TableCell>
                         <TableCell>{partner.description || 'N/A'}</TableCell>
                         <TableCell className="text-right">{partner.percentage}%</TableCell>
@@ -551,7 +551,7 @@ export default function PartnerDistributionAdmin() {
                         <TableCell>
                           <Badge 
                             variant={partner.isActive ? "default" : "secondary"}
-                            className={partner.isActive ? "bg-sky-600" : "bg-sky-200 text-black"}
+                            className={partner.isActive ? "bg-orange-600" : "bg-orange-200 text-black"}
                           >
                             {partner.isActive ? 'Active' : 'Inactive'}
                           </Badge>
@@ -566,7 +566,7 @@ export default function PartnerDistributionAdmin() {
                   <Button 
                     onClick={initializeDefaultPartners} 
                     disabled={isLoading}
-                    className="bg-sky-600 hover:bg-sky-700"
+                    className="bg-orange-600 hover:bg-orange-700"
                   >
                     Initialize Default Partners
                   </Button>
@@ -578,8 +578,8 @@ export default function PartnerDistributionAdmin() {
         
         {/* Calculate Tab */}
         <TabsContent value="calculate">
-          <Card className="border-sky-200">
-            <CardHeader className="bg-sky-50">
+          <Card className="border-orange-200">
+            <CardHeader className="bg-orange-50">
               <CardTitle>Calculate Distributions</CardTitle>
               <CardDescription>
                 Calculate partner distributions for a specific date range
@@ -592,7 +592,7 @@ export default function PartnerDistributionAdmin() {
                   <DatePicker 
                     date={startDate} 
                     setDate={setStartDate} 
-                    className="w-full border-sky-200 focus:border-sky-500"
+                    className="w-full border-orange-200 focus:border-orange-500"
                   />
                 </div>
                 <div className="space-y-2">
@@ -600,7 +600,7 @@ export default function PartnerDistributionAdmin() {
                   <DatePicker 
                     date={endDate} 
                     setDate={setEndDate} 
-                    className="w-full border-sky-200 focus:border-sky-500"
+                    className="w-full border-orange-200 focus:border-orange-500"
                   />
                 </div>
               </div>
@@ -609,7 +609,7 @@ export default function PartnerDistributionAdmin() {
                 <Button 
                   onClick={calculateDistributions} 
                   disabled={isLoading}
-                  className="bg-sky-600 hover:bg-sky-700"
+                  className="bg-orange-600 hover:bg-orange-700"
                 >
                   <Calculator className="w-4 h-4 mr-2" />
                   Calculate Distribution
@@ -618,19 +618,19 @@ export default function PartnerDistributionAdmin() {
               
               {calculatedDistributions.length > 0 && (
                 <div>
-                  <div className="bg-sky-50 p-4 rounded-lg mb-6">
+                  <div className="bg-orange-50 p-4 rounded-lg mb-6">
                     <p className="text-sm text-gray-500">Period</p>
                     <p className="font-medium">
                       {startDate && format(startDate, 'PPP')} to {endDate && format(endDate, 'PPP')}
                     </p>
-                    <Separator className="my-2 bg-sky-200" />
+                    <Separator className="my-2 bg-orange-200" />
                     <p className="text-sm text-gray-500">Total Collected</p>
                     <p className="text-xl font-bold">{formatCurrency(totalCalculated)}</p>
                   </div>
                   
                   <h3 className="text-xl font-semibold mb-4">Distribution Breakdown</h3>
                   <Table>
-                    <TableHeader className="bg-sky-50">
+                    <TableHeader className="bg-orange-50">
                       <TableRow>
                         <TableHead>Partner</TableHead>
                         <TableHead>Percentage</TableHead>
@@ -640,7 +640,7 @@ export default function PartnerDistributionAdmin() {
                     </TableHeader>
                     <TableBody>
                       {calculatedDistributions.map((dist) => (
-                        <TableRow key={dist.partnerId} className="border-b border-sky-100">
+                        <TableRow key={dist.partnerId} className="border-b border-orange-100">
                           <TableCell className="font-medium">{dist.partnerName}</TableCell>
                           <TableCell>{dist.percentage}%</TableCell>
                           <TableCell className="text-right">{formatCurrency(dist.amount)}</TableCell>
@@ -655,7 +655,7 @@ export default function PartnerDistributionAdmin() {
                                   variant="outline" 
                                   size="sm"
                                   onClick={() => setProcessingDistribution(dist)}
-                                  className="border-sky-500 text-sky-700 hover:bg-sky-100"
+                                  className="border-orange-500 text-orange-700 hover:bg-orange-100"
                                 >
                                   Process
                                 </Button> */}
@@ -675,7 +675,7 @@ export default function PartnerDistributionAdmin() {
                                         id="amount" 
                                         value={processingDistribution?.amount} 
                                         disabled 
-                                        className="bg-sky-50"
+                                        className="bg-orange-50"
                                       />
                                     </div>
                                     <div>
@@ -685,7 +685,7 @@ export default function PartnerDistributionAdmin() {
                                         placeholder="e.g. Transaction ID, method, etc."
                                         value={paymentDetails}
                                         onChange={(e) => setPaymentDetails(e.target.value)}
-                                        className="border-sky-200 focus:border-sky-500"
+                                        className="border-orange-200 focus:border-orange-500"
                                       />
                                     </div>
                                   </div>
@@ -694,7 +694,7 @@ export default function PartnerDistributionAdmin() {
                                   <Button 
                                     onClick={processDistribution} 
                                     disabled={isLoading}
-                                    className="bg-sky-600 hover:bg-sky-700"
+                                    className="bg-orange-600 hover:bg-orange-700"
                                   >
                                     Complete Distribution
                                   </Button>
@@ -714,15 +714,15 @@ export default function PartnerDistributionAdmin() {
         
         {/* History Tab */}
         <TabsContent value="history">
-          <Card className="border-sky-200">
-            <CardHeader className="bg-sky-50">
+          <Card className="border-orange-200">
+            <CardHeader className="bg-orange-50">
               <CardTitle>Distribution History</CardTitle>
               <CardDescription>View all past distributions to partners</CardDescription>
             </CardHeader>
             <CardContent>
               {distributions.length > 0 ? (
                 <Table>
-                  <TableHeader className="bg-sky-50">
+                  <TableHeader className="bg-orange-50">
                     <TableRow>
                       <TableHead>Date</TableHead>
                       <TableHead>Partner</TableHead>
@@ -733,7 +733,7 @@ export default function PartnerDistributionAdmin() {
                   </TableHeader>
                   <TableBody>
                     {distributions.map((dist) => (
-                      <TableRow key={dist.id} className="border-b border-sky-100">
+                      <TableRow key={dist.id} className="border-b border-orange-100">
                         <TableCell>{formatDate(dist.createdAt)}</TableCell>
                         <TableCell className="font-medium">{dist.partner.name}</TableCell>
                         <TableCell>
@@ -747,8 +747,8 @@ export default function PartnerDistributionAdmin() {
                               dist.status === 'pending' ? 'secondary' : 'destructive'
                             }
                             className={
-                              dist.status === 'completed' ? 'bg-sky-600' : 
-                              dist.status === 'pending' ? 'bg-sky-200 text-black' : 'bg-red-500'
+                              dist.status === 'completed' ? 'bg-orange-600' : 
+                              dist.status === 'pending' ? 'bg-orange-200 text-black' : 'bg-red-500'
                             }
                           >
                             {dist.status}
@@ -764,11 +764,11 @@ export default function PartnerDistributionAdmin() {
                 </div>
               )}
             </CardContent>
-            <CardFooter className="bg-sky-50">
+            <CardFooter className="bg-orange-50">
               <Button 
                 variant="outline" 
                 onClick={fetchDistributionHistory}
-                className="border-sky-500 text-sky-700 hover:bg-sky-100"
+                className="border-orange-500 text-orange-700 hover:bg-orange-100"
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Refresh History

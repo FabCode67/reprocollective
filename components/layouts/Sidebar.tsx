@@ -58,10 +58,10 @@ export default function Sidebar() {
       >
         {/* Logo */}
         <Link className="p-4 border-b flex items-center gap-2" href={'/'}>
-          <div className="bg-sky-600 text-white p-2 rounded-md">
+          <div className="bg-orange-600 text-white p-2 rounded-md">
             <QrCode className="h-6 w-6" />
           </div>
-          <h1 className="text-xl font-bold text-sky-700">ReproCollective</h1>
+          <h1 className="text-xl font-bold text-orange-700">ReproCollective</h1>
         </Link>
 
         {/* Navigation */}
@@ -71,7 +71,7 @@ export default function Sidebar() {
               <Button 
                 variant="ghost" 
                 className={`w-full justify-start font-medium ${
-                  isActive(item.path) ? 'text-sky-700 bg-sky-50' : 'text-gray-700 hover:bg-gray-100'
+                  isActive(item.path) ? 'text-orange-700 bg-orange-50' : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
                 {item.icon}

@@ -84,7 +84,7 @@ export default function LocationsPage() {
     { id: '2', name: 'City Hotel', amount: 520, count: 12, status: 'Active' },
     { id: '3', name: 'Sunshine School', amount: 480, count: 15, status: 'Active' },
     { id: '4', name: 'Central School', amount: 350, count: 10, status: 'Active' },
-    { id: '5', name: 'Blue Sky Hotel', amount: 320, count: 8, status: 'Inactive' },
+    { id: '5', name: 'orange orange Hotel', amount: 320, count: 8, status: 'Inactive' },
     { id: '6', name: 'Community Center', amount: 280, count: 9, status: 'Active' },
     { id: '7', name: 'Downtown Mall', amount: 250, count: 7, status: 'Active' },
     { id: '8', name: 'University Cafeteria', amount: 220, count: 6, status: 'Inactive' },
@@ -120,7 +120,7 @@ export default function LocationsPage() {
           </div>
           <div className="mt-4 md:mt-0 flex gap-2">
             <Button 
-              className="bg-sky-600 hover:bg-sky-700"
+              className="bg-orange-600 hover:bg-orange-700"
               onClick={() => setIsAddDialogOpen(true)}
             >
               <MapPin className="mr-2 h-4 w-4" />

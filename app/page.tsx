@@ -83,7 +83,7 @@ const HomePage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <Loader2 className="animate-spin text-sky-500" size={48} />
+        <Loader2 className="animate-spin text-orange-500" size={48} />
       </div>
     );
   }
@@ -91,6 +91,7 @@ const HomePage: React.FC = () => {
   return (
     <><div className="min-h-screen bg-white text-gray-900">
       <Navbar />
+      <DarkHeroImage />
 
       <div className="container max-w-7xl p-4 mx-auto mt-20 lg:flex">
         {/* Mobile Section Toggle */}
@@ -99,7 +100,7 @@ const HomePage: React.FC = () => {
             onClick={() => setActiveSection('location')}
             className={`
               w-1/2 p-2 text-center 
-              ${activeSection === 'location' ? 'bg-sky-500 text-white' : 'bg-gray-200'}
+              ${activeSection === 'location' ? 'bg-orange-500 text-white' : 'bg-gray-200'}
             `}
           >
             HOME
@@ -108,7 +109,7 @@ const HomePage: React.FC = () => {
             onClick={() => setActiveSection('info')}
             className={`
               w-1/2 p-2 text-center 
-              ${activeSection === 'info' ? 'bg-sky-500 text-white' : 'bg-gray-200'}
+              ${activeSection === 'info' ? 'bg-orange-500 text-white' : 'bg-gray-200'}
             `}
           >
             About
@@ -117,7 +118,7 @@ const HomePage: React.FC = () => {
             onClick={() => setActiveSection('testimonials')}
             className={`
               w-1/2 p-2 text-center 
-              ${activeSection === 'testimonials' ? 'bg-sky-500 text-white' : 'bg-gray-200'}
+              ${activeSection === 'testimonials' ? 'bg-orange-500 text-white' : 'bg-gray-200'}
             `}
           >
             Testimonials
@@ -132,27 +133,26 @@ const HomePage: React.FC = () => {
           ${activeSection === 'location' ? 'block' : 'hidden lg:block'}
           overflow-y-auto
         `}>
-          <DarkHeroImage />
-          <h2 className="text-2xl font-bold mb-4 text-sky-600">{"Contributer's station"}</h2>
+          <h2 className="text-2xl font-bold mb-4 text-orange-600">{"Contributer's station"}</h2>
           {location.map((location) => (
             <Card
               key={location.id}
-              className="md:mb-4 mb-2 hover:shadow-lg transition-shadow cursor-pointer border-sky-100 px-0 hover:border-sky-300"
+              className="md:mb-4 mb-2 hover:shadow-lg transition-shadow cursor-pointer border-orange-100 px-0 hover:border-orange-300"
               onClick={() => setSelectedLocation(location)}
             >
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">
-                  <span className="text-sky-700">{location.name}</span>
+                  <span className="text-orange-700">{location.name}</span>
                   {/* <Image
               src={location.qrCodeDataUrl || '/logo.png'}
               alt={`QR Code for ${location.name}`}
               width={50}
               height={50}
-              className="self-end sm:self-auto border-2 border-sky-100 rounded"
+              className="self-end sm:self-auto border-2 border-orange-100 rounded"
             /> */}
 
                   {/* display money earned  */}
-                  <span className="text-sky-700 text-xs font-semibold">
+                  <span className="text-orange-700 text-xs font-semibold">
                     {location.totalAmount}RWF
                   </span>
                 </CardTitle>
@@ -165,7 +165,7 @@ const HomePage: React.FC = () => {
                 <div className="flex items-center space-x-2">
                   <div className="flex items-center space-x-2">
                     <Image src="/mtn.webp" alt="momo" width={35} height={35} />
-                    <span className=" text-xs text-gray-600">5553422</span>
+                    {/* <span className=" text-xs text-gray-600">5553422</span> */}
                   </div>
                   {/* drwa small horisontal line             */}
                   <div className="border-l border-gray-300 h-6"></div>
@@ -175,10 +175,10 @@ const HomePage: React.FC = () => {
                       alt="equity"
                       width={35}
                       height={35} />
-                    <span className=" text-xs text-gray-600">444-5555-7777-2232</span>
+                    {/* <span className=" text-xs text-gray-600">444-5555</span> */}
                   </div>
                 </div>
-                <button className="bg-sky-500 text-white md:w-fit w-full px-2 py-1 text-sm rounded-md">Donate</button>
+                <button className="bg-orange-500 text-white md:w-fit w-full px-2 py-1 text-sm rounded-md">Contribute</button>
               </CardContent>
             </Card>
           ))}
@@ -191,7 +191,7 @@ const HomePage: React.FC = () => {
         `}>
           <div className="space-y-6">
             <div className="mb-8">
-              <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-sky-600 flex items-center">
+              <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-orange-600 flex items-center">
                 <Heart className="mr-3 text-red-500" size={36} />
                 Repro Collective
               </h1>
@@ -203,8 +203,8 @@ const HomePage: React.FC = () => {
               </p>
             </div>
 
-            <div className="bg-sky-50 p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl lg:text-2xl font-semibold mb-4 text-sky-700 flex items-center">
+            <div className="bg-orange-50 p-6 rounded-lg shadow-sm">
+              <h3 className="text-xl lg:text-2xl font-semibold mb-4 text-orange-700 flex items-center">
                 <CheckCircle className="mr-3 text-green-500" size={28} />
                 Your Contribution Journey
               </h3>
@@ -227,14 +227,14 @@ const HomePage: React.FC = () => {
               </ol>
             </div>
 
-            <div className="bg-gradient-to-r from-sky-500 to-blue-600 text-white p-6 rounded-lg shadow-lg">
+            <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-6 rounded-lg shadow-lg">
               <h3 className="text-xl lg:text-2xl font-bold mb-4 flex items-center">
                 <Globe className="mr-3" size={28} />
                 Our Vision
               </h3>
               <p className="text-base lg:text-lg leading-relaxed">
                 We envision a world where every contribution, no matter how small,
-                creates ripples of positive transformation. By connecting donors
+                creates ripples of positive transformation. By connecting contributors
                 directly with community needs, we bridge compassion with practical solutions.
               </p>
             </div>

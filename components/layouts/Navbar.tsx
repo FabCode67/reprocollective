@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import {
   NavigationMenu,
@@ -7,26 +7,90 @@ import {
   NavigationMenuLink
 } from '@/components/ui/navigation-menu';
 import { buttonVariants } from '@/components/ui/button';
-// import { BellRing, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import DonationModal from '../DonateModel';
 import Image from 'next/image';
+import axios from 'axios';
+
+interface Location {
+  id: string;
+  name: string;
+  location: string;
+  accountNumber: string;
+  description: string;
+  qrCodeDataUrl?: string;
+  qrCode?: string; 
+  totalAmount?: number;
+}
 
 const Navbar: React.FC = () => {
-  const [isMenuOpen, ] = useState(false);
+  const [isMenuOpen,] = useState(false);
   const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  // const toggleMenu = () => {
-  //   setIsMenuOpen(!isMenuOpen);
-  // };
 
-  const openDonationModal = () => {
-    setIsDonationModalOpen(true);
+  
+
+  // Function to fetch locations
+  const fetchLocations = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/locations`
+      );
+      setLocations(response.data);
+    } catch (error) {
+      console.error('Error fetching locations:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
+  // Handle direct contribution
+  const handleDirectContribution = () => {
+    setSelectedLocation(null);
+    setIsDonationModalOpen(true);
+    setIsDropdownOpen(false);
+  };
+
+  // Handle location selection
+  const handleLocationSelect = (location: Location) => {
+    setSelectedLocation(location);
+    setIsDonationModalOpen(true);
+    setIsDropdownOpen(false);
+  };
+
+  // Toggle dropdown
+  const toggleDropdown = () => {
+    if (!isDropdownOpen && locations.length === 0 && !isLoading) {
+      fetchLocations();
+    }
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Close donation modal
   const closeDonationModal = () => {
     setIsDonationModalOpen(false);
+    setSelectedLocation(null);
   };
 
   return (
@@ -40,7 +104,6 @@ const Navbar: React.FC = () => {
               alt="Repro Collective Logo"
               width={80}
               height={10}
-              // className="w-[100px] h-auto"
             />
           </Link>
 
@@ -55,21 +118,50 @@ const Navbar: React.FC = () => {
             >
               Report
             </button>
-            <button
-              onClick={openDonationModal}
-              className={`
-                ${buttonVariants({ variant: 'default', className: 'bg-sky-500 hover:bg-sky-600' })} 
-                w-fit lg:w-auto text-center
-              `}
-            >
-              Contribute Now
-            </button>
-            {/* <button
-              onClick={toggleMenu}
-              className="text-gray-600 hover:text-gray-900 focus:outline-none"
-            >
-              {isMenuOpen ? <X size={24} /> : <BellRing size={24} />}
-            </button> */}
+            {/* Dropdown for Contribute Now */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={toggleDropdown}
+                className={`
+                  w-fit p-2 text-white rounded-b-md bg-orange-500 hover:bg-orange-600 text-center
+                `}
+              >
+                Contribute Now
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                  <div className="py-1">
+                    <button
+                      onClick={handleDirectContribution}
+                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-orange-100"
+                    >
+                      Contribute Directly
+                    </button>
+                    <div className="border-t border-gray-200 my-1"></div>
+                    <div className="px-4 py-2 text-sm font-medium text-gray-700">
+                      Contribute Through a Location:
+                    </div>
+                    {isLoading ? (
+                      <div className="px-4 py-2 text-gray-500 italic">Loading locations...</div>
+                    ) : locations.length > 0 ? (
+                      <div className="max-h-48 overflow-y-auto">
+                        {locations.map((location) => (
+                          <button
+                            key={location.id}
+                            onClick={() => handleLocationSelect(location)}
+                            className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-orange-100"
+                          >
+                            {location.name}
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="px-4 py-2 text-gray-500 italic">No locations available</div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Navigation Menu */}
@@ -112,18 +204,6 @@ const Navbar: React.FC = () => {
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
-              {/* <NavigationMenuItem className="w-full lg:w-auto">
-                <Link href="#testimonials" passHref legacyBehavior>
-                  <NavigationMenuLink
-                    className={`
-                      ${buttonVariants({ variant: 'ghost' })} 
-                      w-full lg:w-auto text-center
-                    `}
-                  >
-                    Testimonials
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem> */}
               <NavigationMenuItem className="w-full lg:w-auto">
                 <Link href="/report" passHref legacyBehavior>
                   <NavigationMenuLink
@@ -137,33 +217,62 @@ const Navbar: React.FC = () => {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem className="w-full lg:w-auto">
-                {/* Changed to button that opens modal instead of link */}
-                <button
-                  onClick={openDonationModal}
-                  className={`
-                    ${buttonVariants({ variant: 'default', className: 'bg-sky-500 hover:bg-sky-600' })} 
-                    w-full lg:w-auto text-center
-                  `}
-                >
-                  Contribute Now
-                </button>
-              </NavigationMenuItem>
-              {/* <NavigationMenuItem className="w-full lg:w-auto"> */}
-                {/* <div className="hidden lg:flex items-center gap-4 mt-4 lg:mt-0">
+                {/* Dropdown for Contribute Now */}
+                <div className="relative" ref={dropdownRef}>
                   <button
-                    className="text-gray-600 hover:text-gray-900 focus:outline-none"
+                    onClick={toggleDropdown}
+                    className={`
+                      w-full lg:w-auto rounded-md text-center p-2 text-white bg-orange-500 hover:bg-orange-600
+                    `}
                   >
-                    {isMenuOpen ? <X size={24} /> : <BellRing size={24} />}
+                    Contribute Now
                   </button>
-                </div> */}
-              {/* </NavigationMenuItem> */}
+                  {isDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                      <div className="py-1">
+                        <button
+                          onClick={handleDirectContribution}
+                          className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-orange-100"
+                        >
+                          Contribute Directly
+                        </button>
+                        <div className="border-t border-gray-200 my-1"></div>
+                        <div className="px-4 py-2 text-sm font-medium text-gray-700">
+                          Contribute Through a Location:
+                        </div>
+                        {isLoading ? (
+                          <div className="px-4 py-2 text-gray-500 italic">Loading locations...</div>
+                        ) : locations.length > 0 ? (
+                          <div className="max-h-48 overflow-y-auto">
+                            {locations.map((location) => (
+                              <button
+                                key={location.id}
+                                onClick={() => handleLocationSelect(location)}
+                                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-orange-100"
+                              >
+                                {location.name}
+                              </button>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="px-4 py-2 text-gray-500 italic">No locations available</div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>
       </nav>
 
       {/* Donation Modal Component */}
-      <DonationModal isOpen={isDonationModalOpen} onClose={closeDonationModal} />
+      <DonationModal 
+        isOpen={isDonationModalOpen} 
+        onClose={closeDonationModal}
+        location={selectedLocation?.qrCode} // Pass the selected location to the modal
+      />
     </>
   );
 };

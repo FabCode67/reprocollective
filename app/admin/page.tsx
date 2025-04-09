@@ -271,7 +271,7 @@ export default function DonationReportPage() {
       <div className="container max-w-7xl p-4 mx-auto mt-0 lg:flex">
         <div className="flex w-full flex-col space-y-6">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold text-sky-600">Contribution Reports</h1>
+            <h1 className="text-3xl font-bold text-orange-600">Contribution Reports</h1>
             <div className="flex space-x-2">
   <Button variant="outline" onClick={exportToCSV}>Export CSV</Button>
   <Button variant="outline" onClick={printReport}>Print</Button>
@@ -280,9 +280,9 @@ export default function DonationReportPage() {
           </div>
 
           {/* Filter Section */}
-          <Card className="border border-sky-100">
-            <CardHeader className="bg-sky-50">
-              <CardTitle className="text-sky-700">Filter Reports</CardTitle>
+          <Card className="border border-orange-100">
+            <CardHeader className="bg-orange-50">
+              <CardTitle className="text-orange-700">Filter Reports</CardTitle>
               <CardDescription>Select criteria to filter contribution reports</CardDescription>
             </CardHeader>
             <CardContent className="pt-6">
@@ -397,7 +397,7 @@ export default function DonationReportPage() {
 
                 <div className="flex items-end">
                   <Button 
-                    className="bg-sky-600 hover:bg-sky-700"
+                    className="bg-orange-600 hover:bg-orange-700"
                     onClick={handleApplyFilters}
                     disabled={isLoading}
                   >
@@ -412,10 +412,10 @@ export default function DonationReportPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="bg-white">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sky-600 text-lg">Total Contributions</CardTitle>
+                <CardTitle className="text-orange-600 text-lg">Total Contributions</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">${summary.totalAmount.toFixed(2)}</div>
+                <div className="text-3xl font-bold">RWF{summary.totalAmount.toFixed(2)}</div>
                 <p className="text-sm text-gray-500">From {summary.totalCount} Contributions</p>
               </CardContent>
             </Card>
@@ -453,16 +453,16 @@ export default function DonationReportPage() {
 
           {/* Contribution Reports Tabs */}
           <Tabs defaultValue="list" className="w-full">
-            <TabsList className="bg-sky-50">
-              <TabsTrigger value="list" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">List View</TabsTrigger>
-              <TabsTrigger value="location" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">By Location</TabsTrigger>
-              <TabsTrigger value="payment" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">By Payment Method</TabsTrigger>
+            <TabsList className="bg-orange-50">
+              <TabsTrigger value="list" className="data-[state=active]:bg-orange-600 data-[state=active]:text-white">List View</TabsTrigger>
+              <TabsTrigger value="location" className="data-[state=active]:bg-orange-600 data-[state=active]:text-white">By Location</TabsTrigger>
+              <TabsTrigger value="payment" className="data-[state=active]:bg-orange-600 data-[state=active]:text-white">By Payment Method</TabsTrigger>
             </TabsList>
             
             <TabsContent value="list" className="mt-6">
               <Card>
-                <CardHeader className="bg-sky-50">
-                  <CardTitle className="text-sky-700">Contribution List</CardTitle>
+                <CardHeader className="bg-orange-50">
+                  <CardTitle className="text-orange-700">Contribution List</CardTitle>
                   <CardDescription>
                     Showing {donations.length} contributions for the selected period
                   </CardDescription>
@@ -527,8 +527,8 @@ export default function DonationReportPage() {
             
             <TabsContent value="location" className="mt-6">
               <Card>
-                <CardHeader className="bg-sky-50">
-                  <CardTitle className="text-sky-700">Contribution by Location</CardTitle>
+                <CardHeader className="bg-orange-50">
+                  <CardTitle className="text-orange-700">Contribution by Location</CardTitle>
                   <CardDescription>
                     Summary of Contribution grouped by location
                   </CardDescription>
@@ -571,8 +571,8 @@ export default function DonationReportPage() {
             
             <TabsContent value="payment" className="mt-6">
               <Card>
-                <CardHeader className="bg-sky-50">
-                  <CardTitle className="text-sky-700">Contribution by Payment Method</CardTitle>
+                <CardHeader className="bg-orange-50">
+                  <CardTitle className="text-orange-700">Contribution by Payment Method</CardTitle>
                   <CardDescription>
                     Summary of Contribution grouped by payment method
                   </CardDescription>

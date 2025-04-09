@@ -91,7 +91,7 @@ const DonatePage: React.FC = () => {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
@@ -111,7 +111,7 @@ const DonatePage: React.FC = () => {
           <p className="text-gray-600 text-center">{error}</p>
           <button 
             onClick={() => window.location.reload()}
-            className="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition duration-200"
+            className="mt-6 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg transition duration-200"
           >
             Try Again
           </button>
@@ -167,7 +167,7 @@ const DonatePage: React.FC = () => {
                 step="100"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                 required
               />
             </div>
@@ -179,7 +179,7 @@ const DonatePage: React.FC = () => {
                 id="donorName"
                 value={donorName}
                 onChange={(e) => setDonorName(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                 required
               />
             </div>
@@ -192,7 +192,7 @@ const DonatePage: React.FC = () => {
                 value={donorPhone}
                 onChange={(e) => setDonorPhone(e.target.value)}
                 placeholder="e.g. 07XXXXXXXX"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                 required
               />
             </div>
@@ -227,7 +227,7 @@ const DonatePage: React.FC = () => {
             <button
               type="submit"
               disabled={processing}
-              className={`w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg transition duration-200 ${
+              className={`w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg transition duration-200 ${
                 processing ? 'opacity-75 cursor-not-allowed' : ''
               }`}
             >
