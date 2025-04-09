@@ -62,7 +62,7 @@ const Navbar: React.FC = () => {
                 w-fit lg:w-auto text-center
               `}
             >
-              Donate Now
+              Contribute Now
             </button>
             <button
               onClick={toggleMenu}
@@ -145,7 +145,7 @@ const Navbar: React.FC = () => {
                     w-full lg:w-auto text-center
                   `}
                 >
-                  Donate Now
+                  Contribute Now
                 </button>
               </NavigationMenuItem>
               <NavigationMenuItem className="w-full lg:w-auto">

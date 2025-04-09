@@ -63,7 +63,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
       } else {
         toast(
           <div>
-            <strong>Donation Successful</strong>
+            <strong>Contribution Successful</strong>
             <p>Thank you for your generous contribution!</p>
           </div>
         );
@@ -73,7 +73,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
       console.error('Error processing donation:', error);
       toast(
         <div className="text-destructive">
-          <strong>Donation Failed</strong>
+          <strong>Contribution Failed</strong>
           <p>{error instanceof Error ? error.message : "Failed to process donation"}</p>
         </div>
       );
@@ -86,7 +86,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Make a Donation</DialogTitle>
+          <DialogTitle>Make a Contribution</DialogTitle>
           <DialogDescription>
             Your support helps us continue our important work. Thank you!
           </DialogDescription>
@@ -196,7 +196,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
               Cancel
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading ? "Processing..." : "Donate Now"}
+              {loading ? "Processing..." : "Contribute Now"}
             </Button>
           </DialogFooter>
         </form>

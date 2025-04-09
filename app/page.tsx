@@ -7,7 +7,7 @@ import DonationModal from '@/components/DonationModel';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, CheckCircle, Globe, Heart } from 'lucide-react';
 import Image from 'next/image';
-import TestimonialsPage from '@/components/testmonials';
+// import TestimonialsPage from '@/components/testmonials';
 import DarkHeroImage from '@/components/DarkImage';
 import axios from 'axios';
 
@@ -113,7 +113,7 @@ const HomePage: React.FC = () => {
           >
             About
           </button>
-          <button
+          {/* <button
             onClick={() => setActiveSection('testimonials')}
             className={`
               w-1/2 p-2 text-center 
@@ -121,7 +121,7 @@ const HomePage: React.FC = () => {
             `}
           >
             Testimonials
-          </button>
+          </button> */}
 
 
         </div>
@@ -242,11 +242,11 @@ const HomePage: React.FC = () => {
         </div>
 
       </div>
-      {<div className={`
+      {/* {<div className={`
           ${activeSection === 'testimonials' ? 'block' : 'hidden'}
         `}>
         <TestimonialsPage />
-      </div>}
+      </div>} */}
 
 
 
@@ -260,7 +260,7 @@ const HomePage: React.FC = () => {
           onSuccess={() => console.log('Contribution Success')} />
       )}
     </div><section id='testimonials' className="lg:block hidden">
-        <TestimonialsPage />
+        {/* <TestimonialsPage /> */}
       </section></>
   );
 };

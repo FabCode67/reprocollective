@@ -1,622 +1,809 @@
-// src/app/reports/page.tsx
 'use client';
-
 import { useState, useEffect } from 'react';
-import { CalendarIcon } from 'lucide-react';
+import axios from 'axios';
 import { format } from 'date-fns';
+import {  PlusCircle, RefreshCw, Calculator } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
-// import Navbar from '@/components/layouts/Navbar';
+import { Progress } from '@/components/ui/progress';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Separator } from '@/components/ui/separator';
+import { DatePicker } from '@/components/DatePicker';
+// import RootLayout from '@/components/layouts/Dashboardlayout';
 import Navbar from '@/components/layouts/Navbar';
 
-interface DonationLocation {
+
+// Types
+interface Partner {
   id: string;
   name: string;
-  location: string;
-}
-
-interface Donation {
-  id: string;
-  amount: number;
-  donorName: string;
-  donorPhone: string;
-  paymentMethod: string;
-  transactionId?: string;
-  status: string;
-  locationId: string;
+  description: string | null;
+  percentage: number;
+  contactName: string | null;
+  contactEmail: string | null;
+  contactPhone: string | null;
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
-  donationLocation: DonationLocation;
 }
 
-interface ReportSummary {
-  totalAmount: number;
-  totalCount: number;
-  completed: number;
-  pending: number;
-  failed: number;
+interface Distribution {
+  id: string;
+  partnerId: string;
+  amount: number;
+  fromDate: string;
+  toDate: string;
+  totalCollected: number;
+  status: string;
+  paymentDetails: string | null;
+  createdAt: string;
+  updatedAt: string;
+  partner: Partner;
 }
 
-interface ApiResponse {
-  summary: ReportSummary;
-  donations: Donation[];
+interface PartnerSummary {
+  partnerId: string;
+  partnerName: string;
+  percentage: number;
+  totalEntitledAmount: number;
+  totalDistributed: number;
+  pendingAmount: number;
+  completionPercentage: number;
 }
 
-export default function DonationReportPage() {
-  const [startDate, setStartDate] = useState<Date | undefined>(
-    new Date(new Date().setDate(new Date().getDate() - 30))
-  );
-  const [endDate, setEndDate] = useState<Date | undefined>(new Date());
-  const [locationFilter, setLocationFilter] = useState<string>('all');
-  const [paymentMethodFilter, setPaymentMethodFilter] = useState<string>('all');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [locations, setLocations] = useState<DonationLocation[]>([]);
-  const [donations, setDonations] = useState<Donation[]>([]);
-  const [summary, setSummary] = useState<ReportSummary>({
-    totalAmount: 0,
-    totalCount: 0,
-    completed: 0,
-    pending: 0,
-    failed: 0
+interface DistributionCalculation {
+  partnerId: string;
+  partnerName: string;
+  percentage: number;
+  amount: number;
+  fromDate: string;
+  toDate: string;
+  totalCollected: number;
+}
+
+interface DistributionSummary {
+  totalDonations: number;
+  totalDistributed: number;
+  remainingAmount: number;
+  partnerSummaries: PartnerSummary[];
+}
+
+export default function PartnerDistributionAdmin() {
+  const [activeTab, setActiveTab] = useState('summary');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  // State for partners
+  const [partners, setPartners] = useState<Partner[]>([]);
+  const [newPartner, setNewPartner] = useState({
+    name: '',
+    description: '',
+    percentage: 0,
+    contactName: '',
+    contactEmail: '',
+    contactPhone: '',
   });
+  const [showAddPartnerDialog, setShowAddPartnerDialog] = useState(false);
 
-  // Fetch donations based on filters
-  const fetchDonations = async () => {
-    try {
-      setIsLoading(true);
-      
-      const queryParams = new URLSearchParams();
-      
-      if (startDate) {
-        queryParams.append('startDate', startDate.toISOString());
-      }
-      
-      if (endDate) {
-        queryParams.append('endDate', endDate.toISOString());
-      }
-      
-      if (locationFilter !== 'all') {
-        queryParams.append('locationId', locationFilter);
-      }
-      
-      if (statusFilter !== 'all') {
-        queryParams.append('status', statusFilter);
-      }
-      
-      if (paymentMethodFilter !== 'all') {
-        queryParams.append('paymentMethod', paymentMethodFilter);
-      }
-      
-      if (searchTerm) {
-        queryParams.append('search', searchTerm);
-      }
-      
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/donations/reports?${queryParams.toString()}`);
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch contibution reports');
-      }
-      
-      const data: ApiResponse = await response.json();
-      setDonations(data.donations);
-      setSummary(data.summary);
-      
-    } catch (error) {
-      console.error('Error fetching contribution reports:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // State for distributions
+  const [distributions, setDistributions] = useState<Distribution[]>([]);
+  const [distributionSummary, setDistributionSummary] = useState<DistributionSummary | null>(null);
+  
+  // State for distribution calculation
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+  const [calculatedDistributions, setCalculatedDistributions] = useState<DistributionCalculation[]>([]);
+  const [totalCalculated, setTotalCalculated] = useState(0);
+  
+  // State for processing a distribution
+  const [processingDistribution, setProcessingDistribution] = useState<DistributionCalculation | null>(null);
+  const [paymentDetails, setPaymentDetails] = useState('');
+  const [showProcessDialog, setShowProcessDialog] = useState(false);
 
-  // Fetch all locations for the filter dropdown
-  const fetchLocations = async () => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/locations`);
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch locations');
-      }
-      
-      const data = await response.json();
-      setLocations(data);
-    } catch (error) {
-      console.error('Error fetching locations:', error);
-    }
-  };
-
-  // Initial data load
+  // Fetch initial data
   useEffect(() => {
-    fetchLocations();
-    fetchDonations();
+    fetchPartners();
+    fetchDistributionSummary();
+    fetchDistributionHistory();
   }, []);
 
-  // Handle filter application
-  const handleApplyFilters = () => {
-    fetchDonations();
-  };
-
-  // Group donations by location
-  const donationsByLocation = donations.reduce((acc, donation) => {
-    const locationName = donation.donationLocation?.name;
-    
-    if (!acc[locationName]) {
-      acc[locationName] = {
-        locationName,
-        totalAmount: 0,
-        count: 0
-      };
-    }
-    
-    acc[locationName].totalAmount += donation.amount;
-    acc[locationName].count += 1;
-    
-    return acc;
-  }, {} as Record<string, { locationName: string; totalAmount: number; count: number }>);
-
-  // Group donations by payment method
-  const donationsByPaymentMethod = donations.reduce((acc, donation) => {
-    if (!acc[donation.paymentMethod]) {
-      acc[donation.paymentMethod] = {
-        method: donation.paymentMethod,
-        totalAmount: 0,
-        count: 0
-      };
-    }
-    
-    acc[donation.paymentMethod].totalAmount += donation.amount;
-    acc[donation.paymentMethod].count += 1;
-    
-    return acc;
-  }, {} as Record<string, { method: string; totalAmount: number; count: number }>);
-
-  // Get formatted payment method display name
-  const getPaymentMethodDisplay = (method: string) => {
-    switch(method.toLowerCase()) {
-      case 'mtn':
-        return 'MTN Mobile Money';
-      case 'card':
-        return 'Bank Card';
-      default:
-        return method;
+  // Fetch partners
+  const fetchPartners = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(`
+        ${
+          process.env.NEXT_PUBLIC_API_URL
+        }/partners`);
+      setPartners(response.data.partners);
+      setIsLoading(false);
+    } catch (err) {
+      setError('Failed to fetch partners');
+      setIsLoading(false);
+      console.error(err);
     }
   };
 
-  // Get status badge styling
-  const getStatusBadgeStyle = (status: string) => {
-    switch(status.toLowerCase()) {
-      case 'completed':
-        return 'bg-green-100 text-green-800';
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'failed':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
+  // Initialize default partners
+  const initializeDefaultPartners = async () => {
+    try {
+      setIsLoading(true);
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/partners/init-default`);
+      setSuccess('Default partners initialized successfully');
+      fetchPartners();
+      setIsLoading(false);
+    } catch (err) {
+      setError('Failed to initialize default partners');
+      setIsLoading(false);
+      console.error(err);
     }
   };
 
-  const exportToCSV = () => {
-    // Define CSV headers
-    const headers = [
-      'ID',
-      'Date',
-      'Amount',
-      'Payment Method',
-      'Location',
-      'Donor Name',
-      'Donor Phone',
-      'Status',
-    ];
-    
-    // Transform donations data to CSV format
-    const csvData = donations.map((donation) => {
-      return [
-        donation.id,
-        format(new Date(donation.createdAt), 'yyyy-MM-dd'),
-        donation.amount.toFixed(2),
-        getPaymentMethodDisplay(donation.paymentMethod),
-        donation.donationLocation?.name,
-        donation.donorName || 'Anonymous',
-        donation.donorPhone || 'N/A',
-        donation.status
-      ].join(',');
-    });
-    
-    // Combine headers and data
-    const csvContent = [
-      headers.join(','),
-      ...csvData
-    ].join('\n');
-    
-    // Create a Blob with the CSV data
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    
-    // Create a download link
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    
-    // Set up download attributes
-    const fileName = `donation-report-${format(new Date(), 'yyyy-MM-dd')}.csv`;
-    link.setAttribute('href', url);
-    link.setAttribute('download', fileName);
-    
-    // Trigger download
-    document.body.appendChild(link);
-    link.click();
-    
-    // Clean up
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+  // Add a new partner
+  const addPartner = async () => {
+    try {
+      setIsLoading(true);
+      await axios.post(`
+        ${process.env.NEXT_PUBLIC_API_URL}/api/partners`, newPartner);
+      setSuccess('Partner added successfully');
+      setShowAddPartnerDialog(false);
+      setNewPartner({
+        name: '',
+        description: '',
+        percentage: 0,
+        contactName: '',
+        contactEmail: '',
+        contactPhone: '',
+      });
+      fetchPartners();
+      setIsLoading(false);
+    } catch (err) {
+      setError('Failed to add partner');
+      setIsLoading(false);
+      console.error(err);
+    }
   };
-  
-  // Function to print the current view
-  const printReport = () => {
-    window.print();
+
+  // Calculate distributions
+  const calculateDistributions = async () => {
+    if (!startDate || !endDate) {
+      setError('Please select both start and end dates');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const response = await axios.post(`${
+        process.env.NEXT_PUBLIC_API_URL
+      }/distributions/calculate`, {
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+      });
+      
+      setCalculatedDistributions(response.data.distributions);
+      setTotalCalculated(response.data.totalCollected);
+      setIsLoading(false);
+      setSuccess('Distribution calculations completed');
+    } catch (err) {
+      setError('Failed to calculate distributions');
+      setIsLoading(false);
+      console.error(err);
+    }
   };
-  
+
+  // Process a distribution
+  const processDistribution = async () => {
+    if (!processingDistribution) return;
+
+    try {
+      setIsLoading(true);
+      await axios.post(`${
+        process.env.NEXT_PUBLIC_API_URL
+      }/distributions/process`, {
+        partnerId: processingDistribution.partnerId,
+        amount: processingDistribution.amount,
+        fromDate: processingDistribution.fromDate,
+        toDate: processingDistribution.toDate,
+        totalCollected: processingDistribution.totalCollected,
+        paymentDetails,
+      });
+      
+      setSuccess('Distribution processed successfully');
+      setShowProcessDialog(false);
+      setPaymentDetails('');
+      setProcessingDistribution(null);
+      
+      // Refresh data
+      fetchDistributionSummary();
+      fetchDistributionHistory();
+      
+      setIsLoading(false);
+    } catch (err) {
+      setError('Failed to process distribution');
+      setIsLoading(false);
+      console.error(err);
+    }
+  };
+
+  // Fetch distribution history
+  const fetchDistributionHistory = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(`${
+        process.env.NEXT_PUBLIC_API_URL
+      }/distributions/history`);
+      setDistributions(response.data.distributions);
+      setIsLoading(false);
+    } catch (err) {
+      setError('Failed to fetch distribution history');
+      setIsLoading(false);
+      console.error(err);
+    }
+  };
+
+  // Fetch distribution summary
+  const fetchDistributionSummary = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(`${
+        process.env.NEXT_PUBLIC_API_URL
+      }/distributions/summary`);
+      setDistributionSummary(response.data);
+      setIsLoading(false);
+    } catch (err) {
+      setError('Failed to fetch distribution summary');
+      setIsLoading(false);
+      console.error(err);
+    }
+  };
+
+  // Helper to format currency
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'RWF',
+    }).format(amount);
+  };
+
+  // Helper to format date
+  const formatDate = (dateString: string) => {
+    return format(new Date(dateString), 'PPP');
+  };
+
+  // Clear alerts after 5 seconds
+  useEffect(() => {
+    if (error || success) {
+      const timer = setTimeout(() => {
+        setError(null);
+        setSuccess(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error, success]);
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
     <Navbar />
     <div className="container max-w-7xl p-4 mx-auto mt-20 lg:flex">
-      <div className="container max-w-7xl p-4 mx-auto mt-0 lg:flex">
-        <div className="flex w-full flex-col space-y-6">
-          <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold text-sky-600">Contribution Reports</h1>
-            <div className="flex space-x-2">
-  <Button variant="outline" onClick={exportToCSV}>Export CSV</Button>
-  <Button variant="outline" onClick={printReport}>Print</Button>
-
-            </div>
-          </div>
-
-          {/* Filter Section */}
-          <Card className="border border-sky-100">
+    <div className="container mx-auto py-8 bg-white text-black">
+      <h1 className="text-3xl font-bold mb-6">Partner Distribution Management</h1>
+      
+      {/* Alerts */}
+      {error && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      
+      {success && (
+        <Alert className="mb-4 bg-sky-50 border-sky-600">
+          <AlertTitle>Success</AlertTitle>
+          <AlertDescription>{success}</AlertDescription>
+        </Alert>
+      )}
+      
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
+        <TabsList className="grid grid-cols-4 mb-4 bg-sky-100">
+          <TabsTrigger value="summary" className="data-[state=active]:bg-sky-500 data-[state=active]:text-white">Summary</TabsTrigger>
+          <TabsTrigger value="partners" className="data-[state=active]:bg-sky-500 data-[state=active]:text-white">Partners</TabsTrigger>
+          <TabsTrigger value="calculate" className="data-[state=active]:bg-sky-500 data-[state=active]:text-white">Calculate</TabsTrigger>
+          <TabsTrigger value="history" className="data-[state=active]:bg-sky-500 data-[state=active]:text-white">History</TabsTrigger>
+        </TabsList>
+        
+        {/* Summary Tab */}
+        <TabsContent value="summary">
+          <Card className="border-sky-200">
             <CardHeader className="bg-sky-50">
-              <CardTitle className="text-sky-700">Filter Reports</CardTitle>
-              <CardDescription>Select criteria to filter contribution reports</CardDescription>
+              <CardTitle>Distribution Summary</CardTitle>
+              <CardDescription>Overview of all donations and their distribution to partners</CardDescription>
             </CardHeader>
-            <CardContent className="pt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {/* Date Range Filter */}
-                <div className="space-y-2">
-                  <Label htmlFor="date-range">Start Date</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        id="date-range"
-                        variant="outline"
-                        className="w-full justify-start text-left font-normal"
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {startDate ? format(startDate, 'PPP') : 'Select date'}
+            <CardContent>
+              {distributionSummary ? (
+                <div>
+                  <div className="grid grid-cols-3 gap-6 mb-8">
+                    <Card className="border-sky-200">
+                      <CardHeader className="pb-2 bg-sky-50">
+                        <CardTitle className="text-lg">Total Donations</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-3xl font-bold">{formatCurrency(distributionSummary.totalDonations)}</p>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="border-sky-200">
+                      <CardHeader className="pb-2 bg-sky-50">
+                        <CardTitle className="text-lg">Total Distributed</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-3xl font-bold">{formatCurrency(distributionSummary.totalDistributed)}</p>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="border-sky-200">
+                      <CardHeader className="pb-2 bg-sky-50">
+                        <CardTitle className="text-lg">Remaining</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-3xl font-bold">{formatCurrency(distributionSummary.remainingAmount)}</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                  
+                  <h3 className="text-xl font-semibold mb-4">Partner Distribution Status</h3>
+                  <div className="space-y-6">
+                    {distributionSummary.partnerSummaries.map((partner) => (
+                      <div key={partner.partnerId} className="bg-sky-50 p-4 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <div>
+                            <h4 className="font-medium">{partner.partnerName}</h4>
+                            <p className="text-sm text-gray-500">{partner.percentage}% of donations</p>
+                          </div>
+                          <Badge 
+                            variant={partner.completionPercentage >= 100 ? "default" : "secondary"}
+                            className={partner.completionPercentage >= 100 ? "bg-sky-600" : "bg-sky-200 text-black"}
+                          >
+                            {partner.completionPercentage}% Complete
+                          </Badge>
+                        </div>
+                        <Progress 
+                          value={partner.completionPercentage > 100 ? 100 : partner.completionPercentage} 
+                          className="h-2 mb-2 bg-sky-100"
+                          // indicatorClassName="bg-sky-500"
+                        />
+                        <div className="grid grid-cols-3 gap-4 mt-3 text-sm">
+                          <div>
+                            <p className="text-gray-500">Entitled</p>
+                            <p className="font-medium">{formatCurrency(partner.totalEntitledAmount)}</p>
+                          </div>
+                          <div>
+                            <p className="text-gray-500">Distributed</p>
+                            <p className="font-medium">{formatCurrency(partner.totalDistributed)}</p>
+                          </div>
+                          <div>
+                            <p className="text-gray-500">Pending</p>
+                            <p className="font-medium">{formatCurrency(partner.pendingAmount)}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex justify-center items-center h-40">
+                  <p>Loading summary data...</p>
+                </div>
+              )}
+            </CardContent>
+            <CardFooter className="bg-sky-50">
+              <Button 
+                variant="outline" 
+                onClick={fetchDistributionSummary}
+                disabled={isLoading}
+                className="cursor-pointer border-sky-500 text-sky-700 hover:bg-sky-100"
+              >
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Refresh Data
+              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+        
+        {/* Partners Tab */}
+        <TabsContent value="partners">
+          <Card className="border-sky-200">
+            <CardHeader className="bg-sky-50">
+              <div className="flex justify-between items-center">
+                <div>
+                  <CardTitle>Partner Management</CardTitle>
+                  <CardDescription>Manage distribution partners and their percentages</CardDescription>
+                </div>
+                <div className="flex gap-2">
+                  <Dialog open={showAddPartnerDialog} onOpenChange={setShowAddPartnerDialog}>
+                    <DialogTrigger asChild>
+                      <Button className="bg-sky-600 hover:bg-sky-700">
+                        <PlusCircle className="w-4 h-4 mr-2" />
+                        Add Partner
                       </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar
-                        mode="single"
-                        selected={startDate}
-                        onSelect={setStartDate}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="end-date">End Date</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        id="end-date"
-                        variant="outline"
-                        className="w-full justify-start text-left font-normal"
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {endDate ? format(endDate, 'PPP') : 'Select date'}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar
-                        mode="single"
-                        selected={endDate}
-                        onSelect={setEndDate}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-
-                {/* Location Filter */}
-                <div className="space-y-2">
-                  <Label htmlFor="location">Location</Label>
-                  <Select value={locationFilter} onValueChange={setLocationFilter}>
-                    <SelectTrigger id="location">
-                      <SelectValue placeholder="All Locations" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Locations</SelectItem>
-                      {locations.map((location) => (
-                        <SelectItem key={location.id} value={location.id}>
-                          {location?.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Payment Method Filter */}
-                <div className="space-y-2">
-                  <Label htmlFor="payment-method">Payment Method</Label>
-                  <Select value={paymentMethodFilter} onValueChange={setPaymentMethodFilter}>
-                    <SelectTrigger id="payment-method">
-                      <SelectValue placeholder="All Payment Methods" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Payment Methods</SelectItem>
-                      <SelectItem value="mtn">MTN Mobile Money</SelectItem>
-                      <SelectItem value="card">Bank Card</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Status Filter */}
-                <div className="space-y-2">
-                  <Label htmlFor="status">Status</Label>
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger id="status">
-                      <SelectValue placeholder="All Statuses" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Statuses</SelectItem>
-                      <SelectItem value="completed">Completed</SelectItem>
-                      <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="failed">Failed</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="search">Search</Label>
-                  <Input 
-                    id="search" 
-                    placeholder="Search by name, phone or ID" 
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-
-                <div className="flex items-end">
+                    </DialogTrigger>
+                    <DialogContent className="bg-white">
+                      <DialogHeader>
+                        <DialogTitle>Add New Partner</DialogTitle>
+                        <DialogDescription>
+                          Add a new partner for donation distribution
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid gap-2">
+                          <Label htmlFor="name">Partner Name</Label>
+                          <Input 
+                            id="name" 
+                            value={newPartner.name}
+                            onChange={(e) => setNewPartner({...newPartner, name: e.target.value})}
+                            className="border-sky-200 focus:border-sky-500"
+                          />
+                        </div>
+                        <div className="grid gap-2">
+                          <Label htmlFor="description">Description</Label>
+                          <Input 
+                            id="description" 
+                            value={newPartner.description}
+                            onChange={(e) => setNewPartner({...newPartner, description: e.target.value})}
+                            className="border-sky-200 focus:border-sky-500"
+                          />
+                        </div>
+                        <div className="grid gap-2">
+                          <Label htmlFor="percentage">Percentage (%)</Label>
+                          <Input 
+                            id="percentage" 
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={newPartner.percentage}
+                            onChange={(e) => setNewPartner({...newPartner, percentage: parseFloat(e.target.value)})}
+                            className="border-sky-200 focus:border-sky-500"
+                          />
+                        </div>
+                        <div className="grid gap-2">
+                          <Label htmlFor="contactName">Contact Name</Label>
+                          <Input 
+                            id="contactName" 
+                            value={newPartner.contactName}
+                            onChange={(e) => setNewPartner({...newPartner, contactName: e.target.value})}
+                            className="border-sky-200 focus:border-sky-500"
+                          />
+                        </div>
+                        <div className="grid gap-2">
+                          <Label htmlFor="contactEmail">Contact Email</Label>
+                          <Input 
+                            id="contactEmail" 
+                            type="email"
+                            value={newPartner.contactEmail}
+                            onChange={(e) => setNewPartner({...newPartner, contactEmail: e.target.value})}
+                            className="border-sky-200 focus:border-sky-500"
+                          />
+                        </div>
+                        <div className="grid gap-2">
+                          <Label htmlFor="contactPhone">Contact Phone</Label>
+                          <Input 
+                            id="contactPhone" 
+                            value={newPartner.contactPhone}
+                            onChange={(e) => setNewPartner({...newPartner, contactPhone: e.target.value})}
+                            className="border-sky-200 focus:border-sky-500"
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button onClick={addPartner} disabled={isLoading} className="bg-sky-600 hover:bg-sky-700">
+                          Add Partner
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                  
                   <Button 
-                    className="bg-sky-600 hover:bg-sky-700"
-                    onClick={handleApplyFilters}
-                    disabled={isLoading}
+                    variant="outline" 
+                    onClick={initializeDefaultPartners}
+                    disabled={isLoading || partners.length > 0}
+                    className="border-sky-500 text-sky-700 hover:bg-sky-100"
                   >
-                    {isLoading ? 'Loading...' : 'Apply Filters'}
+                    Initialize Default Partners
                   </Button>
                 </div>
               </div>
+            </CardHeader>
+            <CardContent>
+              {partners.length > 0 ? (
+                <Table>
+                  <TableHeader className="bg-sky-50">
+                    <TableRow>
+                      <TableHead>Partner Name</TableHead>
+                      <TableHead>Description</TableHead>
+                      <TableHead className="text-right">Percentage</TableHead>
+                      <TableHead>Contact</TableHead>
+                      <TableHead>Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {partners.map((partner) => (
+                      <TableRow key={partner.id} className="border-b border-sky-100">
+                        <TableCell className="font-medium">{partner.name}</TableCell>
+                        <TableCell>{partner.description || 'N/A'}</TableCell>
+                        <TableCell className="text-right">{partner.percentage}%</TableCell>
+                        <TableCell>
+                          {partner.contactName ? (
+                            <div>
+                              <p>{partner.contactName}</p>
+                              <p className="text-sm text-gray-500">{partner.contactEmail}</p>
+                            </div>
+                          ) : (
+                            'N/A'
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <Badge 
+                            variant={partner.isActive ? "default" : "secondary"}
+                            className={partner.isActive ? "bg-sky-600" : "bg-sky-200 text-black"}
+                          >
+                            {partner.isActive ? 'Active' : 'Inactive'}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-8">
+                  <p className="text-gray-500 mb-4">No partners found</p>
+                  <Button 
+                    onClick={initializeDefaultPartners} 
+                    disabled={isLoading}
+                    className="bg-sky-600 hover:bg-sky-700"
+                  >
+                    Initialize Default Partners
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
-
-          {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="bg-white">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sky-600 text-lg">Total Contributions</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">${summary.totalAmount.toFixed(2)}</div>
-                <p className="text-sm text-gray-500">From {summary.totalCount} Contributions</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-white">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-green-600 text-lg">Completed</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">{summary.completed}</div>
-                <p className="text-sm text-gray-500">Successful Contributions</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-white">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-yellow-600 text-lg">Pending</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">{summary.pending}</div>
-                <p className="text-sm text-gray-500">Awaiting completion</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-white">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-red-600 text-lg">Failed</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">{summary.failed}</div>
-                <p className="text-sm text-gray-500">Unsuccessful attempts</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Contribution Reports Tabs */}
-          <Tabs defaultValue="list" className="w-full">
-            <TabsList className="bg-sky-50">
-              <TabsTrigger value="list" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">List View</TabsTrigger>
-              <TabsTrigger value="location" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">By Location</TabsTrigger>
-              <TabsTrigger value="payment" className="data-[state=active]:bg-sky-600 data-[state=active]:text-white">By Payment Method</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="list" className="mt-6">
-              <Card>
-                <CardHeader className="bg-sky-50">
-                  <CardTitle className="text-sky-700">Contribution List</CardTitle>
-                  <CardDescription>
-                    Showing {donations.length} contributions for the selected period
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="p-0">
-                  {isLoading ? (
-                    <div className="flex justify-center items-center h-40">
-                      <p>Loading contributions...</p>
-                    </div>
-                  ) : (
-                    <Table>
-                      <TableHeader className="bg-gray-50">
-                        <TableRow>
-                          <TableHead className="w-20">ID</TableHead>
-                          <TableHead>Date</TableHead>
-                          <TableHead>Amount</TableHead>
-                          <TableHead>Payment Method</TableHead>
-                          <TableHead>Location</TableHead>
-                          <TableHead>Donor</TableHead>
-                          <TableHead>Status</TableHead>
+        </TabsContent>
+        
+        {/* Calculate Tab */}
+        <TabsContent value="calculate">
+          <Card className="border-sky-200">
+            <CardHeader className="bg-sky-50">
+              <CardTitle>Calculate Distributions</CardTitle>
+              <CardDescription>
+                Calculate partner distributions for a specific date range
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="space-y-2">
+                  <Label htmlFor="startDate">Start Date</Label>
+                  <DatePicker 
+                    date={startDate} 
+                    setDate={setStartDate} 
+                    className="w-full border-sky-200 focus:border-sky-500"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="endDate">End Date</Label>
+                  <DatePicker 
+                    date={endDate} 
+                    setDate={setEndDate} 
+                    className="w-full border-sky-200 focus:border-sky-500"
+                  />
+                </div>
+              </div>
+              
+              <div className="flex justify-end mb-6">
+                <Button 
+                  onClick={calculateDistributions} 
+                  disabled={isLoading}
+                  className="bg-sky-600 hover:bg-sky-700"
+                >
+                  <Calculator className="w-4 h-4 mr-2" />
+                  Calculate Distribution
+                </Button>
+              </div>
+              
+              {calculatedDistributions.length > 0 && (
+                <div>
+                  <div className="bg-sky-50 p-4 rounded-lg mb-6">
+                    <p className="text-sm text-gray-500">Period</p>
+                    <p className="font-medium">
+                      {startDate && format(startDate, 'PPP')} to {endDate && format(endDate, 'PPP')}
+                    </p>
+                    <Separator className="my-2 bg-sky-200" />
+                    <p className="text-sm text-gray-500">Total Collected</p>
+                    <p className="text-xl font-bold">{formatCurrency(totalCalculated)}</p>
+                  </div>
+                  
+                  <h3 className="text-xl font-semibold mb-4">Distribution Breakdown</h3>
+                  <Table>
+                    <TableHeader className="bg-sky-50">
+                      <TableRow>
+                        <TableHead>Partner</TableHead>
+                        <TableHead>Percentage</TableHead>
+                        <TableHead className="text-right">Amount</TableHead>
+                        <TableHead></TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {calculatedDistributions.map((dist) => (
+                        <TableRow key={dist.partnerId} className="border-b border-sky-100">
+                          <TableCell className="font-medium">{dist.partnerName}</TableCell>
+                          <TableCell>{dist.percentage}%</TableCell>
+                          <TableCell className="text-right">{formatCurrency(dist.amount)}</TableCell>
+                          <TableCell>
+                            <Dialog open={showProcessDialog && processingDistribution?.partnerId === dist.partnerId} 
+                                   onOpenChange={(open) => {
+                                     if (!open) setProcessingDistribution(null);
+                                     setShowProcessDialog(open);
+                                   }}>
+                              <DialogTrigger asChild>
+                                {/* <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => setProcessingDistribution(dist)}
+                                  className="border-sky-500 text-sky-700 hover:bg-sky-100"
+                                >
+                                  Process
+                                </Button> */}
+                              </DialogTrigger>
+                              <DialogContent className="bg-white">
+                                <DialogHeader>
+                                  <DialogTitle>Process Distribution</DialogTitle>
+                                  <DialogDescription>
+                                    Process a payment of {processingDistribution && formatCurrency(processingDistribution.amount)} to {processingDistribution?.partnerName}
+                                  </DialogDescription>
+                                </DialogHeader>
+                                <div className="py-4">
+                                  <div className="grid gap-4 mb-4">
+                                    <div>
+                                      <Label htmlFor="amount">Amount</Label>
+                                      <Input 
+                                        id="amount" 
+                                        value={processingDistribution?.amount} 
+                                        disabled 
+                                        className="bg-sky-50"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="paymentDetails">Payment Details</Label>
+                                      <Input 
+                                        id="paymentDetails" 
+                                        placeholder="e.g. Transaction ID, method, etc."
+                                        value={paymentDetails}
+                                        onChange={(e) => setPaymentDetails(e.target.value)}
+                                        className="border-sky-200 focus:border-sky-500"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <DialogFooter>
+                                  <Button 
+                                    onClick={processDistribution} 
+                                    disabled={isLoading}
+                                    className="bg-sky-600 hover:bg-sky-700"
+                                  >
+                                    Complete Distribution
+                                  </Button>
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                          </TableCell>
                         </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {donations.map((donation) => (
-                          <TableRow key={donation.id}>
-                            <TableCell className="font-medium">{donation.id.substring(0, 8)}</TableCell>
-                            <TableCell>{format(new Date(donation.createdAt), 'PPP')}</TableCell>
-                            <TableCell>${donation.amount.toFixed(2)}</TableCell>
-                            <TableCell>{getPaymentMethodDisplay(donation.paymentMethod)}</TableCell>
-                            <TableCell>
-                              <div className="flex flex-col">
-                                <span>{donation.donationLocation?.name}</span>
-                                <span className="text-xs text-gray-500">{donation.donationLocation?.location}</span>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex flex-col">
-                                <span>{donation.donorName || 'Anonymous'}</span>
-                                <span className="text-xs text-gray-500">{donation.donorPhone || 'N/A'}</span>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <Badge className={getStatusBadgeStyle(donation.status)}>
-                                {donation.status.charAt(0).toUpperCase() + donation.status.slice(1)}
-                              </Badge>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                        {donations.length === 0 && !isLoading && (
-                          <TableRow>
-                            <TableCell colSpan={7} className="h-24 text-center">
-                              No contributions found with the selected filters.
-                            </TableCell>
-                          </TableRow>
-                        )}
-                      </TableBody>
-                    </Table>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="location" className="mt-6">
-              <Card>
-                <CardHeader className="bg-sky-50">
-                  <CardTitle className="text-sky-700">Contribution by Location</CardTitle>
-                  <CardDescription>
-                    Summary of Contribution grouped by location
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {isLoading ? (
-                    <div className="flex justify-center items-center h-40">
-                      <p>Loading location data...</p>
-                    </div>
-                  ) : (
-                    <Table>
-                      <TableHeader className="bg-gray-50">
-                        <TableRow>
-                          <TableHead>Location</TableHead>
-                          <TableHead>Contribution</TableHead>
-                          <TableHead>Total Amount</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {Object.values(donationsByLocation).map((item) => (
-                          <TableRow key={item?.locationName}>
-                            <TableCell className="font-medium">{item?.locationName}</TableCell>
-                            <TableCell>{item.count}</TableCell>
-                            <TableCell>${item.totalAmount.toFixed(2)}</TableCell>
-                          </TableRow>
-                        ))}
-                        {Object.keys(donationsByLocation).length === 0 && !isLoading && (
-                          <TableRow>
-                            <TableCell colSpan={3} className="h-24 text-center">
-                              No location data available for the selected filters.
-                            </TableCell>
-                          </TableRow>
-                        )}
-                      </TableBody>
-                    </Table>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="payment" className="mt-6">
-              <Card>
-                <CardHeader className="bg-sky-50">
-                  <CardTitle className="text-sky-700">Contribution by Payment Method</CardTitle>
-                  <CardDescription>
-                    Summary of Contribution grouped by payment method
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {isLoading ? (
-                    <div className="flex justify-center items-center h-40">
-                      <p>Loading payment method data...</p>
-                    </div>
-                  ) : (
-                    <Table>
-                      <TableHeader className="bg-gray-50">
-                        <TableRow>
-                          <TableHead>Payment Method</TableHead>
-                          <TableHead>Contribution</TableHead>
-                          <TableHead>Total Amount</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {Object.values(donationsByPaymentMethod).map((item) => (
-                          <TableRow key={item.method}>
-                            <TableCell className="font-medium">{getPaymentMethodDisplay(item.method)}</TableCell>
-                            <TableCell>{item.count}</TableCell>
-                            <TableCell>${item.totalAmount.toFixed(2)}</TableCell>
-                          </TableRow>
-                        ))}
-                        {Object.keys(donationsByPaymentMethod).length === 0 && !isLoading && (
-                          <TableRow>
-                            <TableCell colSpan={3} className="h-24 text-center">
-                              No payment method data available for the selected filters.
-                            </TableCell>
-                          </TableRow>
-                        )}
-                      </TableBody>
-                    </Table>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </div>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        {/* History Tab */}
+        <TabsContent value="history">
+          <Card className="border-sky-200">
+            <CardHeader className="bg-sky-50">
+              <CardTitle>Distribution History</CardTitle>
+              <CardDescription>View all past distributions to partners</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {distributions.length > 0 ? (
+                <Table>
+                  <TableHeader className="bg-sky-50">
+                    <TableRow>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Partner</TableHead>
+                      <TableHead>Period</TableHead>
+                      <TableHead className="text-right">Amount</TableHead>
+                      <TableHead>Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {distributions.map((dist) => (
+                      <TableRow key={dist.id} className="border-b border-sky-100">
+                        <TableCell>{formatDate(dist.createdAt)}</TableCell>
+                        <TableCell className="font-medium">{dist.partner.name}</TableCell>
+                        <TableCell>
+                          {formatDate(dist.fromDate)} - {formatDate(dist.toDate)}
+                        </TableCell>
+                        <TableCell className="text-right">{formatCurrency(dist.amount)}</TableCell>
+                        <TableCell>
+                          <Badge 
+                            variant={
+                              dist.status === 'completed' ? 'default' : 
+                              dist.status === 'pending' ? 'secondary' : 'destructive'
+                            }
+                            className={
+                              dist.status === 'completed' ? 'bg-sky-600' : 
+                              dist.status === 'pending' ? 'bg-sky-200 text-black' : 'bg-red-500'
+                            }
+                          >
+                            {dist.status}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              ) : (
+                <div className="flex justify-center items-center h-40">
+                  <p className="text-gray-500">No distribution history found</p>
+                </div>
+              )}
+            </CardContent>
+            <CardFooter className="bg-sky-50">
+              <Button 
+                variant="outline" 
+                onClick={fetchDistributionHistory}
+                className="border-sky-500 text-sky-700 hover:bg-sky-100"
+              >
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Refresh History
+              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
     </div>
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

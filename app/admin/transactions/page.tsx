@@ -261,7 +261,7 @@ function TransactionsContent() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem
-                  value=""
+                  value="Locations"
                   >All Locations</SelectItem>
                   {locations.map((location) => (
                     <SelectItem 
@@ -286,7 +286,7 @@ function TransactionsContent() {
                   <SelectValue placeholder="All Statuses" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Statuses</SelectItem>
+                  <SelectItem value="Statuses">All Statuses</SelectItem>
                   <SelectItem value="completed">Completed</SelectItem>
                   <SelectItem value="pending">Pending</SelectItem>
                   <SelectItem value="failed">Failed</SelectItem>
@@ -305,7 +305,7 @@ function TransactionsContent() {
                   <SelectValue placeholder="All Methods" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Methods</SelectItem>
+                  <SelectItem value="Methods">All Methods</SelectItem>
                   <SelectItem value="card">Credit Card</SelectItem>
                   <SelectItem value="cash">Cash</SelectItem>
                   <SelectItem value="bank">Bank Transfer</SelectItem>
