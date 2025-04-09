@@ -112,7 +112,7 @@ const Navbar: React.FC = () => {
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
-              <NavigationMenuItem className="w-full lg:w-auto">
+              {/* <NavigationMenuItem className="w-full lg:w-auto">
                 <Link href="#testimonials" passHref legacyBehavior>
                   <NavigationMenuLink
                     className={`
@@ -123,7 +123,7 @@ const Navbar: React.FC = () => {
                     Testimonials
                   </NavigationMenuLink>
                 </Link>
-              </NavigationMenuItem>
+              </NavigationMenuItem> */}
               <NavigationMenuItem className="w-full lg:w-auto">
                 <Link href="/report" passHref legacyBehavior>
                   <NavigationMenuLink
