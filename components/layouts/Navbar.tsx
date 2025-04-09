@@ -33,9 +33,6 @@ const Navbar: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-
-  
-
   // Function to fetch locations
   const fetchLocations = async () => {
     setIsLoading(true);
@@ -266,12 +263,12 @@ const Navbar: React.FC = () => {
           </NavigationMenu>
         </div>
       </nav>
-
       {/* Donation Modal Component */}
       <DonationModal 
         isOpen={isDonationModalOpen} 
         onClose={closeDonationModal}
-        location={selectedLocation?.qrCode} // Pass the selected location to the modal
+        location={selectedLocation?.qrCode} 
+      // Pass the selected location to the modal
       />
     </>
   );

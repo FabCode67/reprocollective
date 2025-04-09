@@ -86,18 +86,18 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="">
+                <DialogContent className="sm:max-w-[425px] bg-white">
         <DialogHeader>
-          <DialogTitle>Make a Contribution</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-lg sm:text-xl">Make a Contribution</DialogTitle>
+          <DialogDescription className="text-sm sm:text-base">
             Your support helps us continue our important work. Thank you!
           </DialogDescription>
         </DialogHeader>
         
-        <form onSubmit={handleSubmit} className="space-y-4 py-4">
-          <div className="grid gap-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="amount" className="text-right">
+        <form onSubmit={handleSubmit} className="space-y-3 py-2 sm:py-4">
+          <div className="grid gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-1 sm:gap-4">
+              <Label htmlFor="amount" className="text-sm sm:text-right">
                 Amount
               </Label>
               <Input
@@ -106,33 +106,33 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
                 type="number"
                 value={formData.amount}
                 onChange={handleChange}
-                className="col-span-3"
+                className="col-span-1 sm:col-span-3 text-sm sm:text-base"
                 placeholder="0.00"
                 required
               />
             </div>
             
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="currency" className="text-right">
+            <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-1 sm:gap-4">
+              <Label htmlFor="currency" className="text-sm sm:text-right">
                 Currency
               </Label>
               <Select
                 value={formData.currency}
                 onValueChange={(value) => handleSelectChange('currency', value)}
               >
-                <SelectTrigger className="col-span-3">
+                <SelectTrigger className="col-span-1 sm:col-span-3 text-sm sm:text-base h-9 sm:h-10">
                   <SelectValue placeholder="Select currency" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="USD">RWF</SelectItem>
+                  <SelectItem value="RWF">RWF</SelectItem>
                   <SelectItem value="EUR">EUR</SelectItem>
                   <SelectItem value="GBP">GBP</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="donorName" className="text-right">
+            <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-1 sm:gap-4">
+              <Label htmlFor="donorName" className="text-sm sm:text-right">
                 Name
               </Label>
               <Input
@@ -140,13 +140,13 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
                 name="donorName"
                 value={formData.donorName}
                 onChange={handleChange}
-                className="col-span-3"
+                className="col-span-1 sm:col-span-3 text-sm sm:text-base"
                 required
               />
             </div>
             
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="donorPhone" className="text-right">
+            <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-1 sm:gap-4">
+              <Label htmlFor="donorPhone" className="text-sm sm:text-right">
                 Phone
               </Label>
               <Input
@@ -154,13 +154,13 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
                 name="donorPhone"
                 value={formData.donorPhone}
                 onChange={handleChange}
-                className="col-span-3"
+                className="col-span-1 sm:col-span-3 text-sm sm:text-base"
                 required
               />
             </div>
             
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="donorEmail" className="text-right">
+            <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-1 sm:gap-4">
+              <Label htmlFor="donorEmail" className="text-sm sm:text-right">
                 Email
               </Label>
               <Input
@@ -169,19 +169,19 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
                 type="email"
                 value={formData.donorEmail}
                 onChange={handleChange}
-                className="col-span-3"
+                className="col-span-1 sm:col-span-3 text-sm sm:text-base"
               />
             </div>
             
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="paymentMethod" className="text-right">
+            <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-1 sm:gap-4">
+              <Label htmlFor="paymentMethod" className="text-sm sm:text-right">
                 Payment Method
               </Label>
               <Select
                 value={formData.paymentMethod}
                 onValueChange={(value) => handleSelectChange('paymentMethod', value)}
               >
-                <SelectTrigger className="col-span-3">
+                <SelectTrigger className="col-span-1 sm:col-span-3 text-sm sm:text-base h-9 sm:h-10">
                   <SelectValue placeholder="Select payment method" />
                 </SelectTrigger>
                 <SelectContent>
@@ -193,11 +193,11 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
             </div>
           </div>
           
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>
+          <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0 mt-4">
+            <Button type="button" variant="outline" onClick={onClose} className="w-full sm:w-auto text-sm h-9 sm:h-10">
               Cancel
             </Button>
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading} className="w-full sm:w-auto text-sm h-9 sm:h-10">
               {loading ? "Processing..." : "Contribute Now"}
             </Button>
           </DialogFooter>
