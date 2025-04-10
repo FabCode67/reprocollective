@@ -312,8 +312,8 @@ export default function PartnerDistributionAdmin() {
       <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
         <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-12 gap-1 bg-orange-100 w-full">
           <TabsTrigger value="summary" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-sm sm:text-base">Summary</TabsTrigger>
-          <TabsTrigger value="partners" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-sm sm:text-base">Partners</TabsTrigger>
-          <TabsTrigger value="calculate" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-sm sm:text-base">Calculate</TabsTrigger>
+          {/* <TabsTrigger value="partners" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-sm sm:text-base">Partners</TabsTrigger> */}
+          {/* <TabsTrigger value="calculate" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-sm sm:text-base">Calculate</TabsTrigger> */}
           <TabsTrigger value="history" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-sm sm:text-base">History</TabsTrigger>
         </TabsList>
         
