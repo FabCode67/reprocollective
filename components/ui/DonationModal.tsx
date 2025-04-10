@@ -42,7 +42,7 @@ export function DonationModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Donate to {restaurantName}</DialogTitle>
+          <DialogTitle>Contribute to {restaurantName}</DialogTitle>
           <DialogDescription>
             Choose your payment method and contribution amount
           </DialogDescription>

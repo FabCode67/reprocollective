@@ -26,7 +26,7 @@ export default function ReportDetailPage() {
   const handleDelete = () => {
     if (report && window.confirm("Are you sure you want to delete this report?")) {
       deleteReport(report.id);
-      router.push("/reports");
+      router.push("spotlight/reports");
     }
   };
   
@@ -42,9 +42,9 @@ export default function ReportDetailPage() {
     return (
       <div className="min-h-screen bg-orange-50 flex flex-col items-center justify-center p-4">
         <h1 className="text-2xl font-bold text-orange-800 mb-4">Report Not Found</h1>
-        <p className="mb-6 text-gray-600">The report you're looking for doesn't exist or has been removed.</p>
+        <p className="mb-6 text-gray-600">{"The report you're looking for doesn't exist or has been removed."}</p>
         <Button asChild className="bg-orange-600 hover:bg-orange-700">
-          <Link href="/reports">Back to Reports</Link>
+          <Link href="spotlight/reports">Back to Reports</Link>
         </Button>
       </div>
     );
@@ -64,7 +64,7 @@ export default function ReportDetailPage() {
             </div>
             <div className="flex gap-2">
               <Button variant="outline" className="bg-transparent text-white border-white hover:bg-orange-700" asChild>
-                <Link href="/reports" className="flex items-center gap-1">
+                <Link href="reports" className="flex items-center gap-1">
                   <ArrowLeft size={18} />
                   Back to Reports
                 </Link>

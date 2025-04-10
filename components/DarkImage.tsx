@@ -9,7 +9,7 @@ const SlidingHeroImages = () => {
       alt: "Making a Difference",
       title: "Transform Lives Today",
       description: "Your generosity can provide hope, healing, and opportunity for those who need it most",
-      cta: "Donate Now",
+      cta: "Contribute now",
       ctaLink: "/#about"
     },
     {

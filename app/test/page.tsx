@@ -148,7 +148,7 @@ const DonatePage: React.FC = () => {
         )}
         
         <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Donate to {location?.name}</h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">Contribute to {location?.name}</h1>
           <p className="text-gray-600 mb-6">Location: {location?.location}</p>
           
           {error && (

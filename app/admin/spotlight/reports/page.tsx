@@ -28,12 +28,12 @@ export default function ReportsPage() {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold">
-                <Link href="/">Contribution Reports</Link>
+                <Link href="spotlight/reports">Contribution Reports</Link>
               </h1>
               <p className="mt-1">Tracking our impact and resources</p>
             </div>
             <Button asChild className="bg-white text-orange-600 hover:bg-orange-100">
-              <Link href="/reports/create" className="flex items-center gap-1">
+              <Link href="spotlight/reports/create" className="flex items-center gap-1">
                 <Plus size={18} />
                 Create Report
               </Link>
@@ -55,7 +55,7 @@ export default function ReportsPage() {
               Start tracking your contributions by creating your first report.
             </p>
             <Button asChild className="bg-orange-600 hover:bg-orange-700">
-              <Link href="/reports/create">Create Your First Report</Link>
+              <Link href="spotlight/reports/create">Create Your First Report</Link>
             </Button>
           </div>
         ) : (

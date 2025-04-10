@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import RootLayout from "@/app/layout";
+import RootLayout from "@/components/layouts/Dashboardlayout";
 
 export default function Home() {
   return (
@@ -13,8 +13,8 @@ export default function Home() {
         </div>
       </header>
       
-      <main className="flex-grow container mx-auto px-4 py-12">
-        <div className="max-w-3xl mx-auto text-center">
+      <main className="flex flex-col my-auto justify-self-center justify-center items-center h-full mx-auto px-4 py-12">
+        <div className="max-w-3xl flex flex-col my-auto justify-center h-fit  mx-auto text-center">
           <h2 className="text-2xl md:text-4xl font-bold text-orange-800 mb-6">Track Your Contribution Impact</h2>
           <p className="text-lg text-gray-700 mb-8">
             Our platform helps you monitor and share how contributions are used - from pads purchased and donated to 
@@ -26,7 +26,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold text-orange-700 mb-3">View Reports</h3>
               <p className="mb-4">Browse through all contribution reports to see our collective impact.</p>
               <Button asChild className="bg-orange-600 hover:bg-orange-700">
-                <Link href="/reports">View All Reports</Link>
+                <Link href="spotlight/reports">View All Reports</Link>
               </Button>
             </div>
             
@@ -34,7 +34,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold text-orange-700 mb-3">Create New Report</h3>
               <p className="mb-4">Add a new contribution report to share your impact with the community.</p>
               <Button asChild className="bg-orange-600 hover:bg-orange-700">
-                <Link href="/reports/create">Create Report</Link>
+                <Link href="spotlight/reports/create">Create Report</Link>
               </Button>
             </div>
           </div>

@@ -41,7 +41,7 @@ export default function ReportForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     addReport(values);
-    router.push("/reports");
+    router.push("spotlight/reports");
     router.refresh();
   }
 
@@ -52,7 +52,7 @@ export default function ReportForm() {
           <FormField
             control={form.control}
             name="title"
-            render={({ field }: { field: any }) => (
+            render={({ field }) => (
               <FormItem>
                 <FormLabel>Report Title</FormLabel>
                 <FormControl>
@@ -66,7 +66,7 @@ export default function ReportForm() {
           <FormField
             control={form.control}
             name="date"
-            render={({ field }: { field: any }) => (
+            render={({ field }) => (
                 <FormItem>
                 <FormLabel>Date</FormLabel>
                 <FormControl>
@@ -82,7 +82,7 @@ export default function ReportForm() {
           <FormField
             control={form.control}
             name="moneyEarned"
-            render={({ field }: { field: any }) => (
+            render={({ field }) => (
                 <FormItem>
                 <FormLabel>Money Earned ($)</FormLabel>
                 <FormControl>
@@ -96,7 +96,7 @@ export default function ReportForm() {
           <FormField
             control={form.control}
             name="padsBought"
-            render={({ field }: { field: any }) => (
+            render={({ field }) => (
                 <FormItem>
                 <FormLabel>Pads Bought</FormLabel>
                 <FormControl>
@@ -112,7 +112,7 @@ export default function ReportForm() {
           <FormField
             control={form.control}
             name="padsDonated"
-            render={({ field }: { field: any }) => (
+            render={({ field }) => (
                 <FormItem>
                 <FormLabel>Pads Donated</FormLabel>
                 <FormControl>
@@ -126,7 +126,7 @@ export default function ReportForm() {
           <FormField
             control={form.control}
             name="adolescentsTrained"
-            render={({ field }: { field: any }) => (
+            render={({ field }) => (
                 <FormItem>
                 <FormLabel>Adolescents Trained on SRHR</FormLabel>
                 <FormControl>
@@ -141,7 +141,7 @@ export default function ReportForm() {
         <FormField
           control={form.control}
           name="description"
-          render={({ field }: { field: any }) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Short Description</FormLabel>
               <FormControl>
@@ -155,7 +155,7 @@ export default function ReportForm() {
         <FormField
           control={form.control}
           name="content"
-          render={({ field }: { field: any }) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Full Article Content</FormLabel>
               <FormControl>

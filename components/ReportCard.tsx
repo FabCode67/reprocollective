@@ -4,7 +4,6 @@ import { Report } from "@/types";
 import Link from "next/link";
 import { ArrowRight, Trash2 } from "lucide-react";
 import { deleteReport } from "@/lib/db";
-import { useRouter } from "next/navigation";
 
 interface ReportCardProps {
   report: Report;
@@ -12,7 +11,6 @@ interface ReportCardProps {
 }
 
 export default function ReportCard({ report, onDelete }: ReportCardProps) {
-  const router = useRouter();
 
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this report?")) {
@@ -52,7 +50,7 @@ export default function ReportCard({ report, onDelete }: ReportCardProps) {
       </CardContent>
       <CardFooter className="flex justify-between pt-2">
         <Button variant="outline" className="text-orange-700 border-orange-300" asChild>
-          <Link href={`/reports/${report.id}`} className="flex items-center gap-1">
+          <Link href={`reports/${report.id}`} className="flex items-center gap-1">
             Read more <ArrowRight size={16} />
           </Link>
         </Button>

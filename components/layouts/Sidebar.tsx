@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BarChart3, Home, MapPin, Menu, QrCode, X, Coins } from 'lucide-react';
+import { BarChart3, Home, MapPin, Menu, QrCode, X, Coins, File } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Sidebar() {
@@ -35,6 +35,11 @@ export default function Sidebar() {
       name: "Transactions",
       icon: <Coins className="mr-2 h-5 w-5" />,
       path: "/admin/transactions",
+    },
+    {
+      name: "Spotlight",
+      icon: <File className="mr-2 h-5 w-5" />,
+      path: "/admin/spotlight",
     }
   ];
 
