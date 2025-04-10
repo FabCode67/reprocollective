@@ -10,64 +10,61 @@ import { buttonVariants } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import DonationModal from '../DonateModel';
 import Image from 'next/image';
-import axios from 'axios';
-
-interface Location {
-  id: string;
-  name: string;
-  location: string;
-  accountNumber: string;
-  description: string;
-  qrCodeDataUrl?: string;
-  qrCode?: string; 
-  totalAmount?: number;
-}
+import { Menu, X } from 'lucide-react'; // Import icons for the hamburger menu
 
 const Navbar: React.FC = () => {
-  const [isMenuOpen,] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [locations, setLocations] = useState<Location[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [showMobileOptions, setShowMobileOptions] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const mobileOptionsRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-
-  // Function to fetch locations
-  const fetchLocations = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/locations`
-      );
-      setLocations(response.data);
-    } catch (error) {
-      console.error('Error fetching locations:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   // Handle direct contribution
   const handleDirectContribution = () => {
-    setSelectedLocation(null);
     setIsDonationModalOpen(true);
     setIsDropdownOpen(false);
+    setShowMobileOptions(false);
+    setIsMenuOpen(false); // Close mobile menu when opening donation modal
   };
 
-  // Handle location selection
-  const handleLocationSelect = (location: Location) => {
-    setSelectedLocation(location);
-    setIsDonationModalOpen(true);
+  // Handle locations navigation
+  const handleLocationsClick = () => {
     setIsDropdownOpen(false);
-  };
-
-  // Toggle dropdown
-  const toggleDropdown = () => {
-    if (!isDropdownOpen && locations.length === 0 && !isLoading) {
-      fetchLocations();
+    setShowMobileOptions(false);
+    setIsMenuOpen(false); // Close mobile menu after navigation
+    
+    // Navigate to locations section
+    if (typeof window !== 'undefined') {
+      const currentPath = window.location.pathname;
+      
+      // If we're already on the home page
+      if (currentPath === '/' || currentPath === '') {
+        const locationsSection = document.getElementById('locations');
+        if (locationsSection) {
+          locationsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else {
+        // If on another page, navigate to home with locations hash
+        router.push('/#locations');
+      }
     }
+  };
+
+  // Toggle dropdown for desktop
+  const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+  
+  // Toggle mobile options
+  const toggleMobileOptions = () => {
+    setShowMobileOptions(!showMobileOptions);
+  };
+
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
   // Close dropdown when clicking outside
@@ -75,6 +72,10 @@ const Navbar: React.FC = () => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
+      }
+      
+      if (mobileOptionsRef.current && !mobileOptionsRef.current.contains(event.target as Node)) {
+        setShowMobileOptions(false);
       }
     };
 
@@ -84,10 +85,21 @@ const Navbar: React.FC = () => {
     };
   }, []);
 
+  // Close menu on route change
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setIsMenuOpen(false);
+    };
+
+    window.addEventListener('popstate', handleRouteChange);
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+    };
+  }, []);
+
   // Close donation modal
   const closeDonationModal = () => {
     setIsDonationModalOpen(false);
-    setSelectedLocation(null);
   };
 
   return (
@@ -99,69 +111,77 @@ const Navbar: React.FC = () => {
             <Image
               src="/logo.png"
               alt="Repro Collective Logo"
-              width={80}
+              width={60}
               height={10}
             />
           </Link>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile Menu Button */}
+          <button
+            className="lg:hidden p-2 ml-auto mr-2 rounded-md hover:bg-gray-100 focus:outline-none"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? (
+              <X size={24} className="text-gray-700" />
+            ) : (
+              <Menu size={24} className="text-gray-700" />
+            )}
+          </button>
+
+          {/* Mobile Actions */}
           <div className="lg:hidden flex items-center my-auto gap-4">
             {/* Report button */}
-            <button
+            {/* <button
               onClick={() => {
                 router.push('/report');
               }}
               className="text-gray-600 hover:text-gray-900 focus:outline-none"
             >
               Report
-            </button>
-            {/* Dropdown for Contribute Now */}
-            <div className="relative" ref={dropdownRef}>
+            </button> */}
+            
+            {/* Contribute button for mobile */}
+            <div className="relative" ref={mobileOptionsRef}>
               <button
-                onClick={toggleDropdown}
-                className={`
-                  w-fit p-2 text-white rounded-b-md bg-orange-500 hover:bg-orange-600 text-center
-                `}
+                onClick={toggleMobileOptions}
+                className="w-fit p-2 text-white rounded-md bg-orange-500 hover:bg-orange-600 text-center"
               >
-                Contribute Now
+                Contribute
               </button>
-              {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-                  <div className="py-1">
-                    <button
-                      onClick={handleDirectContribution}
-                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-orange-100"
-                    >
-                      Contribute Directly
-                    </button>
-                    <div className="border-t border-gray-200 my-1"></div>
-                    <div className="px-4 py-2 text-sm font-medium text-gray-700">
-                      Contribute Through a Location:
+              
+              {/* Mobile contribution options */}
+              {showMobileOptions && (
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-50 flex items-center justify-center">
+                  <div className="bg-white rounded-lg p-4 w-4/5 max-w-sm">
+                    <h3 className="text-lg font-medium mb-4 text-center">Contribution Options</h3>
+                    <div className="flex flex-col gap-3">
+                      <button
+                        onClick={handleDirectContribution}
+                        className="w-full py-3 text-white bg-orange-500 hover:bg-orange-600 rounded-md"
+                      >
+                        Contribute Directly
+                      </button>
+                      <button
+                        onClick={handleLocationsClick}
+                        className="w-full py-3 text-white bg-blue-500 hover:bg-blue-600 rounded-md"
+                      >
+                        Contribute Through Locations
+                      </button>
+                      <button
+                        onClick={() => setShowMobileOptions(false)}
+                        className="w-full py-2 text-gray-600 hover:text-gray-800 mt-2"
+                      >
+                        Cancel
+                      </button>
                     </div>
-                    {isLoading ? (
-                      <div className="px-4 py-2 text-gray-500 italic">Loading locations...</div>
-                    ) : locations.length > 0 ? (
-                      <div className="max-h-48 overflow-y-auto">
-                        {locations.map((location) => (
-                          <button
-                            key={location.id}
-                            onClick={() => handleLocationSelect(location)}
-                            className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-orange-100"
-                          >
-                            {location.name}
-                          </button>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="px-4 py-2 text-gray-500 italic">No locations available</div>
-                    )}
                   </div>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Navigation Menu */}
+          {/* Desktop Navigation Menu */}
           <NavigationMenu className={`
             ${isMenuOpen ? 'block' : 'hidden'} 
             lg:block 
@@ -201,7 +221,7 @@ const Navbar: React.FC = () => {
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
-              <NavigationMenuItem className="w-full lg:w-auto">
+              <NavigationMenuItem className="w-full lg:w-auto block">
                 <Link href="/report" passHref legacyBehavior>
                   <NavigationMenuLink
                     className={`
@@ -214,13 +234,11 @@ const Navbar: React.FC = () => {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem className="w-full lg:w-auto">
-                {/* Dropdown for Contribute Now */}
+                {/* Dropdown for Contribute Now (Desktop) */}
                 <div className="relative" ref={dropdownRef}>
                   <button
                     onClick={toggleDropdown}
-                    className={`
-                      w-full lg:w-auto rounded-md text-center p-2 text-white bg-orange-500 hover:bg-orange-600
-                    `}
+                    className="w-full lg:w-auto rounded-md text-center p-2 text-white bg-orange-500 hover:bg-orange-600"
                   >
                     Contribute Now
                   </button>
@@ -233,27 +251,12 @@ const Navbar: React.FC = () => {
                         >
                           Contribute Directly
                         </button>
-                        <div className="border-t border-gray-200 my-1"></div>
-                        <div className="px-4 py-2 text-sm font-medium text-gray-700">
-                          Contribute Through a Location:
-                        </div>
-                        {isLoading ? (
-                          <div className="px-4 py-2 text-gray-500 italic">Loading locations...</div>
-                        ) : locations.length > 0 ? (
-                          <div className="max-h-48 overflow-y-auto">
-                            {locations.map((location) => (
-                              <button
-                                key={location.id}
-                                onClick={() => handleLocationSelect(location)}
-                                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-orange-100"
-                              >
-                                {location.name}
-                              </button>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="px-4 py-2 text-gray-500 italic">No locations available</div>
-                        )}
+                        <button
+                          onClick={handleLocationsClick}
+                          className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-orange-100"
+                        >
+                          Contribute Through Locations
+                        </button>
                       </div>
                     </div>
                   )}
@@ -267,8 +270,6 @@ const Navbar: React.FC = () => {
       <DonationModal 
         isOpen={isDonationModalOpen} 
         onClose={closeDonationModal}
-        location={selectedLocation?.qrCode} 
-      // Pass the selected location to the modal
       />
     </>
   );

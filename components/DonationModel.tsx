@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Location } from '@/lib/data';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Building2, MapPin, QrCode, CreditCard, Phone, User, Mail } from 'lucide-react';
+import { Building2, MapPin, QrCode, CreditCard, Phone, User } from 'lucide-react';
 import axios from 'axios';
 import ResultModal from './SuccessAndFailModel';
 
@@ -39,7 +39,6 @@ const DonationModal: React.FC<DonationModalProps> = ({
     // Donor information
     const [donorName, setDonorName] = useState<string>('');
     const [donorPhone, setDonorPhone] = useState<string>('');
-    const [donorEmail, setDonorEmail] = useState<string>('');
 
     // Additional card information for 'card' payment method
     const [cardNumber, setCardNumber] = useState<string>('');
@@ -62,25 +61,14 @@ const DonationModal: React.FC<DonationModalProps> = ({
             return false;
         }
 
-        // Validate donor information
-        if (!donorName.trim()) {
-            onError('Please enter your name');
-            setErrorMessage('Please enter your name');
-            return false;
-        }
-
+       
         if (!donorPhone || donorPhone.length < 10) {
             onError('Please enter a valid phone number');
             setErrorMessage('Please enter a valid phone number');
             return false;
         }
 
-        // Email validation (optional but validate if provided)
-        if (donorEmail && !donorEmail.includes('@')) {
-            onError('Please enter a valid email address');
-            setErrorMessage('Please enter a valid email address');
-            return false;
-        }
+      
 
         // Additional validation for card payment method
         if (paymentMethod === 'card') {
@@ -116,9 +104,8 @@ const DonationModal: React.FC<DonationModalProps> = ({
             const paymentData = {
                 locationCode: location.qrCode, // Assuming location has a code property
                 amount: parseFloat(donationAmount),
-                donorName,
+                donorName: donorName ?? 'unnymous',
                 donorPhone,
-                donorEmail: donorEmail || undefined, // Only include if provided
                 paymentMethod,
                 currency: paymentMethod === 'card' ? 'USD' : 'RWF' // Default currency based on payment method
             };
@@ -191,7 +178,6 @@ const DonationModal: React.FC<DonationModalProps> = ({
         setDonationAmount('');
         setDonorName('');
         setDonorPhone('');
-        setDonorEmail('');
         setCardNumber('');
         setExpiryDate('');
         setCvv('');
@@ -247,7 +233,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="donorName" className="text-right">
                                 <User className="w-4 h-4 inline mr-1" />
-                                Name
+                                Name (Optional)
                             </Label>
                             <Input
                                 id="donorName"
@@ -273,21 +259,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                             />
                         </div>
 
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="donorEmail" className="text-right">
-                                <Mail className="w-4 h-4 inline mr-1" />
-                                Email
-                            </Label>
-                            <Input
-                                id="donorEmail"
-                                type="email"
-                                placeholder="Your email (optional)"
-                                className="col-span-3"
-                                value={donorEmail}
-                                onChange={(e) => setDonorEmail(e.target.value)}
-                            />
-                        </div>
-
+                    
                         {/* Payment Method Selection */}
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label className="text-right">Payment</Label>

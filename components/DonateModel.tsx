@@ -25,7 +25,6 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
     amount: '',
     donorName: '',
     donorPhone: '',
-    donorEmail: '',
     paymentMethod: '',
     currency: 'RWF',
     locationCode: location || '',
@@ -133,7 +132,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
             
             <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-1 sm:gap-4">
               <Label htmlFor="donorName" className="text-sm sm:text-right">
-                Name
+                Name (Optional)
               </Label>
               <Input
                 id="donorName"
@@ -158,21 +157,6 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
                 required
               />
             </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-1 sm:gap-4">
-              <Label htmlFor="donorEmail" className="text-sm sm:text-right">
-                Email
-              </Label>
-              <Input
-                id="donorEmail"
-                name="donorEmail"
-                type="email"
-                value={formData.donorEmail}
-                onChange={handleChange}
-                className="col-span-1 sm:col-span-3 text-sm sm:text-base"
-              />
-            </div>
-            
             <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-1 sm:gap-4">
               <Label htmlFor="paymentMethod" className="text-sm sm:text-right">
                 Payment Method

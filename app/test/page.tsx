@@ -173,10 +173,11 @@ const DonatePage: React.FC = () => {
             </div>
             
             <div className="mb-4">
-              <label htmlFor="donorName" className="block text-gray-700 font-medium mb-2">Your Name*</label>
+              <label htmlFor="donorName" className="block text-gray-700 font-medium mb-2">{"Your Name (Optional)"}</label>
               <input
                 type="text"
                 id="donorName"
+                placeholder='(optional) e.g. John Doe'
                 value={donorName}
                 onChange={(e) => setDonorName(e.target.value)}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"

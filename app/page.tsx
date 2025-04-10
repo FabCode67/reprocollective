@@ -27,38 +27,36 @@ interface EnrichedLocation extends Location {
 
 const HomePage: React.FC = () => {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
-  const [activeSection, setActiveSection] = useState<'location' | 'info' | 'testimonials'>('location');
-
   const [location, setLocation] = useState<Location[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // Function to fetch location from API
   const fetchLocation = async () => {
-      setIsLoading(true);
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/locations` 
-        );
-        const enrichedLocation: EnrichedLocation[] = response.data.map((loc:{
-          id: string;
-          name: string;
-          location: string;
-          accountNumber: string;
-          description: string;
-          qrCodeDataUrl?: string;
-        }) => ({
-          ...loc,
-          address: loc.location || 'Unknown Address',
-          accountNumber: loc.accountNumber || 'N/A',
-          description: loc.description || 'No description available',
-        }));
-        setLocation(enrichedLocation);
-      } catch (error) {
-        console.error('Error fetching location:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/locations` 
+      );
+      const enrichedLocation: EnrichedLocation[] = response.data.map((loc:{
+        id: string;
+        name: string;
+        location: string;
+        accountNumber: string;
+        description: string;
+        qrCodeDataUrl?: string;
+      }) => ({
+        ...loc,
+        address: loc.location || 'Unknown Address',
+        accountNumber: loc.accountNumber || 'N/A',
+        description: loc.description || 'No description available',
+      }));
+      setLocation(enrichedLocation);
+    } catch (error) {
+      console.error('Error fetching location:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Load location on component mount
   useEffect(() => {
@@ -89,50 +87,13 @@ const HomePage: React.FC = () => {
   }
 
   return (
-    <><div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-screen bg-white text-gray-900">
       <Navbar />
       <DarkHeroImage />
 
-      <div className="container max-w-7xl p-4 mx-auto mt-20 lg:flex">
-        {/* Mobile Section Toggle */}
-        <div className="lg:hidden flex mb-1">
-          <button
-            onClick={() => setActiveSection('location')}
-            className={`
-              w-1/2 p-2 text-center 
-              ${activeSection === 'location' ? 'bg-orange-500 text-white' : 'bg-gray-200'}
-            `}
-          >
-            HOME
-          </button>
-          <button
-            onClick={() => setActiveSection('info')}
-            className={`
-              w-1/2 p-2 text-center 
-              ${activeSection === 'info' ? 'bg-orange-500 text-white' : 'bg-gray-200'}
-            `}
-          >
-            About
-          </button>
-          {/* <button
-            onClick={() => setActiveSection('testimonials')}
-            className={`
-              w-1/2 p-2 text-center 
-              ${activeSection === 'testimonials' ? 'bg-orange-500 text-white' : 'bg-gray-200'}
-            `}
-          >
-            Testimonials
-          </button> */}
-
-
-        </div>
-
+      <div id='about' className="container max-w-7xl p-4 mx-auto lg:mt-20 mt-0 flex lg:flex-row flex-col-reverse">
         {/* Location Sidebar */}
-        <div className={`
-          w-full lg:w-1/3 lg:pr-6  mt-0
-          ${activeSection === 'location' ? 'block' : 'hidden lg:block'}
-          overflow-y-auto
-        `}>
+        <div id='locations' className="w-full lg:w-1/3 lg:mt-0 mt-6 lg:pr-6 block overflow-y-auto">
           <h2 className="text-2xl font-bold mb-4 text-orange-600">{"Contributer's station"}</h2>
           {location.map((location) => (
             <Card
@@ -143,14 +104,6 @@ const HomePage: React.FC = () => {
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">
                   <span className="text-orange-700">{location.name}</span>
-                  {/* <Image
-              src={location.qrCodeDataUrl || '/logo.png'}
-              alt={`QR Code for ${location.name}`}
-              width={50}
-              height={50}
-              className="self-end sm:self-auto border-2 border-orange-100 rounded"
-            /> */}
-
                   {/* display money earned  */}
                   <span className="text-orange-700 text-xs font-semibold">
                     {location.totalAmount}RWF
@@ -161,13 +114,11 @@ const HomePage: React.FC = () => {
 
               <CardContent className="flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0">
                 {/* // display momo pay number and equity account number */}
-
                 <div className="flex items-center space-x-2">
                   <div className="flex items-center space-x-2">
                     <Image src="/mtn.webp" alt="momo" width={35} height={35} />
-                    {/* <span className=" text-xs text-gray-600">5553422</span> */}
                   </div>
-                  {/* drwa small horisontal line             */}
+                  {/* drwa small horisontal line */}
                   <div className="border-l border-gray-300 h-6"></div>
                   <div className="flex items-center space-x-2">
                     <Image
@@ -175,7 +126,6 @@ const HomePage: React.FC = () => {
                       alt="equity"
                       width={35}
                       height={35} />
-                    {/* <span className=" text-xs text-gray-600">444-5555</span> */}
                   </div>
                 </div>
                 <button className="bg-orange-500 text-white md:w-fit w-full px-2 py-1 text-sm rounded-md">Contribute</button>
@@ -185,10 +135,7 @@ const HomePage: React.FC = () => {
         </div>
 
         {/* Main Content */}
-        <div className={`
-          w-full lg:w-2/3 lg:pl-6 lg:border-l mt-12
-          ${activeSection === 'info' ? 'block' : 'hidden lg:block'}
-        `}>
+        <div className="w-full lg:w-2/3 lg:pl-6 lg:border-l lg:mt-12 mt-2 block">
           <div className="space-y-6">
             <div className="mb-8">
               <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-orange-600 flex items-center">
@@ -240,15 +187,12 @@ const HomePage: React.FC = () => {
             </div>
           </div>
         </div>
-
       </div>
-      {/* {<div className={`
-          ${activeSection === 'testimonials' ? 'block' : 'hidden'}
-        `}>
-        <TestimonialsPage />
-      </div>} */}
 
-
+      {/* Testimonials section */}
+      <section id='testimonials' className="lg:block hidden">
+        {/* <TestimonialsPage /> */}
+      </section>
 
       {/* Donation Modal */}
       {selectedLocation && (
@@ -259,9 +203,7 @@ const HomePage: React.FC = () => {
           onError={(error) => console.error('Contribution Error:', error)}
           onSuccess={() => console.log('Contribution Success')} />
       )}
-    </div><section id='testimonials' className="lg:block hidden">
-        {/* <TestimonialsPage /> */}
-      </section></>
+    </div>
   );
 };
 

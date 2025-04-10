@@ -16,7 +16,6 @@ import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { DatePicker } from '@/components/DatePicker';
-// import RootLayout from '@/components/layouts/Dashboardlayout';
 import Navbar from '@/components/layouts/Navbar';
 
 
@@ -292,9 +291,8 @@ export default function PartnerDistributionAdmin() {
   return (
     <div className="min-h-screen bg-white text-gray-900">
     <Navbar />
-    <div className="container max-w-7xl p-4 mx-auto mt-20 lg:flex">
-    <div className="container mx-auto py-8 bg-white text-black">
-      <h1 className="text-3xl font-bold mb-6">Partner Distribution Management</h1>
+    <div className="px-4 py-6 mx-auto mt-16 sm:mt-20 w-full max-w-7xl">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Partner Distribution Management</h1>
       
       {/* Alerts */}
       {error && (
@@ -312,64 +310,64 @@ export default function PartnerDistributionAdmin() {
       )}
       
       <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-        <TabsList className="grid grid-cols-4 mb-4 bg-orange-100">
-          <TabsTrigger value="summary" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white">Summary</TabsTrigger>
-          <TabsTrigger value="partners" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white">Partners</TabsTrigger>
-          <TabsTrigger value="calculate" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white">Calculate</TabsTrigger>
-          <TabsTrigger value="history" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white">History</TabsTrigger>
+        <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-12 gap-1 bg-orange-100 w-full">
+          <TabsTrigger value="summary" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-sm sm:text-base">Summary</TabsTrigger>
+          <TabsTrigger value="partners" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-sm sm:text-base">Partners</TabsTrigger>
+          <TabsTrigger value="calculate" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-sm sm:text-base">Calculate</TabsTrigger>
+          <TabsTrigger value="history" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-sm sm:text-base">History</TabsTrigger>
         </TabsList>
         
         {/* Summary Tab */}
         <TabsContent value="summary">
           <Card className="border-orange-200">
             <CardHeader className="bg-orange-50">
-              <CardTitle>Distribution Summary</CardTitle>
+              <CardTitle className="text-lg sm:text-xl">Distribution Summary</CardTitle>
               <CardDescription>Overview of all donations and their distribution to partners</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-3 sm:p-6">
               {distributionSummary ? (
                 <div>
-                  <div className="grid grid-cols-3 gap-6 mb-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
                     <Card className="border-orange-200">
                       <CardHeader className="pb-2 bg-orange-50">
-                        <CardTitle className="text-lg">Total Contribution</CardTitle>
+                        <CardTitle className="text-base sm:text-lg">Total Contribution</CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-3xl font-bold">{formatCurrency(distributionSummary.totalDonations)}</p>
+                        <p className="text-xl sm:text-3xl font-bold">{formatCurrency(distributionSummary.totalDonations)}</p>
                       </CardContent>
                     </Card>
                     
                     <Card className="border-orange-200">
                       <CardHeader className="pb-2 bg-orange-50">
-                        <CardTitle className="text-lg">Total Distributed</CardTitle>
+                        <CardTitle className="text-base sm:text-lg">Total Distributed</CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-3xl font-bold">{formatCurrency(distributionSummary.totalDistributed)}</p>
+                        <p className="text-xl sm:text-3xl font-bold">{formatCurrency(distributionSummary.totalDistributed)}</p>
                       </CardContent>
                     </Card>
                     
-                    <Card className="border-orange-200">
+                    <Card className="border-orange-200 sm:col-span-2 lg:col-span-1">
                       <CardHeader className="pb-2 bg-orange-50">
-                        <CardTitle className="text-lg">Remaining</CardTitle>
+                        <CardTitle className="text-base sm:text-lg">Remaining</CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-3xl font-bold">{formatCurrency(distributionSummary.remainingAmount)}</p>
+                        <p className="text-xl sm:text-3xl font-bold">{formatCurrency(distributionSummary.remainingAmount)}</p>
                       </CardContent>
                     </Card>
                   </div>
                   
-                  <h3 className="text-xl font-semibold mb-4">Partner Distribution Status</h3>
-                  <div className="space-y-6">
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Partner Distribution Status</h3>
+                  <div className="space-y-4 sm:space-y-6">
                     {distributionSummary.partnerSummaries.map((partner) => (
-                      <div key={partner.partnerId} className="bg-orange-50 p-4 rounded-lg">
-                        <div className="flex items-center justify-between mb-2">
-                          <div>
+                      <div key={partner.partnerId} className="bg-orange-50 p-3 sm:p-4 rounded-lg">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                          <div className="mb-2 sm:mb-0">
                             <h4 className="font-medium">{partner.partnerName}</h4>
                             <p className="text-sm text-gray-500">{partner.percentage}% of donations</p>
                           </div>
                           <Badge 
                             variant={partner.completionPercentage >= 100 ? "default" : "secondary"}
-                            className={partner.completionPercentage >= 100 ? "bg-orange-600" : "bg-orange-200 text-black"}
+                            className={partner.completionPercentage >= 100 ? "bg-orange-600 self-start sm:self-auto" : "bg-orange-200 text-black self-start sm:self-auto"}
                           >
                             {partner.completionPercentage}% Complete
                           </Badge>
@@ -377,18 +375,17 @@ export default function PartnerDistributionAdmin() {
                         <Progress 
                           value={partner.completionPercentage > 100 ? 100 : partner.completionPercentage} 
                           className="h-2 mb-2 bg-orange-100"
-                          // indicatorClassName="bg-orange-500"
                         />
-                        <div className="grid grid-cols-3 gap-4 mt-3 text-sm">
-                          <div>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 mt-3 text-sm">
+                          <div className="bg-white p-2 rounded">
                             <p className="text-gray-500">Entitled</p>
                             <p className="font-medium">{formatCurrency(partner.totalEntitledAmount)}</p>
                           </div>
-                          <div>
+                          <div className="bg-white p-2 rounded">
                             <p className="text-gray-500">Distributed</p>
                             <p className="font-medium">{formatCurrency(partner.totalDistributed)}</p>
                           </div>
-                          <div>
+                          <div className="bg-white p-2 rounded">
                             <p className="text-gray-500">Pending</p>
                             <p className="font-medium">{formatCurrency(partner.pendingAmount)}</p>
                           </div>
@@ -403,7 +400,7 @@ export default function PartnerDistributionAdmin() {
                 </div>
               )}
             </CardContent>
-            <CardFooter className="bg-orange-50">
+            <CardFooter className="bg-orange-50 flex justify-center sm:justify-start">
               <Button 
                 variant="outline" 
                 onClick={fetchDistributionSummary}
@@ -421,20 +418,20 @@ export default function PartnerDistributionAdmin() {
         <TabsContent value="partners">
           <Card className="border-orange-200">
             <CardHeader className="bg-orange-50">
-              <div className="flex justify-between items-center">
-                <div>
-                  <CardTitle>Partner Management</CardTitle>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                <div className="mb-4 sm:mb-0">
+                  <CardTitle className="text-lg sm:text-xl">Partner Management</CardTitle>
                   <CardDescription>Manage distribution partners and their percentages</CardDescription>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <Dialog open={showAddPartnerDialog} onOpenChange={setShowAddPartnerDialog}>
                     <DialogTrigger asChild>
-                      <Button className="bg-orange-600 hover:bg-orange-700">
+                      <Button className="bg-orange-600 hover:bg-orange-700 w-full sm:w-auto mb-2 sm:mb-0">
                         <PlusCircle className="w-4 h-4 mr-2" />
                         Add Partner
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="bg-white">
+                    <DialogContent className="bg-white max-w-md mx-4 sm:mx-auto">
                       <DialogHeader>
                         <DialogTitle>Add New Partner</DialogTitle>
                         <DialogDescription>
@@ -502,7 +499,7 @@ export default function PartnerDistributionAdmin() {
                         </div>
                       </div>
                       <DialogFooter>
-                        <Button onClick={addPartner} disabled={isLoading} className="bg-orange-600 hover:bg-orange-700">
+                        <Button onClick={addPartner} disabled={isLoading} className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700">
                           Add Partner
                         </Button>
                       </DialogFooter>
@@ -513,53 +510,55 @@ export default function PartnerDistributionAdmin() {
                     variant="outline" 
                     onClick={initializeDefaultPartners}
                     disabled={isLoading || partners.length > 0}
-                    className="border-orange-500 text-orange-700 hover:bg-orange-100"
+                    className="w-full sm:w-auto border-orange-500 text-orange-700 hover:bg-orange-100"
                   >
-                    Initialize Default Partners
+                    Init Default Partners
                   </Button>
                 </div>
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0 sm:p-6 overflow-x-auto">
               {partners.length > 0 ? (
-                <Table>
-                  <TableHeader className="bg-orange-50">
-                    <TableRow>
-                      <TableHead>Partner Name</TableHead>
-                      <TableHead>Description</TableHead>
-                      <TableHead className="text-right">Percentage</TableHead>
-                      <TableHead>Contact</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {partners.map((partner) => (
-                      <TableRow key={partner.id} className="border-b border-orange-100">
-                        <TableCell className="font-medium">{partner.name}</TableCell>
-                        <TableCell>{partner.description || 'N/A'}</TableCell>
-                        <TableCell className="text-right">{partner.percentage}%</TableCell>
-                        <TableCell>
-                          {partner.contactName ? (
-                            <div>
-                              <p>{partner.contactName}</p>
-                              <p className="text-sm text-gray-500">{partner.contactEmail}</p>
-                            </div>
-                          ) : (
-                            'N/A'
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          <Badge 
-                            variant={partner.isActive ? "default" : "secondary"}
-                            className={partner.isActive ? "bg-orange-600" : "bg-orange-200 text-black"}
-                          >
-                            {partner.isActive ? 'Active' : 'Inactive'}
-                          </Badge>
-                        </TableCell>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader className="bg-orange-50">
+                      <TableRow>
+                        <TableHead>Partner Name</TableHead>
+                        <TableHead className="hidden sm:table-cell">Description</TableHead>
+                        <TableHead className="text-right">%</TableHead>
+                        <TableHead className="hidden sm:table-cell">Contact</TableHead>
+                        <TableHead>Status</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {partners.map((partner) => (
+                        <TableRow key={partner.id} className="border-b border-orange-100">
+                          <TableCell className="font-medium">{partner.name}</TableCell>
+                          <TableCell className="hidden sm:table-cell">{partner.description || 'N/A'}</TableCell>
+                          <TableCell className="text-right">{partner.percentage}%</TableCell>
+                          <TableCell className="hidden sm:table-cell">
+                            {partner.contactName ? (
+                              <div>
+                                <p>{partner.contactName}</p>
+                                <p className="text-sm text-gray-500">{partner.contactEmail}</p>
+                              </div>
+                            ) : (
+                              'N/A'
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <Badge 
+                              variant={partner.isActive ? "default" : "secondary"}
+                              className={partner.isActive ? "bg-orange-600" : "bg-orange-200 text-black"}
+                            >
+                              {partner.isActive ? 'Active' : 'Inactive'}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               ) : (
                 <div className="flex flex-col items-center justify-center py-8">
                   <p className="text-gray-500 mb-4">No partners found</p>
@@ -580,13 +579,13 @@ export default function PartnerDistributionAdmin() {
         <TabsContent value="calculate">
           <Card className="border-orange-200">
             <CardHeader className="bg-orange-50">
-              <CardTitle>Calculate Distributions</CardTitle>
+              <CardTitle className="text-lg sm:text-xl">Calculate Distributions</CardTitle>
               <CardDescription>
                 Calculate partner distributions for a specific date range
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-4 mb-6">
+            <CardContent className="p-3 sm:p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 <div className="space-y-2">
                   <Label htmlFor="startDate">Start Date</Label>
                   <DatePicker 
@@ -605,11 +604,11 @@ export default function PartnerDistributionAdmin() {
                 </div>
               </div>
               
-              <div className="flex justify-end mb-6">
+              <div className="flex justify-center sm:justify-end mb-6">
                 <Button 
                   onClick={calculateDistributions} 
                   disabled={isLoading}
-                  className="bg-orange-600 hover:bg-orange-700"
+                  className="bg-orange-600 hover:bg-orange-700 w-full sm:w-auto"
                 >
                   <Calculator className="w-4 h-4 mr-2" />
                   Calculate Distribution
@@ -621,96 +620,92 @@ export default function PartnerDistributionAdmin() {
                   <div className="bg-orange-50 p-4 rounded-lg mb-6">
                     <p className="text-sm text-gray-500">Period</p>
                     <p className="font-medium">
-                      {startDate && format(startDate, 'PPP')} to {endDate && format(endDate, 'PPP')}
+                      {startDate && format(startDate, 'PP')} to {endDate && format(endDate, 'PP')}
                     </p>
                     <Separator className="my-2 bg-orange-200" />
                     <p className="text-sm text-gray-500">Total Collected</p>
                     <p className="text-xl font-bold">{formatCurrency(totalCalculated)}</p>
                   </div>
                   
-                  <h3 className="text-xl font-semibold mb-4">Distribution Breakdown</h3>
-                  <Table>
-                    <TableHeader className="bg-orange-50">
-                      <TableRow>
-                        <TableHead>Partner</TableHead>
-                        <TableHead>Percentage</TableHead>
-                        <TableHead className="text-right">Amount</TableHead>
-                        <TableHead></TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {calculatedDistributions.map((dist) => (
-                        <TableRow key={dist.partnerId} className="border-b border-orange-100">
-                          <TableCell className="font-medium">{dist.partnerName}</TableCell>
-                          <TableCell>{dist.percentage}%</TableCell>
-                          <TableCell className="text-right">{formatCurrency(dist.amount)}</TableCell>
-                          <TableCell>
-                            <Dialog open={showProcessDialog && processingDistribution?.partnerId === dist.partnerId} 
-                                   onOpenChange={(open) => {
-                                     if (!open) setProcessingDistribution(null);
-                                     setShowProcessDialog(open);
-                                   }}>
-                              <DialogTrigger asChild>
-                                {/* <Button 
-                                  variant="outline" 
-                                  size="sm"
-                                  onClick={() => setProcessingDistribution(dist)}
-                                  className="border-orange-500 text-orange-700 hover:bg-orange-100"
-                                >
-                                  Process
-                                </Button> */}
-                              </DialogTrigger>
-                              <DialogContent className="bg-white">
-                                <DialogHeader>
-                                  <DialogTitle>Process Distribution</DialogTitle>
-                                  <DialogDescription>
-                                    Process a payment of {processingDistribution && formatCurrency(processingDistribution.amount)} to {processingDistribution?.partnerName}
-                                  </DialogDescription>
-                                </DialogHeader>
-                                <div className="py-4">
-                                  <div className="grid gap-4 mb-4">
-                                    <div>
-                                      <Label htmlFor="amount">Amount</Label>
-                                      <Input 
-                                        id="amount" 
-                                        value={processingDistribution?.amount} 
-                                        disabled 
-                                        className="bg-orange-50"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label htmlFor="paymentDetails">Payment Details</Label>
-                                      <Input 
-                                        id="paymentDetails" 
-                                        placeholder="e.g. Transaction ID, method, etc."
-                                        value={paymentDetails}
-                                        onChange={(e) => setPaymentDetails(e.target.value)}
-                                        className="border-orange-200 focus:border-orange-500"
-                                      />
+                  <h3 className="text-lg sm:text-xl font-semibold mb-4">Distribution Breakdown</h3>
+                  <div className="overflow-x-auto -mx-3 sm:mx-0">
+                    <Table>
+                      <TableHeader className="bg-orange-50">
+                        <TableRow>
+                          <TableHead>Partner</TableHead>
+                          <TableHead>%</TableHead>
+                          <TableHead className="text-right">Amount</TableHead>
+                          <TableHead></TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {calculatedDistributions.map((dist) => (
+                          <TableRow key={dist.partnerId} className="border-b border-orange-100">
+                            <TableCell className="font-medium">{dist.partnerName}</TableCell>
+                            <TableCell>{dist.percentage}%</TableCell>
+                            <TableCell className="text-right">{formatCurrency(dist.amount)}</TableCell>
+                            <TableCell>
+                              <Dialog open={showProcessDialog && processingDistribution?.partnerId === dist.partnerId} 
+                                    onOpenChange={(open) => {
+                                      if (!open) setProcessingDistribution(null);
+                                      setShowProcessDialog(open);
+                                    }}>
+                                <DialogTrigger asChild>
+                                  {/* Process button removed as per original code */}
+                                </DialogTrigger>
+                                <DialogContent className="bg-white max-w-md mx-4 sm:mx-auto">
+                                  <DialogHeader>
+                                    <DialogTitle>Process Distribution</DialogTitle>
+                                    <DialogDescription>
+                                      Process a payment of {processingDistribution && formatCurrency(processingDistribution.amount)} to {processingDistribution?.partnerName}
+                                    </DialogDescription>
+                                  </DialogHeader>
+                                  <div className="py-4">
+                                    <div className="grid gap-4 mb-4">
+                                      <div>
+                                        <Label htmlFor="amount">Amount</Label>
+                                        <Input 
+                                          id="amount" 
+                                          value={processingDistribution?.amount} 
+                                          disabled 
+                                          className="bg-orange-50"
+                                        />
+                                      </div>
+                                      <div>
+                                        <Label htmlFor="paymentDetails">Payment Details</Label>
+                                        <Input 
+                                          id="paymentDetails" 
+                                          placeholder="e.g. Transaction ID, method, etc."
+                                          value={paymentDetails}
+                                          onChange={(e) => setPaymentDetails(e.target.value)}
+                                          className="border-orange-200 focus:border-orange-500"
+                                        />
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                                <DialogFooter>
-                                  <Button 
-                                    onClick={processDistribution} 
-                                    disabled={isLoading}
-                                    className="bg-orange-600 hover:bg-orange-700"
-                                  >
-                                    Complete Distribution
-                                  </Button>
-                                </DialogFooter>
-                              </DialogContent>
-                            </Dialog>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                                  <DialogFooter>
+                                    <Button 
+                                      onClick={processDistribution} 
+                                      disabled={isLoading}
+                                      className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700"
+                                    >
+                                      Complete Distribution
+                                    </Button>
+                                  </DialogFooter>
+                                </DialogContent>
+                              </Dialog>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 </div>
               )}
             </CardContent>
           </Card>
         </TabsContent>
+
         
         {/* History Tab */}
         <TabsContent value="history">
@@ -777,7 +772,6 @@ export default function PartnerDistributionAdmin() {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
     </div>
     </div>
   );
