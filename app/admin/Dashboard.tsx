@@ -43,7 +43,7 @@ const DashboardContent = () => {
               <CardTitle className="text-sm font-medium text-gray-500">Total Contributions</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$12,540</div>
+              <div className="text-2xl font-bold">12,540 rwf</div>
               <p className="text-sm text-green-600 flex items-center mt-1">
                 +12.5% from last month
               </p>
@@ -79,7 +79,7 @@ const DashboardContent = () => {
               <CardTitle className="text-sm font-medium text-gray-500">Average Contributions</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$38.50</div>
+              <div className="text-2xl font-bold">38.50 rwf</div>
               <p className="text-sm text-red-600 flex items-center mt-1">
                 -2.3% from last month
               </p>
@@ -98,8 +98,8 @@ const DashboardContent = () => {
               <div className="space-y-6">
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm font-medium">
-                    <div>$12,540 raised</div>
-                    <div className="text-[#F77665]">$20,000 goal</div>
+                    <div>12,540 rwf raised</div>
+                    <div className="text-[#F77665]">20,000 rwf goal </div>
                   </div>
                   <Progress value={63} className="h-2 bg-gray-100" />
                   <div className="text-center text-sm text-gray-500">63% of monthly goal reached</div>
@@ -109,12 +109,12 @@ const DashboardContent = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-orange-50 p-4 rounded-md">
                       <div className="text-gray-500 text-sm">MTN Mobile Money</div>
-                      <div className="text-xl font-bold">$7,840</div>
+                      <div className="text-xl font-bold">7,840 rwf</div>
                       <div className="text-xs text-gray-500">62% of contributions</div>
                     </div>
                     <div className="bg-orange-50 p-4 rounded-md">
                       <div className="text-gray-500 text-sm">Bank Cards</div>
-                      <div className="text-xl font-bold">$4,700</div>
+                      <div className="text-xl font-bold">4,700</div>
                       <div className="text-xs text-gray-500">38% of contributions</div>
                     </div>
                   </div>
@@ -140,7 +140,7 @@ const DashboardContent = () => {
                       <div className="text-sm text-gray-500">{donation.date}</div>
                     </div>
                     <div className="text-right">
-                      <div className="font-medium">${donation.amount.toFixed(2)}</div>
+                      <div className="font-medium">{donation.amount.toFixed(2)} Rwf</div>
                       <Badge 
                         className={
                           donation.status === 'Completed' ? 'bg-green-100 text-green-800' :
@@ -265,9 +265,9 @@ const DashboardContent = () => {
               <CardTitle className="text-sm font-medium text-gray-500">Average Per Location</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$430</div>
+              <div className="text-2xl font-bold">430</div>
               <p className="text-sm text-green-600 flex items-center mt-1">
-                +$50 from last month
+                +50 from last month
               </p>
             </CardContent>
           </Card>
@@ -297,7 +297,7 @@ const DashboardContent = () => {
                     <TableCell className="font-medium">{location.name}</TableCell>
                     <TableCell>{location.address}</TableCell>
                     <TableCell>{location.count}</TableCell>
-                    <TableCell>${location.amount}</TableCell>
+                    <TableCell>{location.amount} rwf</TableCell>
                     <TableCell>
                       <Badge className={location.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
                         {location.active ? 'Active' : 'Inactive'}

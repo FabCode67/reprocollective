@@ -197,6 +197,35 @@ const Navbar: React.FC = () => {
               lg:space-x-4 
               p-4 lg:p-0
             ">
+               <NavigationMenuItem className="w-full lg:w-auto">
+                {/* Dropdown for Contribute Now (Desktop) */}
+                <div className="relative" ref={dropdownRef}>
+                  <button
+                    onClick={toggleDropdown}
+                    className="w-full lg:w-auto rounded-md text-center p-2 text-white bg-[#F77665] hover:bg-[#F77665]"
+                  >
+                    Contribute Now
+                  </button>
+                  {isDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                      <div className="py-1">
+                        <button
+                          onClick={handleDirectContribution}
+                          className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-orange-100"
+                        >
+                          Contribute Directly
+                        </button>
+                        <button
+                          onClick={handleLocationsClick}
+                          className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-orange-100"
+                        >
+                          Contribute Through Locations
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </NavigationMenuItem>
               <NavigationMenuItem className="w-full lg:w-auto">
                 <Link href="/" passHref legacyBehavior>
                   <NavigationMenuLink
@@ -233,7 +262,7 @@ const Navbar: React.FC = () => {
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
-              <NavigationMenuItem className="w-full lg:w-auto block">
+              {/* <NavigationMenuItem className="w-full lg:w-auto block">
                 <Link href="/login" passHref legacyBehavior>
                   <NavigationMenuLink
                     className={`
@@ -244,7 +273,7 @@ const Navbar: React.FC = () => {
                     Login
                   </NavigationMenuLink>
                 </Link>
-              </NavigationMenuItem>
+              </NavigationMenuItem> */}
               <NavigationMenuItem className="w-full lg:w-auto block">
                 <Link href="/spotlight" passHref legacyBehavior>
                   <NavigationMenuLink
@@ -257,35 +286,7 @@ const Navbar: React.FC = () => {
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
-              <NavigationMenuItem className="w-full lg:w-auto">
-                {/* Dropdown for Contribute Now (Desktop) */}
-                <div className="relative" ref={dropdownRef}>
-                  <button
-                    onClick={toggleDropdown}
-                    className="w-full lg:w-auto rounded-md text-center p-2 text-white bg-[#F77665] hover:bg-[#F77665]"
-                  >
-                    Contribute Now
-                  </button>
-                  {isDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-                      <div className="py-1">
-                        <button
-                          onClick={handleDirectContribution}
-                          className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-orange-100"
-                        >
-                          Contribute Directly
-                        </button>
-                        <button
-                          onClick={handleLocationsClick}
-                          className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-orange-100"
-                        >
-                          Contribute Through Locations
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </NavigationMenuItem>
+             
             </NavigationMenuList>
           </NavigationMenu>
         </div>

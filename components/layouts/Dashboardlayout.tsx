@@ -33,6 +33,8 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
       } catch (error) {
         // Invalid JSON in localStorage
         localStorage.removeItem('reprouser');
+        console.log('Error parsing user data:', error);
+        
         router.push('/login');
       }
     } else {
