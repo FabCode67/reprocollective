@@ -41,7 +41,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
                                 Contribution Successful!
                             </DialogTitle>
                             <DialogDescription className="text-center">
-                                {message || 'Thank you for your generous contribution to Repro Collective.'}
+                                {message || 'Thank you for your generous contribution to Reprocollecitve.'}
                             </DialogDescription>
                         </>
                     ) : (

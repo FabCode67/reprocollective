@@ -15,7 +15,7 @@ const Footer = () => {
             <div className="flex items-center mb-2">
               <Image 
                 src="/saye.jpg" 
-                alt="Repro Collective Logo" 
+                alt="Reprocollecitve Logo" 
                 width={80} 
                 height={40} 
                 className="mr-2"

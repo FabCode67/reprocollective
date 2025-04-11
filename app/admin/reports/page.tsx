@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
-import {  PlusCircle, RefreshCw, Calculator } from 'lucide-react';
+import {  RefreshCw, Calculator } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -425,12 +425,12 @@ export default function PartnerDistributionAdmin() {
                 </div>
                 <div className="flex gap-2">
                   <Dialog open={showAddPartnerDialog} onOpenChange={setShowAddPartnerDialog}>
-                    <DialogTrigger asChild>
+                    {/* <DialogTrigger asChild>
                       <Button className="bg-[#F77665] hover:bg-[#F77665]">
                         <PlusCircle className="w-4 h-4 mr-2" />
                         Add Partner
                       </Button>
-                    </DialogTrigger>
+                    </DialogTrigger> */}
                     <DialogContent className="bg-white">
                       <DialogHeader>
                         <DialogTitle>Add New Partner</DialogTitle>

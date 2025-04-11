@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Repro Collective",
-  description: "Repro Collective is a non-profit organization dedicated to providing support and resources for individuals in need.",
+  title: "Reprocollecitve",
+  description: "Reprocollecitve is a non-profit organization dedicated to providing support and resources for individuals in need.",
 };
 
 export default function RootLayout({

@@ -137,7 +137,7 @@ const HomePage: React.FC = () => {
             <div className="mb-8">
               <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-[#F77665] flex items-center">
                 <Heart className="mr-3 text-red-500" size={36} />
-                Repro Collective
+                Reprocollecitve
               </h1>
               <p className="text-base lg:text-lg mb-6 text-gray-700 leading-relaxed">
                 We believe in transformative change through strategic, compassionate giving.

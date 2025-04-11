@@ -119,7 +119,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                 // Clear form fields
                 resetForm();
                 setResultSuccess(true);
-                setResultMessage('Thank you for your generous contribution to Repro Collective!');
+                setResultMessage('Thank you for your generous contribution to Reprocollecitve!');
                 setTransactionId(response.data.transactionId || '');
                 setFinalAmount(parseFloat(donationAmount));
                 setShowResultModal(true);
@@ -136,7 +136,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                 } else {
                     // Otherwise, consider it successful
                     setResultSuccess(true);
-                    setResultMessage('Thank you for your generous contribution to Repro Collective!');
+                    setResultMessage('Thank you for your generous contribution to Reprocollecitve!');
                     setTransactionId(response.data.transactionId || '');
                     setFinalAmount(parseFloat(donationAmount));
                     setShowResultModal(true);
@@ -198,7 +198,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                     <DialogHeader>
                         <DialogTitle className="flex items-center">
                             <QrCode className="mr-2 text-[#F77665]" />
-                            Donate to Repro Collective
+                            Donate to Reprocollecitve
                         </DialogTitle>
                         <DialogDescription>
                             Support our mission through {location.name}

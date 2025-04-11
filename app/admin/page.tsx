@@ -415,7 +415,7 @@ export default function DonationReportPage() {
                 <CardTitle className="text-[#F77665] text-lg">Total Contributions</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">RWF{summary.totalAmount.toFixed(2)}</div>
+                <div className="text-3xl font-bold">{summary.totalAmount.toFixed(2)}RWF</div>
                 <p className="text-sm text-gray-500">From {summary.totalCount} Contributions</p>
               </CardContent>
             </Card>
@@ -490,7 +490,7 @@ export default function DonationReportPage() {
                           <TableRow key={donation.id}>
                             <TableCell className="font-medium">{donation.id.substring(0, 8)}</TableCell>
                             <TableCell>{format(new Date(donation.createdAt), 'PPP')}</TableCell>
-                            <TableCell>${donation.amount.toFixed(2)}</TableCell>
+                            <TableCell>{donation.amount.toFixed(2)}RWF</TableCell>
                             <TableCell>{getPaymentMethodDisplay(donation.paymentMethod)}</TableCell>
                             <TableCell>
                               <div className="flex flex-col">
@@ -552,7 +552,7 @@ export default function DonationReportPage() {
                           <TableRow key={item?.locationName}>
                             <TableCell className="font-medium">{item?.locationName}</TableCell>
                             <TableCell>{item.count}</TableCell>
-                            <TableCell>${item.totalAmount.toFixed(2)}</TableCell>
+                            <TableCell>{item.totalAmount.toFixed(2)} RWF</TableCell>
                           </TableRow>
                         ))}
                         {Object.keys(donationsByLocation).length === 0 && !isLoading && (
@@ -596,7 +596,7 @@ export default function DonationReportPage() {
                           <TableRow key={item.method}>
                             <TableCell className="font-medium">{getPaymentMethodDisplay(item.method)}</TableCell>
                             <TableCell>{item.count}</TableCell>
-                            <TableCell>${item.totalAmount.toFixed(2)}</TableCell>
+                            <TableCell>{item.totalAmount.toFixed(2)}RWF</TableCell>
                           </TableRow>
                         ))}
                         {Object.keys(donationsByPaymentMethod).length === 0 && !isLoading && (

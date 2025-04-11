@@ -110,7 +110,7 @@ const Navbar: React.FC = () => {
           <Link href="/" className="flex items-center">
             <Image
               src="/logo.png"
-              alt="Repro Collective Logo"
+              alt="Reprocollecitve Logo"
               width={60}
               height={10}
             />
@@ -230,6 +230,30 @@ const Navbar: React.FC = () => {
                     `}
                   >
                     Reports
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem className="w-full lg:w-auto block">
+                <Link href="/login" passHref legacyBehavior>
+                  <NavigationMenuLink
+                    className={`
+                      ${buttonVariants({ variant: 'ghost' })} 
+                      w-full lg:w-auto text-center
+                    `}
+                  >
+                    Login
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem className="w-full lg:w-auto block">
+                <Link href="/spotlight" passHref legacyBehavior>
+                  <NavigationMenuLink
+                    className={`
+                      ${buttonVariants({ variant: 'ghost' })} 
+                      w-full lg:w-auto text-center
+                    `}
+                  >
+                    Spotlight
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
