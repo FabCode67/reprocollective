@@ -43,7 +43,7 @@ export default function ReportDetailPage() {
       <div className="min-h-screen bg-orange-50 flex flex-col items-center justify-center p-4">
         <h1 className="text-2xl font-bold text-orange-800 mb-4">Report Not Found</h1>
         <p className="mb-6 text-gray-600">{"The report you're looking for doesn't exist or has been removed."}</p>
-        <Button asChild className="bg-orange-600 hover:bg-orange-700">
+        <Button asChild className="bg-[#F77665] hover:bg-[#F77665]">
           <Link href="spotlight/reports">Back to Reports</Link>
         </Button>
       </div>
@@ -53,7 +53,7 @@ export default function ReportDetailPage() {
   return (
     <RootLayout>
     <div className="min-h-screen bg-orange-50">
-      <header className="bg-orange-600 text-white py-6">
+      <header className="bg-[#F77665] text-white py-6">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             <div>
@@ -63,7 +63,7 @@ export default function ReportDetailPage() {
               <p className="mt-1">Tracking our impact and resources</p>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" className="bg-transparent text-white border-white hover:bg-orange-700" asChild>
+              <Button variant="outline" className="bg-transparent text-white border-white hover:bg-[#F77665]" asChild>
                 <Link href="reports" className="flex items-center gap-1">
                   <ArrowLeft size={18} />
                   Back to Reports

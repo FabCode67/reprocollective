@@ -81,7 +81,7 @@ const HomePage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <Loader2 className="animate-spin text-orange-500" size={48} />
+        <Loader2 className="animate-spin text-[#F77665]" size={48} />
       </div>
     );
   }
@@ -94,7 +94,7 @@ const HomePage: React.FC = () => {
       <div id='about' className="container max-w-7xl p-4 mx-auto lg:mt-20 mt-0 flex lg:flex-row flex-col-reverse">
         {/* Location Sidebar */}
         <div id='locations' className="w-full lg:w-1/3 lg:mt-0 mt-6 lg:pr-6 block overflow-y-auto">
-          <h2 className="text-2xl font-bold mb-4 text-orange-600">{"Contributor's station"}</h2>
+          <h2 className="text-2xl font-bold mb-4 text-[#F77665]">{"Contributor's station"}</h2>
           {location.map((location) => (
             <Card
               key={location.id}
@@ -103,9 +103,9 @@ const HomePage: React.FC = () => {
             >
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">
-                  <span className="text-orange-700">{location.name}</span>
+                  <span className="text-[#F77665]">{location.name}</span>
                   {/* display money earned  */}
-                  <span className="text-orange-700 text-xs font-semibold">
+                  <span className="text-[#F77665] text-xs font-semibold">
                     {location.totalAmount}RWF
                   </span>
                 </CardTitle>
@@ -128,7 +128,7 @@ const HomePage: React.FC = () => {
                       height={35} />
                   </div>
                 </div>
-                <button className="bg-orange-500 text-white md:w-fit w-full px-2 py-1 text-sm rounded-md">Contribute</button>
+                <button className="bg-[#F77665] text-white md:w-fit w-full px-2 py-1 text-sm rounded-md">Contribute</button>
               </CardContent>
             </Card>
           ))}
@@ -138,7 +138,7 @@ const HomePage: React.FC = () => {
         <div className="w-full lg:w-2/3 lg:pl-6 lg:border-l lg:mt-12 mt-2 block">
           <div className="space-y-6">
             <div className="mb-8">
-              <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-orange-600 flex items-center">
+              <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-[#F77665] flex items-center">
                 <Heart className="mr-3 text-red-500" size={36} />
                 Repro Collective
               </h1>
@@ -151,7 +151,7 @@ const HomePage: React.FC = () => {
             </div>
 
             <div className="bg-orange-50 p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl lg:text-2xl font-semibold mb-4 text-orange-700 flex items-center">
+              <h3 className="text-xl lg:text-2xl font-semibold mb-4 text-[#F77665] flex items-center">
                 <CheckCircle className="mr-3 text-green-500" size={28} />
                 Your Contribution Journey
               </h3>
@@ -174,7 +174,7 @@ const HomePage: React.FC = () => {
               </ol>
             </div>
 
-            <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-6 rounded-lg shadow-lg">
+            <div className="bg-gradient-to-r from-[#F77665] to-[#F77665] text-white p-6 rounded-lg shadow-lg">
               <h3 className="text-xl lg:text-2xl font-bold mb-4 flex items-center">
                 <Globe className="mr-3" size={28} />
                 Our Vision

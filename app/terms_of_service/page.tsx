@@ -26,7 +26,7 @@ export default function TermsOfUsePage() {
           <CardContent className="p-8">
             <div className="prose max-w-none">
               <p className="text-lg">
-                Welcome to <span className="font-bold text-orange-600">REPROCOLLECTIVE</span>, 
+                Welcome to <span className="font-bold text-[#F77665]">REPROCOLLECTIVE</span>, 
                 a digital platform operated by SAYE Company Ltd. These Terms of Use 
                 govern your use of our website, contributor stations, mobile services, e-commerce, 
                 and any other related features Platform. By accessing or using REPROCOLLECTIVE, 
@@ -93,11 +93,11 @@ export default function TermsOfUsePage() {
                 <h3 className="text-lg font-bold text-blue-800">Contact Us</h3>
                 <div className="flex mt-4 space-x-6">
                   <div className="flex items-center text-gray-700">
-                    <Mail className="h-5 w-5 text-orange-600 mr-2" />
+                    <Mail className="h-5 w-5 text-[#F77665] mr-2" />
                     <span>sayecompany@dukatazeonline.rw</span>
                   </div>
                   <div className="flex items-center text-gray-700">
-                    <Phone className="h-5 w-5 text-orange-600 mr-2" />
+                    <Phone className="h-5 w-5 text-[#F77665] mr-2" />
                     <span>+250 787 304 095</span>
                   </div>
                 </div>

@@ -145,7 +145,7 @@ const Navbar: React.FC = () => {
             <div className="relative" ref={mobileOptionsRef}>
               <button
                 onClick={toggleMobileOptions}
-                className="w-fit p-2 text-white rounded-md bg-orange-500 hover:bg-orange-600 text-center"
+                className="w-fit p-2 text-white rounded-md bg-[#F77665] hover:bg-[#F77665] text-center"
               >
                 Contribute
               </button>
@@ -158,7 +158,7 @@ const Navbar: React.FC = () => {
                     <div className="flex flex-col gap-3">
                       <button
                         onClick={handleDirectContribution}
-                        className="w-full py-3 text-white bg-orange-500 hover:bg-orange-600 rounded-md"
+                        className="w-full py-3 text-white bg-[#F77665] hover:bg-[#F77665] rounded-md"
                       >
                         Contribute Directly
                       </button>
@@ -238,7 +238,7 @@ const Navbar: React.FC = () => {
                 <div className="relative" ref={dropdownRef}>
                   <button
                     onClick={toggleDropdown}
-                    className="w-full lg:w-auto rounded-md text-center p-2 text-white bg-orange-500 hover:bg-orange-600"
+                    className="w-full lg:w-auto rounded-md text-center p-2 text-white bg-[#F77665] hover:bg-[#F77665]"
                   >
                     Contribute Now
                   </button>

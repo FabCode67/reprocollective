@@ -29,7 +29,7 @@ export default function PrivacyPolicyPage() {
           <CardContent className="p-8">
             <div className="prose max-w-none">
               <p className="text-lg">
-                <span className="font-bold text-orange-600">REPROCOLLECTIVE</span>, operated by SAYE Company Ltd, 
+                <span className="font-bold text-[#F77665]">REPROCOLLECTIVE</span>, operated by SAYE Company Ltd, 
                 is committed to protecting your privacy. This policy explains what data we collect, how we use it, 
                 and how we keep it safe.
               </p>
@@ -102,20 +102,20 @@ export default function PrivacyPolicyPage() {
               
               <div className="mt-10 p-6 bg-orange-50 rounded-lg border border-orange-200">
                 <h3 className="text-lg font-bold text-blue-800 flex items-center">
-                  <Shield className="h-5 w-5 text-orange-600 mr-2" />
+                  <Shield className="h-5 w-5 text-[#F77665] mr-2" />
                   Contact Us
                 </h3>
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center text-gray-700">
-                    <Mail className="h-5 w-5 text-orange-600 mr-2 flex-shrink-0" />
+                    <Mail className="h-5 w-5 text-[#F77665] mr-2 flex-shrink-0" />
                     <span>sayecompany@dukatazeonline.rw</span>
                   </div>
                   <div className="flex items-center text-gray-700">
-                    <Phone className="h-5 w-5 text-orange-600 mr-2 flex-shrink-0" />
+                    <Phone className="h-5 w-5 text-[#F77665] mr-2 flex-shrink-0" />
                     <span>+250 787 304 095</span>
                   </div>
                   <div className="flex items-center text-gray-700 col-span-1 md:col-span-2">
-                    <Globe className="h-5 w-5 text-orange-600 mr-2 flex-shrink-0" />
+                    <Globe className="h-5 w-5 text-[#F77665] mr-2 flex-shrink-0" />
                     <span>www.reprocollective.org | www.dukataze.rw</span>
                   </div>
                 </div>

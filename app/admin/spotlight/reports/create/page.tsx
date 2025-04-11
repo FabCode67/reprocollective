@@ -11,7 +11,7 @@ export default function CreateReportPage() {
   return (
     <RootLayout>
     <div className="min-h-screen bg-orange-50">
-      <header className="bg-orange-600 text-white py-6">
+      <header className="bg-[#F77665] text-white py-6">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             <div>
@@ -20,7 +20,7 @@ export default function CreateReportPage() {
               </h1>
               <p className="mt-1">Tracking our impact and resources</p>
             </div>
-            <Button variant="outline" className="bg-transparent text-white border-white hover:bg-orange-700" asChild>
+            <Button variant="outline" className="bg-transparent text-white border-white hover:bg-[#F77665]" asChild>
               <Link href="reports" className="flex items-center gap-1">
                 <ArrowLeft size={18} />
                 Back to Reports

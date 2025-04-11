@@ -307,7 +307,7 @@ export default function PartnerDistributionAdmin() {
       )}
       
       {success && (
-        <Alert className="mb-4 bg-orange-50 border-orange-600">
+        <Alert className="mb-4 bg-orange-50 border-[#F77665]">
           <AlertTitle>Success</AlertTitle>
           <AlertDescription>{success}</AlertDescription>
         </Alert>
@@ -315,10 +315,10 @@ export default function PartnerDistributionAdmin() {
       
       <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
         <TabsList className="grid grid-cols-2 md:grid-cols-2 mb-12 gap-1 bg-orange-100 w-full">
-          <TabsTrigger value="summary" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-sm sm:text-base">Summary</TabsTrigger>
-          {/* <TabsTrigger value="partners" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-sm sm:text-base">Partners</TabsTrigger> */}
-          {/* <TabsTrigger value="calculate" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-sm sm:text-base">Calculate</TabsTrigger> */}
-          <TabsTrigger value="history" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-sm sm:text-base">History</TabsTrigger>
+          <TabsTrigger value="summary" className="data-[state=active]:bg-[#F77665] data-[state=active]:text-white text-sm sm:text-base">Summary</TabsTrigger>
+          {/* <TabsTrigger value="partners" className="data-[state=active]:bg-[#F77665] data-[state=active]:text-white text-sm sm:text-base">Partners</TabsTrigger> */}
+          {/* <TabsTrigger value="calculate" className="data-[state=active]:bg-[#F77665] data-[state=active]:text-white text-sm sm:text-base">Calculate</TabsTrigger> */}
+          <TabsTrigger value="history" className="data-[state=active]:bg-[#F77665] data-[state=active]:text-white text-sm sm:text-base">History</TabsTrigger>
         </TabsList>
         
         {/* Summary Tab */}
@@ -371,7 +371,7 @@ export default function PartnerDistributionAdmin() {
                           </div>
                           <Badge 
                             variant={partner.completionPercentage >= 100 ? "default" : "secondary"}
-                            className={partner.completionPercentage >= 100 ? "bg-orange-600 self-start sm:self-auto" : "bg-orange-200 text-black self-start sm:self-auto"}
+                            className={partner.completionPercentage >= 100 ? "bg-[#F77665] self-start sm:self-auto" : "bg-orange-200 text-black self-start sm:self-auto"}
                           >
                             {partner.completionPercentage}% Complete
                           </Badge>
@@ -409,7 +409,7 @@ export default function PartnerDistributionAdmin() {
                 variant="outline" 
                 onClick={fetchDistributionSummary}
                 disabled={isLoading}
-                className="cursor-pointer border-orange-500 text-orange-700 hover:bg-orange-100"
+                className="cursor-pointer border-[#F77665] text-[#F77665] hover:bg-orange-100"
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Refresh Data
@@ -430,7 +430,7 @@ export default function PartnerDistributionAdmin() {
                 <div className="flex flex-col sm:flex-row gap-2">
                   <Dialog open={showAddPartnerDialog} onOpenChange={setShowAddPartnerDialog}>
                     <DialogTrigger asChild>
-                      <Button className="bg-orange-600 hover:bg-orange-700 w-full sm:w-auto mb-2 sm:mb-0">
+                      <Button className="bg-[#F77665] hover:bg-[#F77665] w-full sm:w-auto mb-2 sm:mb-0">
                         <PlusCircle className="w-4 h-4 mr-2" />
                         Add Partner
                       </Button>
@@ -449,7 +449,7 @@ export default function PartnerDistributionAdmin() {
                             id="name" 
                             value={newPartner.name}
                             onChange={(e) => setNewPartner({...newPartner, name: e.target.value})}
-                            className="border-orange-200 focus:border-orange-500"
+                            className="border-orange-200 focus:border-[#F77665]"
                           />
                         </div>
                         <div className="grid gap-2">
@@ -458,7 +458,7 @@ export default function PartnerDistributionAdmin() {
                             id="description" 
                             value={newPartner.description}
                             onChange={(e) => setNewPartner({...newPartner, description: e.target.value})}
-                            className="border-orange-200 focus:border-orange-500"
+                            className="border-orange-200 focus:border-[#F77665]"
                           />
                         </div>
                         <div className="grid gap-2">
@@ -470,7 +470,7 @@ export default function PartnerDistributionAdmin() {
                             max="100"
                             value={newPartner.percentage}
                             onChange={(e) => setNewPartner({...newPartner, percentage: parseFloat(e.target.value)})}
-                            className="border-orange-200 focus:border-orange-500"
+                            className="border-orange-200 focus:border-[#F77665]"
                           />
                         </div>
                         <div className="grid gap-2">
@@ -479,7 +479,7 @@ export default function PartnerDistributionAdmin() {
                             id="contactName" 
                             value={newPartner.contactName}
                             onChange={(e) => setNewPartner({...newPartner, contactName: e.target.value})}
-                            className="border-orange-200 focus:border-orange-500"
+                            className="border-orange-200 focus:border-[#F77665]"
                           />
                         </div>
                         <div className="grid gap-2">
@@ -489,7 +489,7 @@ export default function PartnerDistributionAdmin() {
                             type="email"
                             value={newPartner.contactEmail}
                             onChange={(e) => setNewPartner({...newPartner, contactEmail: e.target.value})}
-                            className="border-orange-200 focus:border-orange-500"
+                            className="border-orange-200 focus:border-[#F77665]"
                           />
                         </div>
                         <div className="grid gap-2">
@@ -498,12 +498,12 @@ export default function PartnerDistributionAdmin() {
                             id="contactPhone" 
                             value={newPartner.contactPhone}
                             onChange={(e) => setNewPartner({...newPartner, contactPhone: e.target.value})}
-                            className="border-orange-200 focus:border-orange-500"
+                            className="border-orange-200 focus:border-[#F77665]"
                           />
                         </div>
                       </div>
                       <DialogFooter>
-                        <Button onClick={addPartner} disabled={isLoading} className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700">
+                        <Button onClick={addPartner} disabled={isLoading} className="w-full sm:w-auto bg-[#F77665] hover:bg-[#F77665]">
                           Add Partner
                         </Button>
                       </DialogFooter>
@@ -514,7 +514,7 @@ export default function PartnerDistributionAdmin() {
                     variant="outline" 
                     onClick={initializeDefaultPartners}
                     disabled={isLoading || partners.length > 0}
-                    className="w-full sm:w-auto border-orange-500 text-orange-700 hover:bg-orange-100"
+                    className="w-full sm:w-auto border-[#F77665] text-[#F77665] hover:bg-orange-100"
                   >
                     Init Default Partners
                   </Button>
@@ -553,7 +553,7 @@ export default function PartnerDistributionAdmin() {
                           <TableCell>
                             <Badge 
                               variant={partner.isActive ? "default" : "secondary"}
-                              className={partner.isActive ? "bg-orange-600" : "bg-orange-200 text-black"}
+                              className={partner.isActive ? "bg-[#F77665]" : "bg-orange-200 text-black"}
                             >
                               {partner.isActive ? 'Active' : 'Inactive'}
                             </Badge>
@@ -569,7 +569,7 @@ export default function PartnerDistributionAdmin() {
                   <Button 
                     onClick={initializeDefaultPartners} 
                     disabled={isLoading}
-                    className="bg-orange-600 hover:bg-orange-700"
+                    className="bg-[#F77665] hover:bg-[#F77665]"
                   >
                     Initialize Default Partners
                   </Button>
@@ -595,7 +595,7 @@ export default function PartnerDistributionAdmin() {
                   <DatePicker 
                     date={startDate} 
                     setDate={setStartDate} 
-                    className="w-full border-orange-200 focus:border-orange-500"
+                    className="w-full border-orange-200 focus:border-[#F77665]"
                   />
                 </div>
                 <div className="space-y-2">
@@ -603,7 +603,7 @@ export default function PartnerDistributionAdmin() {
                   <DatePicker 
                     date={endDate} 
                     setDate={setEndDate} 
-                    className="w-full border-orange-200 focus:border-orange-500"
+                    className="w-full border-orange-200 focus:border-[#F77665]"
                   />
                 </div>
               </div>
@@ -612,7 +612,7 @@ export default function PartnerDistributionAdmin() {
                 <Button 
                   onClick={calculateDistributions} 
                   disabled={isLoading}
-                  className="bg-orange-600 hover:bg-orange-700 w-full sm:w-auto"
+                  className="bg-[#F77665] hover:bg-[#F77665] w-full sm:w-auto"
                 >
                   <Calculator className="w-4 h-4 mr-2" />
                   Calculate Distribution
@@ -682,7 +682,7 @@ export default function PartnerDistributionAdmin() {
                                           placeholder="e.g. Transaction ID, method, etc."
                                           value={paymentDetails}
                                           onChange={(e) => setPaymentDetails(e.target.value)}
-                                          className="border-orange-200 focus:border-orange-500"
+                                          className="border-orange-200 focus:border-[#F77665]"
                                         />
                                       </div>
                                     </div>
@@ -691,7 +691,7 @@ export default function PartnerDistributionAdmin() {
                                     <Button 
                                       onClick={processDistribution} 
                                       disabled={isLoading}
-                                      className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700"
+                                      className="w-full sm:w-auto bg-[#F77665] hover:bg-[#F77665]"
                                     >
                                       Complete Distribution
                                     </Button>
@@ -746,7 +746,7 @@ export default function PartnerDistributionAdmin() {
                               dist.status === 'pending' ? 'secondary' : 'destructive'
                             }
                             className={
-                              dist.status === 'completed' ? 'bg-orange-600' : 
+                              dist.status === 'completed' ? 'bg-[#F77665]' : 
                               dist.status === 'pending' ? 'bg-orange-200 text-black' : 'bg-red-500'
                             }
                           >
@@ -767,7 +767,7 @@ export default function PartnerDistributionAdmin() {
               <Button 
                 variant="outline" 
                 onClick={fetchDistributionHistory}
-                className="border-orange-500 text-orange-700 hover:bg-orange-100"
+                className="border-[#F77665] text-[#F77665] hover:bg-orange-100"
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Refresh History

@@ -6,7 +6,7 @@ export default function Home() {
   return (
 <RootLayout>
     <div className="flex flex-col min-h-screen">
-      <header className="bg-orange-600 text-white py-6">
+      <header className="bg-[#F77665] text-white py-6">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold">Contribution Reports</h1>
           <p className="mt-2">Tracking our impact and resources</p>
@@ -23,17 +23,17 @@ export default function Home() {
           
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             <div className="bg-orange-50 p-6 rounded-lg border border-orange-200">
-              <h3 className="text-xl font-semibold text-orange-700 mb-3">View Reports</h3>
+              <h3 className="text-xl font-semibold text-[#F77665] mb-3">View Reports</h3>
               <p className="mb-4">Browse through all contribution reports to see our collective impact.</p>
-              <Button asChild className="bg-orange-600 hover:bg-orange-700">
+              <Button asChild className="bg-[#F77665] hover:bg-[#F77665]">
                 <Link href="spotlight/reports">View All Reports</Link>
               </Button>
             </div>
             
             <div className="bg-orange-50 p-6 rounded-lg border border-orange-200">
-              <h3 className="text-xl font-semibold text-orange-700 mb-3">Create New Report</h3>
+              <h3 className="text-xl font-semibold text-[#F77665] mb-3">Create New Report</h3>
               <p className="mb-4">Add a new contribution report to share your impact with the community.</p>
-              <Button asChild className="bg-orange-600 hover:bg-orange-700">
+              <Button asChild className="bg-[#F77665] hover:bg-[#F77665]">
                 <Link href="spotlight/reports/create">Create Report</Link>
               </Button>
             </div>

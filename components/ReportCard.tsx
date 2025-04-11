@@ -49,7 +49,7 @@ export default function ReportCard({ report, onDelete }: ReportCardProps) {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between pt-2">
-        <Button variant="outline" className="text-orange-700 border-orange-300" asChild>
+        <Button variant="outline" className="text-[#F77665] border-orange-300" asChild>
           <Link href={`reports/${report.id}`} className="flex items-center gap-1">
             Read more <ArrowRight size={16} />
           </Link>

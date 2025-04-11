@@ -183,7 +183,7 @@ const AddLocationDialog: React.FC<AddLocationDialogProps> = ({ isOpen, onClose, 
             </Button>
             <Button 
               type="submit" 
-              className="bg-orange-600 hover:bg-orange-700"
+              className="bg-[#F77665] hover:bg-[#F77665]"
               disabled={isLoading}
             >
               {isLoading ? 'Adding...' : 'Add Location'}

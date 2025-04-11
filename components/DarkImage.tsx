@@ -109,7 +109,7 @@ const SlidingHeroImages = () => {
               </p>
               <a 
                 href={image.ctaLink} 
-                className="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300 inline-block mt-2 transform hover:scale-105"
+                className="bg-[#F77665] hover:bg-[#F77665] text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300 inline-block mt-2 transform hover:scale-105"
               >
                 {image.cta}
               </a>
@@ -147,7 +147,7 @@ const SlidingHeroImages = () => {
             onClick={() => goToSlide(index)}
             className={`w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full transition-all duration-300 ${
               index === currentIndex 
-                ? 'bg-orange-600 scale-125' 
+                ? 'bg-[#F77665] scale-125' 
                 : 'bg-white bg-opacity-70 hover:bg-opacity-100'
             }`}
             aria-label={`Go to slide ${index + 1}`}

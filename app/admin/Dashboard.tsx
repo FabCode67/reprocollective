@@ -32,7 +32,7 @@ const DashboardContent = () => {
           </div>
           <div className="mt-4 md:mt-0 flex gap-2">
             <Input className="max-w-[180px]" placeholder="Search..." />
-            <Button className="bg-orange-600 hover:bg-orange-700">Generate Report</Button>
+            <Button className="bg-[#F77665] hover:bg-[#F77665]">Generate Report</Button>
           </div>
         </div>
   
@@ -99,7 +99,7 @@ const DashboardContent = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm font-medium">
                     <div>$12,540 raised</div>
-                    <div className="text-orange-700">$20,000 goal</div>
+                    <div className="text-[#F77665]">$20,000 goal</div>
                   </div>
                   <Progress value={63} className="h-2 bg-gray-100" />
                   <div className="text-center text-sm text-gray-500">63% of monthly goal reached</div>
@@ -120,7 +120,7 @@ const DashboardContent = () => {
                   </div>
                 </div>
                 
-                <Button className="w-full bg-orange-600 hover:bg-orange-700">View Detailed Analytics</Button>
+                <Button className="w-full bg-[#F77665] hover:bg-[#F77665]">View Detailed Analytics</Button>
               </div>
             </CardContent>
           </Card>
@@ -230,7 +230,7 @@ const DashboardContent = () => {
           </div>
           <div className="mt-4 md:mt-0 flex gap-2">
             <Input className="max-w-[180px]" placeholder="Search locations..." />
-            <Button className="bg-orange-600 hover:bg-orange-700">Add New Location</Button>
+            <Button className="bg-[#F77665] hover:bg-[#F77665]">Add New Location</Button>
           </div>
         </div>
   
@@ -363,7 +363,7 @@ const DashboardContent = () => {
             <p className="text-gray-500">Generate, view and download contribution reports</p>
           </div>
           <div className="mt-4 md:mt-0 flex gap-2">
-            <Button className="bg-orange-600 hover:bg-orange-700">Generate New Report</Button>
+            <Button className="bg-[#F77665] hover:bg-[#F77665]">Generate New Report</Button>
           </div>
         </div>
   
@@ -372,7 +372,7 @@ const DashboardContent = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center">
-                <BarChart3 className="h-8 w-8 text-orange-600 mb-2" />
+                <BarChart3 className="h-8 w-8 text-[#F77665] mb-2" />
                 <h3 className="font-bold">contribution Summary</h3>
                 <p className="text-sm text-gray-500 mb-4">Overview of all contributions with trends and patterns</p>
                 <Button className="w-full">Generate</Button>
@@ -383,7 +383,7 @@ const DashboardContent = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center">
-                <Users className="h-8 w-8 text-orange-600 mb-2" />
+                <Users className="h-8 w-8 text-[#F77665] mb-2" />
                 <h3 className="font-bold">Donor Report</h3>
                 <p className="text-sm text-gray-500 mb-4">Detailed information about your donors and their behavior</p>
                 <Button className="w-full">Generate</Button>
@@ -394,7 +394,7 @@ const DashboardContent = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center">
-                <MapPin className="h-8 w-8 text-orange-600 mb-2" />
+                <MapPin className="h-8 w-8 text-[#F77665] mb-2" />
                 <h3 className="font-bold">Location Analysis</h3>
                 <p className="text-sm text-gray-500 mb-4">Performance metrics by location with detailed breakdown</p>
                 <Button className="w-full">Generate</Button>

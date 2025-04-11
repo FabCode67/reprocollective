@@ -170,7 +170,7 @@ export default function ReportForm() {
           <Button type="button" variant="outline" className="mr-2" onClick={() => router.push("/reports")}>
             Cancel
           </Button>
-          <Button type="submit" className="bg-orange-600 hover:bg-orange-700">
+          <Button type="submit" className="bg-[#F77665] hover:bg-[#F77665]">
             Submit Report
           </Button>
         </div>

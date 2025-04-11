@@ -20,39 +20,39 @@ const Footer = () => {
                 height={40} 
                 className="mr-2"
               />
-              <span className="text-orange-600 font-bold text-xl">Reprocollective</span>
+              <span className="text-[#F77665] font-bold text-xl">Reprocollective</span>
             </div>
             <p className="text-gray-600 text-sm">Transforming lives through compassionate giving</p>
           </div>
           
           {/* Links */}
           <div className="flex flex-wrap justify-center gap-6 text-sm">
-            <Link href="/#about" className="text-gray-600 hover:text-orange-600 transition-colors">
+            <Link href="/#about" className="text-gray-600 hover:text-[#F77665] transition-colors">
               About Us
             </Link>
-            <Link href="/report" className="text-gray-600 hover:text-orange-600 transition-colors">
+            <Link href="/report" className="text-gray-600 hover:text-[#F77665] transition-colors">
               Report
             </Link>
-            <Link href="/privacy_policy" className="text-gray-600 hover:text-orange-600 transition-colors">
+            <Link href="/privacy_policy" className="text-gray-600 hover:text-[#F77665] transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms_of_service" className="text-gray-600 hover:text-orange-600 transition-colors">
+            <Link href="/terms_of_service" className="text-gray-600 hover:text-[#F77665] transition-colors">
               Terms of Service
             </Link>
           </div>
           
           {/* Social icons */}
           <div className="flex gap-4 mt-4 md:mt-0">
-            <a href="#" className="text-gray-500 hover:text-orange-600 transition-colors">
+            <a href="#" className="text-gray-500 hover:text-[#F77665] transition-colors">
               <Mail size={20} />
             </a>
-            <a href="#" className="text-gray-500 hover:text-orange-600 transition-colors">
+            <a href="#" className="text-gray-500 hover:text-[#F77665] transition-colors">
               <Instagram size={20} />
             </a>
-            <a href="#" className="text-gray-500 hover:text-orange-600 transition-colors">
+            <a href="#" className="text-gray-500 hover:text-[#F77665] transition-colors">
               <Twitter size={20} />
             </a>
-            <a href="#" className="text-gray-500 hover:text-orange-600 transition-colors">
+            <a href="#" className="text-gray-500 hover:text-[#F77665] transition-colors">
               <Facebook size={20} />
             </a>
           </div>

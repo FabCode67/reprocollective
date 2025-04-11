@@ -120,7 +120,7 @@ export default function LocationsPage() {
           </div>
           <div className="mt-4 md:mt-0 flex gap-2">
             <Button 
-              className="bg-orange-600 hover:bg-orange-700"
+              className="bg-[#F77665] hover:bg-[#F77665]"
               onClick={() => setIsAddDialogOpen(true)}
             >
               <MapPin className="mr-2 h-4 w-4" />

@@ -18,7 +18,7 @@ export default function UserReport() {
   
   return (
         <div className="min-h-screen  bg-orange-50">
-      <header className="bg-orange-600 text-white py-6">
+      <header className="bg-[#F77665] text-white py-6">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             <div>
@@ -27,7 +27,7 @@ export default function UserReport() {
               </h1>
               <p className="mt-1">Tracking our impact and resources</p>
             </div>
-            <Button asChild className="bg-white text-orange-600 hover:bg-orange-100">
+            <Button asChild className="bg-white text-[#F77665] hover:bg-orange-100">
               <Link href="/#about" className="flex items-center gap-1">
                 <Eye size={18} />
                 View About Us

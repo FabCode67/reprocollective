@@ -197,7 +197,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                 <DialogContent className="sm:max-w-[425px] bg-white">
                     <DialogHeader>
                         <DialogTitle className="flex items-center">
-                            <QrCode className="mr-2 text-orange-500" />
+                            <QrCode className="mr-2 text-[#F77665]" />
                             Donate to Repro Collective
                         </DialogTitle>
                         <DialogDescription>
@@ -208,7 +208,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                     <div className="space-y-4 py-4">
                         {/* Location Details */}
                         <div className="flex items-center space-x-3 bg-orange-50 p-3 rounded-lg">
-                            <Building2 className="text-orange-500" />
+                            <Building2 className="text-[#F77665]" />
                             <div>
                                 <h4 className="font-semibold">{location.name}</h4>
                                 <p className="text-sm text-gray-600 flex items-center">
@@ -269,8 +269,8 @@ const DonationModal: React.FC<DonationModalProps> = ({
                                     onClick={() => setPaymentMethod('mtn')}
                                     className={
                                         paymentMethod === 'mtn'
-                                            ? 'bg-orange-500 hover:bg-orange-600'
-                                            : 'bg-white hover:bg-gray-100 border border-orange-600'
+                                            ? 'bg-[#F77665] hover:bg-[#F77665]'
+                                            : 'bg-white hover:bg-gray-100 border border-[#F77665]'
                                     }
                                 >
                                     MTN Mobile
@@ -280,8 +280,8 @@ const DonationModal: React.FC<DonationModalProps> = ({
                                     onClick={() => setPaymentMethod('card')}
                                     className={
                                         paymentMethod === 'card'
-                                            ? 'bg-orange-500 hover:bg-orange-600'
-                                            : 'bg-white hover:bg-gray-100 border border-orange-600'
+                                            ? 'bg-[#F77665] hover:bg-[#F77665]'
+                                            : 'bg-white hover:bg-gray-100 border border-[#F77665]'
                                     }
                                 >
                                     Card
@@ -291,8 +291,8 @@ const DonationModal: React.FC<DonationModalProps> = ({
                                     onClick={() => setPaymentMethod('bank_transfer')}
                                     className={
                                         paymentMethod === 'bank_transfer'
-                                            ? 'bg-orange-500 hover:bg-orange-600'
-                                            : 'bg-white hover:bg-gray-100 border border-orange-600'
+                                            ? 'bg-[#F77665] hover:bg-[#F77665]'
+                                            : 'bg-white hover:bg-gray-100 border border-[#F77665]'
                                     }
                                 >
                                     Bank Transfer
@@ -363,7 +363,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                     <Button
                         onClick={handleDonate}
                         disabled={isProcessing}
-                        className="w-full bg-orange-500 hover:bg-orange-600"
+                        className="w-full bg-[#F77665] hover:bg-[#F77665]"
                     >
                         {isProcessing ? 'Processing...' : 'Contribute Now'}
                     </Button>
