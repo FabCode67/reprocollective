@@ -1,7 +1,7 @@
 // src/app/ProtectedLayout.tsx
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from './Sidebar';
 import Header from './Header';
@@ -11,38 +11,40 @@ interface ProtectedLayoutProps {
 }
 
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
-  const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isAuthenticated, ] = useState<boolean>(false);
+  const [isLoading, ] = useState<boolean>(true);
+  // const router = useRouter();
+  // const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  // const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    // Check if user is authenticated
-    const user = localStorage.getItem('user');
-    if (user) {
-      try {
-        const userData = JSON.parse(user);
-        // You can add additional checks here if needed
-        // e.g., check if token is expired, validate isAdmin flag, etc.
-        if (userData.email && userData.isAdmin) {
-          setIsAuthenticated(true);
-        } else {
-          // Invalid user data
-          localStorage.removeItem('reprouser');
-          router.push('/login');
-        }
-      } catch (error) {
-        // Invalid JSON in localStorage
-        localStorage.removeItem('reprouser');
-        console.log('Error parsing user data:', error);
+  // useEffect(() => {
+  //   // Check if user is authenticated
+  //   const user = localStorage.getItem('user');
+  //   if (user) {
+  //     try {
+  //       const userData = JSON.parse(user);
+  //       // You can add additional checks here if needed
+  //       // e.g., check if token is expired, validate isAdmin flag, etc.
+  //       if (userData.email && userData.isAdmin) {
+  //         setIsAuthenticated(true);
+  //       } else {
+  //         // Invalid user data
+  //         localStorage.removeItem('reprouser');
+  //         router.push('/login');
+  //       }
+  //     } catch (error) {
+  //       // Invalid JSON in localStorage
+  //       localStorage.removeItem('reprouser');
+  //       console.log('Error parsing user data:', error);
         
-        router.push('/login');
-      }
-    } else {
-      // No user data found
-      router.push('/login');
-    }
-    setIsLoading(false);
-  }, [router]);
+  //       router.push('/login');
+  //     }
+  //   } else {
+  //     // No user data found
+  //     router.push('/login');
+  //   }
+  //   setIsLoading(false);
+  // }, [router]);
 
   // Show loading state
   if (isLoading) {
