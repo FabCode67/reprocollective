@@ -18,7 +18,7 @@ const LoginPage = () => {
 
   // Check if user is already logged in
   useEffect(() => {
-    const loggedInUser = localStorage.getItem('user');
+    const loggedInUser = localStorage.getItem('reprouser');
     if (loggedInUser) {
       // If user is already logged in, redirect to admin portal
       router.push('/admin');
@@ -40,7 +40,7 @@ const LoginPage = () => {
           isAdmin: true,
           loginTime: new Date().toISOString()
         };
-        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('reprouser', JSON.stringify(user));
         
         // Redirect to admin portal
         router.push('/admin');
