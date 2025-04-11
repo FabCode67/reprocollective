@@ -23,10 +23,46 @@ interface EnrichedLocation extends Location {
   address: string;
 }
 
+interface Content {
+  section: string;
+  text: string;
+  updatedAt: string;
+}
+
+
+
 const HomePage: React.FC = () => {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [location, setLocation] = useState<Location[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+    const [, setLoading] = useState(false);
+    const [, setContentSections] = useState<Content[]>([]);
+    const [editingContent, setEditingContent] = useState<{ [key: string]: string }>({});
+    
+  const fetchContent = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/content`);
+      const data = await response.json();
+      setContentSections(data.contents);
+      
+      // Initialize editing state
+      const initialEditState: { [key: string]: string } = {};
+      data.contents.forEach((content: Content) => {
+        initialEditState[content.section] = content.text;
+      });
+      setEditingContent(initialEditState);
+    } catch (error) {
+      console.error('Error fetching content:', error);
+      
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchContent();
+  }, []);
 
   // Function to fetch location from API
   const fetchLocation = async () => {
@@ -140,10 +176,8 @@ const HomePage: React.FC = () => {
                 Reprocollecitve
               </h1>
               <p className="text-base lg:text-lg mb-6 text-gray-700 leading-relaxed">
-                We believe in transformative change through strategic, compassionate giving.
-                Every contribution is a powerful step towards sustainable development,
-                empowering communities to break cycles of vulnerability and create
-                lasting, meaningful impact.
+                {editingContent['home'] || "We believe in transformative change through strategic, compassionate giving. Every contribution is a powerful step towards sustainable development, empowering communities to break cycles of vulnerability and createlasting, meaningful impact."}
+              
               </p>
             </div>
 
@@ -177,9 +211,7 @@ const HomePage: React.FC = () => {
                 Our Vision
               </h3>
               <p className="text-base lg:text-lg leading-relaxed">
-                We envision a world where every contribution, no matter how small,
-                creates ripples of positive transformation. By connecting contributors
-                directly with community needs, we bridge compassion with practical solutions.
+                {editingContent['vision'] || "We envision a world where every contribution, no matter how small, creates ripples of positive transformation. By connecting contributors directly with community needs, we bridge compassion with practical solutions."}
               </p>
             </div>
           </div>
