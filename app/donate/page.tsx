@@ -87,7 +87,7 @@ const DonatePageContent = () => {
 
   const handleDonationSuccess = (amount?: number) => {
       if (amount !== undefined) {
-          toastTypes.success(`Thank you for your contrubution of $${amount}!`);
+          toastTypes.success(`Thank you for your contrubution of ${amount}!`);
       } else {
           toastTypes.success('Thank you for your contrubution!');
       }

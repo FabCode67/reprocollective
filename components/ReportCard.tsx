@@ -30,7 +30,7 @@ export default function ReportCard({ report, onDelete }: ReportCardProps) {
           <div className="grid grid-cols-2 gap-2">
             <div className="bg-orange-100 p-3 rounded">
               <p className="text-sm text-gray-600">Collected amount</p>
-              <p className="font-bold text-orange-900">${report.moneyEarned.toFixed(2)}</p>
+              <p className="font-bold text-orange-900">{report.moneyEarned.toFixed(2)} rwf</p>
             </div>
             <div className="bg-orange-100 p-3 rounded">
               <p className="text-sm text-gray-600">Pads collected</p>

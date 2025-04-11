@@ -327,7 +327,7 @@ const DashboardContent = () => {
                   <div key={index} className="space-y-2">
                     <div className="flex justify-between">
                       <div className="font-medium">{location.name}</div>
-                      <div className="text-gray-500">${location.amount}</div>
+                      <div className="text-gray-500">{location.amount} RWF</div>
                     </div>
                     <Progress 
                       value={location.amount / 650 * 100} 
