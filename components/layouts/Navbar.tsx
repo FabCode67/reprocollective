@@ -258,7 +258,7 @@ const Navbar: React.FC = () => {
                       w-full lg:w-auto text-center
                     `}
                   >
-                    Reports
+                    View reports
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
