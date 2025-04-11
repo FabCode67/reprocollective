@@ -20,7 +20,7 @@ const Footer = () => {
                 height={40} 
                 className="mr-2"
               />
-              <span className="text-orange-600 font-bold text-xl">Repro Collective</span>
+              <span className="text-orange-600 font-bold text-xl">Reprocollective</span>
             </div>
             <p className="text-gray-600 text-sm">Transforming lives through compassionate giving</p>
           </div>
@@ -60,7 +60,7 @@ const Footer = () => {
         
         {/* Bottom copyright and powered by */}
         <div className="border-t border-gray-200 pt-4 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
-          <p>© {new Date().getFullYear()} Repro Collective. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Reprocollective. All rights reserved.</p>
           <div className="flex items-center mt-2 md:mt-0">
             <span>Powered by</span>
             <Heart size={14} className="mx-1 text-red-500" />

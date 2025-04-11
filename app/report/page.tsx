@@ -17,6 +17,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Separator } from '@/components/ui/separator';
 import { DatePicker } from '@/components/DatePicker';
 import Navbar from '@/components/layouts/Navbar';
+import UserReport from './userReport';
 
 
 // Types
@@ -292,6 +293,9 @@ export default function PartnerDistributionAdmin() {
     <div className="min-h-screen bg-white text-gray-900">
     <Navbar />
     <div className="px-4 py-6 mx-auto mt-16 sm:mt-20 w-full max-w-7xl">
+
+    <UserReport />
+
       <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Partner Distribution Management</h1>
       
       {/* Alerts */}

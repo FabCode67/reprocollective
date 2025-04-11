@@ -94,7 +94,7 @@ const HomePage: React.FC = () => {
       <div id='about' className="container max-w-7xl p-4 mx-auto lg:mt-20 mt-0 flex lg:flex-row flex-col-reverse">
         {/* Location Sidebar */}
         <div id='locations' className="w-full lg:w-1/3 lg:mt-0 mt-6 lg:pr-6 block overflow-y-auto">
-          <h2 className="text-2xl font-bold mb-4 text-orange-600">{"Contributer's station"}</h2>
+          <h2 className="text-2xl font-bold mb-4 text-orange-600">{"Contributor's station"}</h2>
           {location.map((location) => (
             <Card
               key={location.id}
