@@ -14,19 +14,38 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [initialAuthCheck, setInitialAuthCheck] = useState(false);
   const router = useRouter();
 
-  // Check if user is already logged in
+  // Check if user is already logged in - only once on initial mount
   useEffect(() => {
-    const loggedInUser = localStorage.getItem('reprouser');
-    if (loggedInUser) {
-      // If user is already logged in, redirect to admin portal
-      router.push('/admin');
+    // const checkAuth = () => {
+    //   try {
+    //     const userStr = localStorage.getItem('reprouser');
+    //     if (userStr) {
+    //       const user = JSON.parse(userStr);
+    //       if (user.email && user.isAdmin) {
+    //         // Valid user exists, redirect to admin
+    //         router.replace('/admin');
+    //         return true;
+    //       }
+    //     }
+    //   } catch (error) {
+    //     // If there's an error, clear the storage
+    //     console.log('Error parsing user data:', error);
+        
+    //     localStorage.removeItem('reprouser');
+    //   }
+    //   return false;
+    // };
+    
+    if (!initialAuthCheck) {
+      setInitialAuthCheck(true);
     }
-  }, [router]);
+  }, [router, initialAuthCheck]);
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setError('');
     setLoading(true);
 
@@ -34,27 +53,45 @@ const LoginPage = () => {
     setTimeout(() => {
       // Check for admin credentials
       if (email === 'reproadmin@gmail.com' && password === 'Repro@123') {
-        // Store user info in local storage
-        const user = {
-          email,
-          isAdmin: true,
-          loginTime: new Date().toISOString()
-        };
-        localStorage.setItem('reprouser', JSON.stringify(user));
-        
-        // Redirect to admin portal
-        router.push('/admin');
+        try {
+          // Store user info in local storage
+          const user = {
+            email,
+            isAdmin: true,
+            loginTime: new Date().toISOString()
+          };
+          localStorage.setItem('reprouser', JSON.stringify(user));
+          
+          // Redirect to admin portal using replace to avoid history issues
+          router.replace('/admin');
+        } catch (error) {
+          console.log('Error saving user data:', error);
+          
+          setError('Failed to save login information. Please try again.');
+        }
       } else {
         // Show error message
         setError('Invalid email or password. Please try again.');
-        setLoading(false);
       }
+      setLoading(false);
     }, 800);
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  // Don't render login form until initial auth check is complete
+  if (!initialAuthCheck) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-t-orange-500 border-gray-200 rounded-full animate-spin mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">

@@ -1,8 +1,7 @@
-// src/app/ProtectedLayout.tsx
 'use client';
 
-import React, {  useState } from 'react';
-// import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import Sidebar from './Sidebar';
 import Header from './Header';
 
@@ -11,43 +10,61 @@ interface ProtectedLayoutProps {
 }
 
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
-  const [isAuthenticated, ] = useState<boolean>(false);
-  const [isLoading, ] = useState<boolean>(true);
-  // const router = useRouter();
-  // const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  // const [isLoading, setIsLoading] = useState<boolean>(true);
+  const router = useRouter();
+  const pathname = usePathname();
+  const [authState, setAuthState] = useState<'loading' | 'authenticated' | 'unauthenticated'>('loading');
 
-  // useEffect(() => {
-  //   // Check if user is authenticated
-  //   const user = localStorage.getItem('user');
-  //   if (user) {
-  //     try {
-  //       const userData = JSON.parse(user);
-  //       // You can add additional checks here if needed
-  //       // e.g., check if token is expired, validate isAdmin flag, etc.
-  //       if (userData.email && userData.isAdmin) {
-  //         setIsAuthenticated(true);
-  //       } else {
-  //         // Invalid user data
-  //         localStorage.removeItem('reprouser');
-  //         router.push('/login');
-  //       }
-  //     } catch (error) {
-  //       // Invalid JSON in localStorage
-  //       localStorage.removeItem('reprouser');
-  //       console.log('Error parsing user data:', error);
+  // Define public routes that don't need authentication
+  const publicPaths = ['/login', '/register', '/forgot-password'];
+  const isPublicRoute = publicPaths.includes(pathname);
+
+  useEffect(() => {
+    // Skip auth check for public routes
+    if (isPublicRoute) {
+      setAuthState('unauthenticated');
+      return;
+    }
+
+    // Check authentication status
+    const checkAuth = () => {
+      try {
+        const userStr = localStorage.getItem('reprouser');
+        if (!userStr) {
+          return false;
+        }
+
+        const user = JSON.parse(userStr);
+        if (!user.email || !user.isAdmin) {
+          return false;
+        }
         
-  //       router.push('/login');
-  //     }
-  //   } else {
-  //     // No user data found
-  //     router.push('/login');
-  //   }
-  //   setIsLoading(false);
-  // }, [router]);
+        return true;
+      } catch (error) {
+        console.log('Error parsing user data:', error);
+        return false;
+      }
+    };
 
-  // Show loading state
-  if (isLoading) {
+    const isAuthenticated = checkAuth();
+    
+    if (isAuthenticated) {
+      setAuthState('authenticated');
+    } else {
+      // If not authenticated and not on a public route, redirect to login
+      setAuthState('unauthenticated');
+      
+      // Use a small timeout to avoid immediate redirect conflicts
+      const redirectTimer = setTimeout(() => {
+        localStorage.removeItem('reprouser'); // Clean up any invalid state
+        router.replace('/login');
+      }, 100);
+      
+      return () => clearTimeout(redirectTimer);
+    }
+  }, [router, pathname, isPublicRoute]);
+
+  // Show loading state while checking authentication
+  if (authState === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
@@ -58,12 +75,12 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
     );
   }
 
-  // If not authenticated, return null (redirect happens in useEffect)
-  if (!isAuthenticated) {
-    return null;
+  // If on a public path or unauthenticated, just render children without the dashboard layout
+  if (isPublicRoute || authState === 'unauthenticated') {
+    return <>{children}</>;
   }
 
-  // If authenticated, render the layout
+  // Render dashboard layout for authenticated routes
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <Sidebar />
