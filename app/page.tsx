@@ -102,7 +102,7 @@ const HomePage: React.FC = () => {
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">
                   <span className="text-[#F77665]">{location.name}</span>
-                  {/* display money earned  */}
+                  {/* display Collected amount  */}
                   <span className="text-[#F77665] text-xs font-semibold">
                     {location.totalAmount}RWF
                   </span>

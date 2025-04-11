@@ -84,7 +84,7 @@ export default function ReportForm() {
             name="moneyEarned"
             render={({ field }) => (
                 <FormItem>
-                <FormLabel>Money Earned (rwf)</FormLabel>
+                <FormLabel>Collected amount (rwf)</FormLabel>
                 <FormControl>
                   <Input type="number" step="0.01" min="0" {...field} />
                 </FormControl>
@@ -98,7 +98,7 @@ export default function ReportForm() {
             name="padsBought"
             render={({ field }) => (
                 <FormItem>
-                <FormLabel>Pads Bought</FormLabel>
+                <FormLabel>Pads collected</FormLabel>
                 <FormControl>
                   <Input type="number" min="0" {...field} />
                 </FormControl>

@@ -29,11 +29,11 @@ export default function ReportCard({ report, onDelete }: ReportCardProps) {
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-2">
             <div className="bg-orange-100 p-3 rounded">
-              <p className="text-sm text-gray-600">Money Earned</p>
+              <p className="text-sm text-gray-600">Collected amount</p>
               <p className="font-bold text-orange-900">${report.moneyEarned.toFixed(2)}</p>
             </div>
             <div className="bg-orange-100 p-3 rounded">
-              <p className="text-sm text-gray-600">Pads Bought</p>
+              <p className="text-sm text-gray-600">Pads collected</p>
               <p className="font-bold text-orange-900">{report.padsBought}</p>
             </div>
             <div className="bg-orange-100 p-3 rounded">

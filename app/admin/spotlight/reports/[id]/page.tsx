@@ -87,11 +87,11 @@ export default function ReportDetailPage() {
           <div className="p-6">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               <div className="bg-orange-50 p-4 rounded border border-orange-200">
-                <p className="text-sm text-gray-600">Money Earned</p>
+                <p className="text-sm text-gray-600">Collected amount</p>
                 <p className="font-bold text-2xl text-orange-800">{report.moneyEarned.toFixed(2)} RWF</p>
               </div>
               <div className="bg-orange-50 p-4 rounded border border-orange-200">
-                <p className="text-sm text-gray-600">Pads Bought</p>
+                <p className="text-sm text-gray-600">Pads collected</p>
                 <p className="font-bold text-2xl text-orange-800">{report.padsBought}</p>
               </div>
               <div className="bg-orange-50 p-4 rounded border border-orange-200">
