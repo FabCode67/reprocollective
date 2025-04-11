@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import Navbar from '@/components/layouts/Navbar';
 
 // Sample spotlight data - in a real app, this would come from an API or CMS
 const spotlightItems = [
@@ -49,7 +50,10 @@ const SpotlightPage = () => {
   const regularSpotlights = spotlightItems.filter(item => !item.featured);
 
   return (
-    <div className="container mx-auto py-16 px-4 md:px-8">
+    <div className="min-h-screen bg-white text-gray-900">
+    <Navbar />
+    <div className="px-4 py-6 mx-auto mt-16 sm:mt-20 w-full max-w-7xl">
+
       {/* Hero section with page title */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">Spotlight</h1>
@@ -135,6 +139,7 @@ const SpotlightPage = () => {
           <Button variant="outline" size="sm">Next</Button>
         </div>
       </div>
+    </div>
     </div>
   );
 };
