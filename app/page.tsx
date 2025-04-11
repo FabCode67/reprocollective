@@ -6,8 +6,6 @@ import { getLocationsWithQRCodes } from '@/lib/data';
 import DonationModal from '@/components/DonationModel';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, CheckCircle, Globe, Heart } from 'lucide-react';
-import Image from 'next/image';
-// import TestimonialsPage from '@/components/testmonials';
 import DarkHeroImage from '@/components/DarkImage';
 import axios from 'axios';
 
@@ -114,11 +112,10 @@ const HomePage: React.FC = () => {
 
               <CardContent className="flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0">
                 {/* // display momo pay number and equity account number */}
-                <div className="flex items-center space-x-2">
+                {/* <div className="flex items-center space-x-2">
                   <div className="flex items-center space-x-2">
                     <Image src="/mtn.webp" alt="momo" width={35} height={35} />
                   </div>
-                  {/* drwa small horisontal line */}
                   <div className="border-l border-gray-300 h-6"></div>
                   <div className="flex items-center space-x-2">
                     <Image
@@ -127,8 +124,8 @@ const HomePage: React.FC = () => {
                       width={35}
                       height={35} />
                   </div>
-                </div>
-                <button className="bg-[#F77665] text-white md:w-fit w-full px-2 py-1 text-sm rounded-md">Contribute</button>
+                </div> */}
+                <button className="bg-[#F77665] text-white md:w-fit w-fit px-2 py-1 text-sm rounded-md flex justify-end ml-auto self-end">Contribute</button>
               </CardContent>
             </Card>
           ))}
