@@ -17,6 +17,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Separator } from '@/components/ui/separator';
 import { DatePicker } from '@/components/DatePicker';
 import RootLayout from '@/components/layouts/Dashboardlayout';
+import HomeReport from '../spotlight/page';
 
 
 // Types
@@ -290,9 +291,9 @@ export default function PartnerDistributionAdmin() {
 
   return (
     <RootLayout>
-    <div className="container mx-auto py-8 bg-white text-black">
+    <div className="container mx-auto py-2 bg-white text-black">
+      <HomeReport />
       <h1 className="text-3xl font-bold mb-6">Partner Distribution Management</h1>
-      
       {/* Alerts */}
       {error && (
         <Alert variant="destructive" className="mb-4">

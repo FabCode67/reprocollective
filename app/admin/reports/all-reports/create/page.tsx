@@ -16,12 +16,12 @@ export default function CreateReportPage() {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold">
-                <Link href="/spotlight/reports">Contribution Reports</Link>
+                <Link href="/admin/reports/all-reports">Contribution Reports</Link>
               </h1>
               <p className="mt-1">Tracking our impact and resources</p>
             </div>
             <Button variant="outline" className="bg-transparent text-white border-white hover:bg-[#F77665]" asChild>
-              <Link href="reports" className="flex items-center gap-1">
+              <Link href="/admin/reports/all-reports" className="flex items-center gap-1">
                 <ArrowLeft size={18} />
                 Back to Reports
               </Link>

@@ -1,11 +1,9 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import RootLayout from "@/components/layouts/Dashboardlayout";
 
-export default function Home() {
+export default function HomeReport() {
   return (
-<RootLayout>
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-fit">
       <header className="bg-[#F77665] text-white py-6">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold">Contribution Reports</h1>
@@ -13,8 +11,8 @@ export default function Home() {
         </div>
       </header>
       
-      <main className="flex flex-col my-auto justify-self-center justify-center items-center h-full mx-auto px-4 py-12">
-        <div className="max-w-3xl flex flex-col my-auto justify-center h-fit  mx-auto text-center">
+      <main className="flex flex-col  h-full mx-auto px-4 py-12">
+        <div className="max-w-3xl flex flex-col h-fit  mx-auto text-center">
           <h2 className="text-2xl md:text-4xl font-bold text-orange-800 mb-6">Track Your Contribution Impact</h2>
           <p className="text-lg text-gray-700 mb-8">
             Our platform helps you monitor and share how contributions are used - from pads purchased and donated to 
@@ -26,7 +24,7 @@ export default function Home() {
               <h3 className="text-xl font-semibold text-[#F77665] mb-3">View Reports</h3>
               <p className="mb-4">Browse through all contribution reports to see our collective impact.</p>
               <Button asChild className="bg-[#F77665] hover:bg-[#F77665]">
-                <Link href="spotlight/reports">View All Reports</Link>
+                <Link href="reports/all-reports">View All Reports</Link>
               </Button>
             </div>
             
@@ -34,14 +32,13 @@ export default function Home() {
               <h3 className="text-xl font-semibold text-[#F77665] mb-3">Create New Report</h3>
               <p className="mb-4">Add a new contribution report to share your impact with the community.</p>
               <Button asChild className="bg-[#F77665] hover:bg-[#F77665]">
-                <Link href="spotlight/reports/create">Create Report</Link>
+                <Link href="reports/all-reports/create">Create Report</Link>
               </Button>
             </div>
           </div>
         </div>
       </main>
     </div>
-        </RootLayout>
     
   );
 }

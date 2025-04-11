@@ -9,7 +9,7 @@ import { getReports } from "@/lib/db";
 import { Report } from "@/types";
 import RootLayout from "@/components/layouts/Dashboardlayout";
 
-export default function UserReport() {
+export default function ReportsPage() {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +32,9 @@ export default function UserReport() {
     fetchReports();
   }, []);
   
-
+  const handleDelete = () => {
+    fetchReports();
+  };
   
   return (
     <RootLayout>
@@ -42,7 +44,7 @@ export default function UserReport() {
             <div className="flex justify-between items-center">
               <div>
                 <h1 className="text-3xl font-bold">
-                  <Link href="/report">Contribution Reports</Link>
+                  <Link href="/admin/reports">Contribution Reports</Link>
                 </h1>
                 <p className="mt-1">Tracking our impact and resources</p>
               </div>
@@ -57,9 +59,9 @@ export default function UserReport() {
                   </Button>
                 )}
                 <Button asChild className="bg-white text-[#F77665] hover:bg-orange-100">
-                  <Link href="/#about" className="flex items-center gap-1">
+                  <Link href="all-reports/create" className="flex items-center gap-1">
                     <Plus size={18} />
-                    View about us
+                    Create Report
                   </Link>
                 </Button>
               </div>
@@ -92,13 +94,16 @@ export default function UserReport() {
             <div className="bg-white p-8 rounded-lg text-center shadow-sm">
               <h3 className="text-xl font-semibold text-gray-800 mb-4">No reports yet!</h3>
               <p className="mb-6 text-gray-600">
-                {"It seems like there are no reports available at the moment. Please check back later."}
+                Start tracking your contributions by creating your first report.
               </p>
+              <Button asChild className="bg-[#F77665] hover:bg-[#F77665]">
+                <Link href="all-reports/create">Create Your First Report</Link>
+              </Button>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {reports.map(report => (
-                <ReportCard key={report.id} report={report} />
+                <ReportCard key={report.id} report={report} onDelete={handleDelete} />
               ))}
             </div>
           )}

@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -7,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
 import { addReport } from "@/lib/db";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   title: z.string().min(3, { message: "Title must be at least 3 characters" }),
@@ -21,6 +25,8 @@ const formSchema = z.object({
 
 export default function ReportForm() {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
   // Get the current date in YYYY-MM-DD format
   const today = new Date().toISOString().split('T')[0];
@@ -39,15 +45,29 @@ export default function ReportForm() {
     }
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    addReport(values);
-    router.push("spotlight/reports");
-    router.refresh();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      setIsSubmitting(true);
+      setError(null);
+      await addReport(values);
+      router.push("/admin/reports/all-reports");
+      router.refresh();
+    } catch (err) {
+      console.error("Error submitting report:", err);
+      setError("Failed to submit report. Please try again.");
+      setIsSubmitting(false);
+    }
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {error && (
+          <div className="bg-red-50 text-red-800 p-4 rounded-md border border-red-200">
+            {error}
+          </div>
+        )}
+        
         <div className="grid md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -167,11 +187,28 @@ export default function ReportForm() {
         />
         
         <div className="flex justify-end">
-          <Button type="button" variant="outline" className="mr-2" onClick={() => router.push("/reports")}>
+          <Button 
+            type="button" 
+            variant="outline" 
+            className="mr-2" 
+            onClick={() => router.push("/reports")}
+            disabled={isSubmitting}
+          >
             Cancel
           </Button>
-          <Button type="submit" className="bg-[#F77665] hover:bg-[#F77665]">
-            Submit Report
+          <Button 
+            type="submit" 
+            className="bg-[#F77665] hover:bg-[#F77665]" 
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 size={16} className="mr-2 animate-spin" />
+                Submitting...
+              </>
+            ) : (
+              'Submit Report'
+            )}
           </Button>
         </div>
       </form>

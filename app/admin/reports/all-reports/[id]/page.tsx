@@ -1,16 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { getReportById } from "@/lib/db";
+import { getReportById, deleteReport } from "@/lib/db";
 import { Report } from "@/types";
-import { ArrowLeft, RefreshCw } from "lucide-react";
+import { ArrowLeft, Trash2, RefreshCw } from "lucide-react";
 import RootLayout from "@/components/layouts/Dashboardlayout";
 
 export default function ReportDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const [report, setReport] = useState<Report | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -35,6 +36,21 @@ export default function ReportDetailPage() {
     fetchReport();
   }, [params.id]);
   
+  const handleDelete = async () => {
+    if (!report) return;
+    
+    if (window.confirm("Are you sure you want to delete this report?")) {
+      try {
+        setLoading(true);
+        await deleteReport(report.id);
+        router.push("/admin/reports/all-reports");
+      } catch (err) {
+        setError("Failed to delete report. Please try again.");
+        console.error("Error deleting report:", err);
+        setLoading(false);
+      }
+    }
+  };
   
   if (loading) {
     return (
@@ -64,7 +80,7 @@ export default function ReportDetailPage() {
                 Try Again
               </Button>
               <Button asChild variant="outline">
-                <Link href="/report">Back to Reports</Link>
+                <Link href="/admin/reports/all-reports">Back to Reports</Link>
               </Button>
             </div>
           </div>
@@ -80,7 +96,7 @@ export default function ReportDetailPage() {
           <h1 className="text-2xl font-bold text-orange-800 mb-4">Report Not Found</h1>
           <p className="mb-6 text-gray-600">{"The report you're looking for doesn't exist or has been removed."}</p>
           <Button asChild className="bg-[#F77665] hover:bg-[#F77665]">
-            <Link href="spotlight/reports">Back to Reports</Link>
+            <Link href="/admin/reports/all-reports">Back to Reports</Link>
           </Button>
         </div>
       </RootLayout>
@@ -95,18 +111,20 @@ export default function ReportDetailPage() {
             <div className="flex justify-between items-center">
               <div>
                 <h1 className="text-3xl font-bold">
-                  <Link href="/report">Contribution Reports</Link>
+                  <Link href="/admin/reports/all-reports">Contribution Reports</Link>
                 </h1>
                 <p className="mt-1">Tracking our impact and resources</p>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" className="bg-transparent text-white border-white hover:bg-white/20" asChild>
-                  <Link href="/report" className="flex items-center gap-1">
+                  <Link href="/admin/reports/all-reports" className="flex items-center gap-1">
                     <ArrowLeft size={18} />
                     Back to Reports
                   </Link>
                 </Button>
-              
+                <Button variant="destructive" className="bg-red-600 hover:bg-red-700" onClick={handleDelete}>
+                  <Trash2 size={18} />
+                </Button>
               </div>
             </div>
           </div>
