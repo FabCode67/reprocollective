@@ -36,7 +36,7 @@ const testimonials: Testimonial[] = [
     name: "Emma Njeri",
     location: "Kigali, Rwanda",
     role: "Community Health Worker",
-    quote: "Reprocollecitve has been a lifeline for our community. Their support has transformed how we approach reproductive health education and access.",
+    quote: "REPROCOLLECTIVE has been a lifeline for our community. Their support has transformed how we approach reproductive health education and access.",
     impact: "Helped provide reproductive health resources to 500+ women in urban settlements",
     image: "/user2.jpg",
     rating: 5
@@ -46,7 +46,7 @@ const testimonials: Testimonial[] = [
     name: "David Mutua",
     location: "Mombasa, Rwanda",
     role: "Local Educator",
-    quote: "The resources and support from Reprocollecitve have empowered our youth to make informed decisions about their health and future.",
+    quote: "The resources and support from REPROCOLLECTIVE have empowered our youth to make informed decisions about their health and future.",
     impact: "Conducted 25 youth-focused reproductive health workshops",
     image: "/user.jpg",
     rating: 5
@@ -56,7 +56,7 @@ const testimonials: Testimonial[] = [
     name: "Sarah Thompson",
     location: "International Supporter",
     role: "Global Health Advocate",
-    quote: "I've seen firsthand how Reprocollecitve creates sustainable change. Their approach goes beyond temporary aid to create lasting impact.",
+    quote: "I've seen firsthand how REPROCOLLECTIVE creates sustainable change. Their approach goes beyond temporary aid to create lasting impact.",
     impact: "Helped raise $50,000 in international support",
     image: "/user3.jpg",
     rating: 5

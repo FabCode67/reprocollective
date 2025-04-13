@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { getReportById } from "@/lib/db";
 import { Report } from "@/types";
 import { ArrowLeft, RefreshCw } from "lucide-react";
-import RootLayout from "@/components/layouts/Dashboardlayout";
 
 export default function ReportDetailPage() {
   const params = useParams();
@@ -38,7 +37,6 @@ export default function ReportDetailPage() {
   
   if (loading) {
     return (
-      <RootLayout>
         <div className="min-h-screen bg-orange-50 flex items-center justify-center">
           <div className="text-center">
             <div className="flex justify-center mb-4">
@@ -47,13 +45,11 @@ export default function ReportDetailPage() {
             <p className="text-xl text-orange-800">Loading report...</p>
           </div>
         </div>
-      </RootLayout>
     );
   }
   
   if (error) {
     return (
-      <RootLayout>
         <div className="min-h-screen bg-orange-50 flex flex-col items-center justify-center p-4">
           <div className="bg-white p-8 rounded-lg shadow-sm border-l-4 border-red-500 max-w-lg w-full">
             <h1 className="text-2xl font-bold text-gray-800 mb-4">Error Loading Report</h1>
@@ -69,13 +65,11 @@ export default function ReportDetailPage() {
             </div>
           </div>
         </div>
-      </RootLayout>
     );
   }
   
   if (!report) {
     return (
-      <RootLayout>
         <div className="min-h-screen bg-orange-50 flex flex-col items-center justify-center p-4">
           <h1 className="text-2xl font-bold text-orange-800 mb-4">Report Not Found</h1>
           <p className="mb-6 text-gray-600">{"The report you're looking for doesn't exist or has been removed."}</p>
@@ -83,12 +77,10 @@ export default function ReportDetailPage() {
             <Link href="spotlight/reports">Back to Reports</Link>
           </Button>
         </div>
-      </RootLayout>
     );
   }
   
   return (
-    <RootLayout>
       <div className="min-h-screen bg-orange-50">
         <header className="bg-[#F77665] text-white py-6">
           <div className="container mx-auto px-4">
@@ -125,10 +117,10 @@ export default function ReportDetailPage() {
                   <p className="text-sm text-gray-600">Collected amount</p>
                   <p className="font-bold text-2xl text-orange-800">{report.moneyEarned.toFixed(2)} RWF</p>
                 </div>
-                <div className="bg-orange-50 p-4 rounded border border-orange-200">
+                {/* <div className="bg-orange-50 p-4 rounded border border-orange-200">
                   <p className="text-sm text-gray-600">Pads collected</p>
                   <p className="font-bold text-2xl text-orange-800">{report.padsBought}</p>
-                </div>
+                </div> */}
                 <div className="bg-orange-50 p-4 rounded border border-orange-200">
                   <p className="text-sm text-gray-600">Pads Donated</p>
                   <p className="font-bold text-2xl text-orange-800">{report.padsDonated}</p>
@@ -156,6 +148,5 @@ export default function ReportDetailPage() {
           </article>
         </main>
       </div>
-    </RootLayout>
   );
 }

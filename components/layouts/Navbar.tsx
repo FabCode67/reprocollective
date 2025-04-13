@@ -110,7 +110,7 @@ const Navbar: React.FC = () => {
           <Link href="/" className="flex items-center">
             <Image
               src="/logo.png"
-              alt="Reprocollecitve Logo"
+              alt="REPROCOLLECTIVE Logo"
               width={60}
               height={10}
             />

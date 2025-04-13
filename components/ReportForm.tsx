@@ -113,19 +113,6 @@ export default function ReportForm() {
             )}
           />
           
-          <FormField
-            control={form.control}
-            name="padsBought"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Pads collected</FormLabel>
-                <FormControl>
-                  <Input type="number" min="0" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
         </div>
         
         <div className="grid md:grid-cols-2 gap-6">

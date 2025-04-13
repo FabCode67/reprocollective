@@ -7,7 +7,6 @@ import { Plus, RefreshCw } from "lucide-react";
 import ReportCard from "@/components/ReportCard";
 import { getReports } from "@/lib/db";
 import { Report } from "@/types";
-import RootLayout from "@/components/layouts/Dashboardlayout";
 
 export default function UserReport() {
   const [reports, setReports] = useState<Report[]>([]);
@@ -35,7 +34,6 @@ export default function UserReport() {
 
   
   return (
-    <RootLayout>
       <div className="min-h-screen bg-orange-50">
         <header className="bg-[#F77665] text-white py-6">
           <div className="container mx-auto px-4">
@@ -104,6 +102,5 @@ export default function UserReport() {
           )}
         </main>
       </div>
-    </RootLayout>
   );
 }

@@ -105,7 +105,7 @@ const LoginPage = () => {
               </div>
             </div>
           </div>
-          <CardTitle className="text-2xl">Login to Reprocollecitve</CardTitle>
+          <CardTitle className="text-2xl">Login to REPROCOLLECTIVE</CardTitle>
           <CardDescription>
             Enter your credentials to access the portal
           </CardDescription>

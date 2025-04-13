@@ -30,7 +30,7 @@ const spotlightItems = [
     title: "New Research on Reproductive Health Disparities",
     category: "Research",
     image: "/user.jpg",
-    description: "Recent study conducted by Reprocollecitve reveals significant disparities in access to reproductive healthcare across different communities.",
+    description: "Recent study conducted by REPROCOLLECTIVE reveals significant disparities in access to reproductive healthcare across different communities.",
     date: "March 15, 2025",
     featured: false,
   },

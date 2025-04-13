@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Heart, Mail, Instagram, Twitter, Facebook } from 'lucide-react';
+import { Heart, Instagram, Twitter, Facebook } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -15,7 +15,7 @@ const Footer = () => {
             <div className="flex items-center mb-2">
               <Image 
                 src="/saye.jpg" 
-                alt="Reprocollecitve Logo" 
+                alt="REPROCOLLECTIVE Logo" 
                 width={80} 
                 height={40} 
                 className="mr-2"
@@ -43,16 +43,13 @@ const Footer = () => {
           
           {/* Social icons */}
           <div className="flex gap-4 mt-4 md:mt-0">
-            <a href="#" className="text-gray-500 hover:text-[#F77665] transition-colors">
-              <Mail size={20} />
-            </a>
-            <a href="#" className="text-gray-500 hover:text-[#F77665] transition-colors">
+            <a href="https://www.instagram.com/dukataze/?igshid=OGQ5ZDc2ODk2ZA%3D%3D" className="text-gray-500 hover:text-[#F77665] transition-colors">
               <Instagram size={20} />
             </a>
-            <a href="#" className="text-gray-500 hover:text-[#F77665] transition-colors">
+            <a href="https://x.com/i/flow/login?redirect_after_login=%2Fdukataze)" className="text-gray-500 hover:text-[#F77665] transition-colors">
               <Twitter size={20} />
             </a>
-            <a href="#" className="text-gray-500 hover:text-[#F77665] transition-colors">
+            <a href="https://web.facebook.com/dukataze?mibextid=LQQJ4d&_rdc=1&_rdr" className="text-gray-500 hover:text-[#F77665] transition-colors">
               <Facebook size={20} />
             </a>
           </div>

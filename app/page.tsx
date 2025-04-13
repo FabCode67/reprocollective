@@ -5,9 +5,10 @@ import Navbar from '@/components/layouts/Navbar';
 import { getLocationsWithQRCodes } from '@/lib/data';
 import DonationModal from '@/components/DonationModel';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, CheckCircle, Globe, Heart } from 'lucide-react';
+import { Loader2, Globe, Heart } from 'lucide-react';
 import DarkHeroImage from '@/components/DarkImage';
 import axios from 'axios';
+import Image from 'next/image';
 
 interface Location {
   id: string;
@@ -173,7 +174,7 @@ const HomePage: React.FC = () => {
             <div className="mb-8">
               <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-[#F77665] flex items-center">
                 <Heart className="mr-3 text-red-500" size={36} />
-                Reprocollecitve
+                REPROCOLLECTIVE
               </h1>
               <p className="text-base lg:text-lg mb-6 text-gray-700 leading-relaxed">
                 {editingContent['home'] || "We believe in transformative change through strategic, compassionate giving. Every contribution is a powerful step towards sustainable development, empowering communities to break cycles of vulnerability and createlasting, meaningful impact."}
@@ -182,7 +183,7 @@ const HomePage: React.FC = () => {
             </div>
 
             <div className="bg-orange-50 p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl lg:text-2xl font-semibold mb-4 text-[#F77665] flex items-center">
+              {/* <h3 className="text-xl lg:text-2xl font-semibold mb-4 text-[#F77665] flex items-center">
                 <CheckCircle className="mr-3 text-green-500" size={28} />
                 Your Contribution Journey
               </h3>
@@ -202,7 +203,15 @@ const HomePage: React.FC = () => {
                 <li>
                   <strong>Impact:</strong> Witness how your contribution creates real change
                 </li>
-              </ol>
+              </ol> */}
+
+              <Image
+                src="/chart.png"
+                alt="Hero Image"
+                width={700}
+                height={400}
+                className="mt-4 rounded-lg shadow-lg"
+              />
             </div>
 
             <div className="bg-gradient-to-r from-[#F77665] to-[#F77665] text-white p-6 rounded-lg shadow-lg">

@@ -18,14 +18,14 @@ const baseLocations: Location[] = [
     name: 'Camellia Restaurant',
     location: 'KN 67 St, Kigali, Rwanda',
     accountNumber: '0786684390',
-    description: 'A popular dining spot supporting Reprocollecitve\'s mission'
+    description: 'A popular dining spot supporting REPROCOLLECTIVE\'s mission'
   },
   {
     id: 'Marriott-1',
     name: 'Marriott Hotel',
     location: 'Kacyiru, Kigali, Rwanda',
     accountNumber: '0788709997',
-    description: 'Luxury hotel partnering with Reprocollecitve'
+    description: 'Luxury hotel partnering with REPROCOLLECTIVE'
   },
   {
     id: 'cafe-1',
