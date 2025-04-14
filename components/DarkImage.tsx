@@ -87,7 +87,7 @@ const SlidingHeroImages = () => {
 
   return (
     <><div
-      className="relative w-full h-80 md:h-[90vh] lg:h-[90vh] mb-6 mt-0 overflow-hidden"
+      className="relative w-full h-[80vh] lg:h-[90vh] mb-6 mt-0 overflow-hidden"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
