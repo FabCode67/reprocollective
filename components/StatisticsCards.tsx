@@ -6,17 +6,20 @@ const StatisticsCards = () => {
   const statsData = [
     {
       title: "Total Contributions",
-      period: "2021-2023",
+      period: "2021-2024",
       value: "1,245,720 Rwf",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <rect x="2" y="6" width="20" height="12" rx="2" ry="2" />
+        <circle cx="12" cy="12" r="2" />
+        <path d="M6 12h.01M18 12h.01" />
+      </svg>
+      
       )
     },
     {
       title: "Current Year",
-      period: "2024",
+      period: "2025",
       value: "357,840 Rwf",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -26,8 +29,8 @@ const StatisticsCards = () => {
       )
     },
     {
-      title: "Total Contributors",
-      period: "All Time",
+      title: "Current total Contributors",
+      period: "2025",
       value: "3,782",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

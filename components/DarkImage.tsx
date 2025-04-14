@@ -8,8 +8,8 @@ const SlidingHeroImages = () => {
     {
       src: "/home1.png",
       alt: "Making a Difference",
-      title: "Transform Lives Today",
-      description: "Your generosity can provide hope, healing, and opportunity for those who need it most",
+      title: "REPROCOLLECTIVE",
+      description: "Collective Action , lasting impact.",
       cta: "Contribute now",
       ctaLink: "/#about"
     },
