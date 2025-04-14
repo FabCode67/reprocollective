@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/dialog";
 import { Loader2, Plus, Save, Trash } from "lucide-react";
 import RootLayout from "@/components/layouts/Dashboardlayout";
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
 // Types
 interface Content {
@@ -196,6 +197,11 @@ export default function ContentManagementPage() {
     setPartnerDialog(true);
   };
 
+  const contentvalue = editingContent["vision"]
+
+  console.log("Content Value:", contentvalue);
+  
+
   return (
     <RootLayout>
     <div className="container mx-auto py-8">
@@ -221,22 +227,20 @@ export default function ContentManagementPage() {
               
               {/* Home Page Content */}
               <div className="space-y-2">
-                <Label htmlFor="home-content">Home Page Description</Label>
-                <Textarea 
-                  id="home-content"
-                  rows={6}
-                  value={editingContent["home"] || ""}
-                  onChange={(e) => setEditingContent({...editingContent, home: e.target.value})} 
-                />
-                <div className="flex justify-end">
-                  <Button 
-                    onClick={() => updateContent("home")} 
-                    disabled={loading}
-                  >
-                    <Save className="mr-2 h-4 w-4" /> Save Home Content
-                  </Button>
-                </div>
-              </div>
+  <Label htmlFor="home-content">Home Page Description</Label>
+  <RichTextEditor 
+    value={editingContent["vision"] || contentvalue || ""}
+    onChange={(value) => setEditingContent({...editingContent, home: value})}
+  />
+  <div className="flex justify-end">
+    <Button 
+      onClick={() => updateContent("home")} 
+      disabled={loading}
+    >
+      <Save className="mr-2 h-4 w-4" /> Save Home Content
+    </Button>
+  </div>
+</div>
               
               {/* Vision Content */}
               <div className="space-y-2">

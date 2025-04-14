@@ -176,9 +176,7 @@ const HomePage: React.FC = () => {
                 <Heart className="mr-3 text-red-500" size={36} />
                 REPROCOLLECTIVE
               </h1>
-              <p className="text-base lg:text-lg mb-6 text-gray-700 leading-relaxed">
-                {editingContent['home'] || "We believe in transformative change through strategic, compassionate giving. Every contribution is a powerful step towards sustainable development, empowering communities to break cycles of vulnerability and createlasting, meaningful impact."}
-              
+              <p dangerouslySetInnerHTML={{ __html: editingContent['home']}}  className="text-base lg:text-lg mb-6 text-gray-700 leading-relaxed">              
               </p>
             </div>
 
