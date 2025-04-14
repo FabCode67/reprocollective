@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Navbar from '@/components/layouts/Navbar';
 
@@ -48,7 +48,6 @@ const spotlightItems = [
 const SpotlightPage = () => {
   // Separate featured spotlight from regular items
   const featuredSpotlight = spotlightItems.find(item => item.featured);
-  const regularSpotlights = spotlightItems.filter(item => !item.featured);
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
@@ -82,7 +81,7 @@ const SpotlightPage = () => {
                 <CardTitle className="text-2xl mb-2">{featuredSpotlight.title}</CardTitle>
                 <CardDescription className="text-sm mb-4">{featuredSpotlight.date}</CardDescription>
                 <p className="mb-6">{featuredSpotlight.description}</p>
-                <Button>Read Full Story</Button>
+                {/* <Button>Read Full Story</Button> */}
               </div>
             </div>
           </Card>
@@ -90,34 +89,7 @@ const SpotlightPage = () => {
       )}
 
       {/* Regular spotlights */}
-      <div>
-        <h2 className="text-2xl font-semibold mb-6">More Spotlights</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {regularSpotlights.map(spotlight => (
-            <Card key={spotlight.id} className="flex flex-col h-full">
-              <div className="h-48 relative bg-gray-200">
-                {/* Placeholder for image */}
-                <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                  Image: {spotlight.title}
-                </div>
-              </div>
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <Badge>{spotlight.category}</Badge>
-                  <span className="text-sm text-gray-500">{spotlight.date}</span>
-                </div>
-                <CardTitle className="mt-2">{spotlight.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <p>{spotlight.description}</p>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline" className="w-full">Read More</Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      </div>
+      
 
       {/* Call to action */}
       <div className="mt-16 bg-orange-50 rounded-lg p-8 text-center">

@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Heart, Instagram, Twitter, Facebook } from 'lucide-react';
+import { Heart, Instagram, Twitter, Facebook, Phone, MapPin, Mail } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -52,6 +52,24 @@ const Footer = () => {
             <a href="https://web.facebook.com/dukataze?mibextid=LQQJ4d&_rdc=1&_rdr" className="text-gray-500 hover:text-[#F77665] transition-colors">
               <Facebook size={20} />
             </a>
+          </div>
+        </div>
+        
+        {/* Contact Information and Location */}
+        <div className="flex flex-col md:flex-row justify-center gap-6 py-4 border-t border-gray-200">
+          <div className="flex items-center">
+            <Phone size={16} className="text-[#F77665] mr-2" />
+            <span className="text-gray-600 text-sm">+250 787 304 095</span>
+          </div>
+          <div className="flex items-center">
+            <Mail size={16} className="text-[#F77665] mr-2" />
+            <a href="mailto:ayecompany@dukatazeonline.rw" className="text-gray-600 text-sm hover:text-[#F77665]">
+              ayecompany@dukatazeonline.rw
+            </a>
+          </div>
+          <div className="flex items-center">
+            <MapPin size={16} className="text-[#F77665] mr-2" />
+            <span className="text-gray-600 text-sm">Kigali Rwanda</span>
           </div>
         </div>
         
