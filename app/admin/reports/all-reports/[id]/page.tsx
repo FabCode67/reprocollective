@@ -8,6 +8,7 @@ import { getReportById, deleteReport } from "@/lib/db";
 import { Report } from "@/types";
 import { ArrowLeft, Trash2, RefreshCw } from "lucide-react";
 import RootLayout from "@/components/layouts/Dashboardlayout";
+import Image from "next/image";
 
 export default function ReportDetailPage() {
   const params = useParams();
@@ -130,8 +131,19 @@ export default function ReportDetailPage() {
           </div>
         </header>
         
-        <main className="container mx-auto px-4 py-8">
+  <main className="container mx-auto px-4 py-8">
           <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden">
+            {report?.image && (
+              <div className="w-full h-80 relative">
+                <Image 
+                  src={report?.image}
+                  alt={report?.title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            )}
             <div className="bg-orange-100 p-6 border-b border-orange-200">
               <h1 className="text-3xl font-bold text-orange-800">{report.title}</h1>
               <p className="text-gray-600 mt-2">Published on {new Date(report.date).toLocaleDateString()}</p>
@@ -165,9 +177,11 @@ export default function ReportDetailPage() {
               <div className="mb-8">
                 <h2 className="text-xl font-semibold text-orange-800 mb-4">Full Report</h2>
                 <div className="prose max-w-none">
-                  {report.content.split('\n').map((paragraph, index) => (
+                  {/* {report.content.split('\n').map((paragraph, index) => (
                     <p key={index} className="mb-4 text-gray-700">{paragraph}</p>
-                  ))}
+                  ))} */}
+                                    <p dangerouslySetInnerHTML={{ __html: report?.content }} className="mb-4 text-gray-700"></p>
+
                 </div>
               </div>
             </div>

@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Report } from "@/types";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
+
 
 interface ReportCardProps {
   report: Report;
@@ -12,8 +14,18 @@ export default function UserReportCard({ report }: ReportCardProps) {
 
 
   return (
-    <Card className="bg-white border-orange-300 hover:shadow-md transition-shadow">
-      <CardHeader className="bg-orange-50">
+<Card className="bg-white border-orange-300 hover:shadow-md transition-shadow">
+      {report?.image && (
+        <div className="w-full h-48 relative">
+          <Image 
+            src={report?.image || '/chart.png'}
+            alt={"Report Image"}
+            fill
+            className="object-cover rounded-t-lg"
+          />
+        </div>
+      )}
+            <CardHeader className="bg-orange-50">
         <CardTitle className="text-xl text-orange-800">{report.title}</CardTitle>
         <CardDescription>{report.date}</CardDescription>
       </CardHeader>

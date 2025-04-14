@@ -16,32 +16,32 @@ const SlidingHeroImages = () => {
     {
       src: "/home4.jpg",
       alt: "Volunteer Making Impact",
-      title: "Be The Change",
-      description: "Join our passionate community of volunteers and help create lasting impact in your neighborhood",
+      title: "REPROCOLLECTIVE",
+      description: "Collective Action , lasting impact.",
       cta: "Get Involved",
       ctaLink: "/#about"
     },
     {
       src: "/home2.jpg",
       alt: "Community Gathering",
-      title: "Building Stronger Communities",
-      description: "Together we're creating resilient neighborhoods where everyone has the chance to thrive",
+      title: "REPROCOLLECTIVE",
+      description: "Collective Action , lasting impact.",
       cta: "Our Programs",
       ctaLink: "/#about"
     },
     {
       src: "/home3.jpg",
       alt: "Success Story",
-      title: "Stories of Hope",
-      description: "See how your support has transformed lives and communities across the region",
+      title: "REPROCOLLECTIVE",
+      description: "Collective Action , lasting impact.",
       cta: "Read Stories",
       ctaLink: "/reports"
     },
     {
       src: "/home4.jpg",
       alt: "Community Event",
-      title: "Join Our Events",
-      description: "Participate in our upcoming events and make a difference in your community",
+      title: "REPROCOLLECTIVE",
+      description: "Collective Action , lasting impact.",
       cta: "View Events",
       ctaLink: "/report"
     },

@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Plus, RefreshCw } from "lucide-react";
-import ReportCard from "@/components/ReportCard";
 import { getReports } from "@/lib/db";
 import { Report } from "@/types";
+import UserReportCard from "./userReportCard";
 
 export default function UserReport() {
   const [reports, setReports] = useState<Report[]>([]);
@@ -96,7 +96,7 @@ export default function UserReport() {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {reports.map(report => (
-                <ReportCard key={report.id} report={report} />
+                <UserReportCard key={report.id} report={report} />
               ))}
             </div>
           )}

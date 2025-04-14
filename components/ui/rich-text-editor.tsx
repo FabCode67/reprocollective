@@ -49,6 +49,7 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
         <Button 
           variant="ghost" 
           size="sm" 
+          type='button'
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={editor.isActive('bold') ? 'bg-muted' : ''}
         >
@@ -57,6 +58,7 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
         <Button 
           variant="ghost" 
           size="sm" 
+          type='button'
           onClick={() => editor.chain().focus().toggleItalic().run()}
           className={editor.isActive('italic') ? 'bg-muted' : ''}
         >
@@ -64,6 +66,7 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
         </Button>
         <Button 
           variant="ghost" 
+          type='button'
           size="sm" 
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={editor.isActive('bulletList') ? 'bg-muted' : ''}
@@ -73,6 +76,7 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
         <Button 
           variant="ghost" 
           size="sm" 
+          type='button'
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className={editor.isActive('orderedList') ? 'bg-muted' : ''}
         >
@@ -80,6 +84,7 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
         </Button>
         <Button 
           variant="ghost" 
+          type='button'
           size="sm" 
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           className={editor.isActive('blockquote') ? 'bg-muted' : ''}
@@ -88,6 +93,7 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
         </Button>
         <Button 
           variant="ghost" 
+          type='button'
           size="sm" 
           onClick={() => {
             const url = window.prompt('URL')
@@ -100,7 +106,8 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
           <LinkIcon className="h-4 w-4" />
         </Button>
         <Button 
-          variant="ghost" 
+          variant="ghost"
+          type='button'
           size="sm" 
           onClick={() => {
             const url = window.prompt('Image URL')
@@ -112,14 +119,16 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
           <ImageIcon className="h-4 w-4" />
         </Button>
         <Button 
-          variant="ghost" 
+          variant="ghost"
+            type='button' 
           size="sm" 
           onClick={() => editor.chain().focus().undo().run()}
         >
           <Undo className="h-4 w-4" />
         </Button>
         <Button 
-          variant="ghost" 
+          variant="ghost"
+            type='button' 
           size="sm" 
           onClick={() => editor.chain().focus().redo().run()}
         >

@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { addReport } from "@/lib/db";
 import { Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
@@ -270,7 +271,8 @@ export default function ReportForm() {
             <FormItem>
               <FormLabel>Full Article Content</FormLabel>
               <FormControl>
-                <Textarea placeholder="Detailed report..." className="h-32" {...field} />
+                {/* <Textarea placeholder="Detailed report..." className="h-32" {...field} /> */}
+                <RichTextEditor {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
