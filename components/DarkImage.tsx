@@ -1,11 +1,12 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import StatisticsCards from './StatisticsCards';
 
 const SlidingHeroImages = () => {
   const images = [
     {
-      src: "/donation.jpeg",
+      src: "/home1.png",
       alt: "Making a Difference",
       title: "Transform Lives Today",
       description: "Your generosity can provide hope, healing, and opportunity for those who need it most",
@@ -13,7 +14,7 @@ const SlidingHeroImages = () => {
       ctaLink: "/#about"
     },
     {
-      src: "/volunteer.jpeg",
+      src: "/home4.jpg",
       alt: "Volunteer Making Impact",
       title: "Be The Change",
       description: "Join our passionate community of volunteers and help create lasting impact in your neighborhood",
@@ -21,7 +22,7 @@ const SlidingHeroImages = () => {
       ctaLink: "/#about"
     },
     {
-      src: "/community.jpeg",
+      src: "/home2.jpg",
       alt: "Community Gathering",
       title: "Building Stronger Communities",
       description: "Together we're creating resilient neighborhoods where everyone has the chance to thrive",
@@ -29,13 +30,22 @@ const SlidingHeroImages = () => {
       ctaLink: "/#about"
     },
     {
-      src: "/success.jpeg",
+      src: "/home3.jpg",
       alt: "Success Story",
       title: "Stories of Hope",
       description: "See how your support has transformed lives and communities across the region",
       cta: "Read Stories",
       ctaLink: "/reports"
-    }
+    },
+    {
+      src: "/home4.jpg",
+      alt: "Community Event",
+      title: "Join Our Events",
+      description: "Participate in our upcoming events and make a difference in your community",
+      cta: "View Events",
+      ctaLink: "/report"
+    },
+    
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -76,14 +86,14 @@ const SlidingHeroImages = () => {
   };
 
   return (
-    <div 
-      className="relative w-full h-80 sm:h-96 md:h-[70vh] lg:h-[80vh] mb-6 mt-0 overflow-hidden"
+    <><div
+      className="relative w-full h-80 md:h-[90vh] lg:h-[90vh] mb-6 mt-0 overflow-hidden"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
       {/* Sliding Images */}
-      <div 
-        className="flex transition-transform duration-700 ease-in-out h-full" 
+      <div
+        className="flex transition-transform duration-700 ease-in-out h-full"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {images.map((image, index) => (
@@ -95,10 +105,9 @@ const SlidingHeroImages = () => {
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 100vw"
                 priority={index === 0}
-                className="object-cover"
-              />
+                className="object-cover" />
             </div>
-            
+
             {/* Gradient Overlay */}
             <div className="absolute inset-0 top-12 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-center items-center p-6 py-12 text-center">
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 drop-shadow-lg">
@@ -107,8 +116,8 @@ const SlidingHeroImages = () => {
               <p className="text-sm sm:text-base md:text-lg text-white text-center max-w-xl mx-auto mb-6 drop-shadow">
                 {image.description}
               </p>
-              <a 
-                href={image.ctaLink} 
+              <a
+                href={image.ctaLink}
                 className="bg-[#F77665] hover:bg-[#F77665] text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300 inline-block mt-2 transform hover:scale-105"
               >
                 {image.cta}
@@ -119,8 +128,8 @@ const SlidingHeroImages = () => {
       </div>
 
       {/* Arrow Navigation */}
-      <button 
-        onClick={prevSlide} 
+      <button
+        onClick={prevSlide}
         className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 focus:outline-none  sm:flex"
         aria-label="Previous slide"
       >
@@ -128,9 +137,9 @@ const SlidingHeroImages = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
       </button>
-      
-      <button 
-        onClick={nextSlide} 
+
+      <button
+        onClick={nextSlide}
         className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 focus:outline-none  sm:flex"
         aria-label="Next slide"
       >
@@ -140,21 +149,18 @@ const SlidingHeroImages = () => {
       </button>
 
       {/* Dots Navigation */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3">
+      <div className="absolute md:bottom-8 bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-3">
         {images.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full transition-all duration-300 ${
-              index === currentIndex 
-                ? 'bg-[#F77665] scale-125' 
-                : 'bg-white bg-opacity-70 hover:bg-opacity-100'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
+            className={`w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full transition-all duration-300 ${index === currentIndex
+                ? 'bg-[#F77665] scale-125'
+                : 'bg-white bg-opacity-70 hover:bg-opacity-100'}`}
+            aria-label={`Go to slide ${index + 1}`} />
         ))}
       </div>
-    </div>
+    </div><StatisticsCards /></>
   );
 };
 

@@ -124,7 +124,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white text-gray-900">
       <Navbar />
-      <DarkHeroImage />
+      <DarkHeroImage /> 
 
       <div id='about' className="container max-w-7xl p-4 mx-auto lg:mt-20 mt-0 flex lg:flex-row flex-col-reverse">
         {/* Location Sidebar */}
