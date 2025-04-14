@@ -31,4 +31,5 @@ export interface Report {
   description: string;
   adolescentsTrained: number;
   content: string;
+  image?: string;
 }

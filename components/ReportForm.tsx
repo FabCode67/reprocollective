@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -10,7 +10,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
 import { addReport } from "@/lib/db";
-import { Loader2 } from "lucide-react";
+import { Loader2, Upload, X } from "lucide-react";
+import Image from "next/image";
+
+const MAX_FILE_SIZE = 5000000; // 5MB
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
 
 const formSchema = z.object({
   title: z.string().min(3, { message: "Title must be at least 3 characters" }),
@@ -27,6 +31,10 @@ export default function ReportForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageError, setImageError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Get the current date in YYYY-MM-DD format
   const today = new Date().toISOString().split('T')[0];
@@ -45,11 +53,47 @@ export default function ReportForm() {
     }
   });
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setImageError(null);
+    
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    // Validate file size
+    if (file.size > MAX_FILE_SIZE) {
+      setImageError("Image size should be less than 5MB");
+      return;
+    }
+    
+    // Validate file type
+    if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
+      setImageError("Only .jpg, .jpeg, .png and .gif formats are supported");
+      return;
+    }
+    
+    setImageFile(file);
+    
+    // Create preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeImage = () => {
+    setImageFile(null);
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsSubmitting(true);
       setError(null);
-      await addReport(values);
+      await addReport(values, imageFile || undefined);
       router.push("/admin/reports/all-reports");
       router.refresh();
     } catch (err) {
@@ -113,6 +157,19 @@ export default function ReportForm() {
             )}
           />
           
+          <FormField
+            control={form.control}
+            name="padsBought"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Pads Bought</FormLabel>
+                <FormControl>
+                  <Input type="number" min="0" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
         
         <div className="grid md:grid-cols-2 gap-6">
@@ -143,6 +200,53 @@ export default function ReportForm() {
               </FormItem>
             )}
           />
+        </div>
+        
+        {/* Image Upload */}
+        <div>
+          <FormLabel className="block mb-2">Report Image</FormLabel>
+          <div className="mt-1 flex items-center">
+            {imagePreview ? (
+              <div className="relative w-32 h-32">
+                <Image 
+                  src={imagePreview} 
+                  alt="Preview" 
+                  className="object-cover rounded-md"
+                  width={128}
+                  height={128}
+                />
+                <button
+                  type="button"
+                  onClick={removeImage}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            ) : (
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                className="flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed border-gray-300 rounded-md cursor-pointer hover:bg-gray-50"
+              >
+                <Upload size={24} className="text-gray-400" />
+                <span className="mt-2 text-sm text-gray-500">Upload image</span>
+              </div>
+            )}
+            
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleImageChange}
+              accept="image/png, image/jpeg, image/jpg, image/gif"
+              className="hidden"
+            />
+          </div>
+          {imageError && (
+            <p className="mt-1 text-sm text-red-600">{imageError}</p>
+          )}
+          <p className="mt-1 text-sm text-gray-500">
+            Supported formats: JPG, PNG, GIF. Max size: 5MB
+          </p>
         </div>
         
         <FormField

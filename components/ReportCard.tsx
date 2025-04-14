@@ -1,9 +1,11 @@
+'use client'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Report } from "@/types";
 import Link from "next/link";
 import { ArrowRight, Trash2 } from "lucide-react";
 import { deleteReport } from "@/lib/db";
+import Image from "next/image";
 
 interface ReportCardProps {
   report: Report;
@@ -21,6 +23,16 @@ export default function ReportCard({ report, onDelete }: ReportCardProps) {
 
   return (
     <Card className="bg-white border-orange-300 hover:shadow-md transition-shadow">
+      {report?.image && (
+        <div className="w-full h-48 relative">
+          <Image 
+            src={report?.image || '/chart.png'}
+            alt={"Report Image"}
+            fill
+            className="object-cover rounded-t-lg"
+          />
+        </div>
+      )}
       <CardHeader className="bg-orange-50">
         <CardTitle className="text-xl text-orange-800">{report.title}</CardTitle>
         <CardDescription>{report.date}</CardDescription>
@@ -32,10 +44,6 @@ export default function ReportCard({ report, onDelete }: ReportCardProps) {
               <p className="text-sm text-gray-600">Collected amount</p>
               <p className="font-bold text-orange-900">{report.moneyEarned.toFixed(2)} rwf</p>
             </div>
-            {/* <div className="bg-orange-100 p-3 rounded">
-              <p className="text-sm text-gray-600">Pads collected</p>
-              <p className="font-bold text-orange-900">{report.padsBought}</p>
-            </div> */}
             <div className="bg-orange-100 p-3 rounded">
               <p className="text-sm text-gray-600">Pads Donated</p>
               <p className="font-bold text-orange-900">{report.padsDonated}</p>

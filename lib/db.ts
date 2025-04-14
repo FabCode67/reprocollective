@@ -28,9 +28,28 @@ export const getReportById = async (id: string): Promise<Report | undefined> => 
 };
 
 // Add a new report
-export const addReport = async (report: Omit<Report, "id">): Promise<Report> => {
+export const addReport = async (report: Omit<Report, "id">, imageFile?: File): Promise<Report> => {
   try {
-    const response = await axios.post(`${API_URL}/reports`, report);
+    // Create FormData object if there's an image
+    const formData = new FormData();
+    
+    // Add all report fields to FormData
+    Object.entries(report).forEach(([key, value]) => {
+      formData.append(key, value.toString());
+    });
+    
+    // Add image file if it exists
+    if (imageFile) {
+      formData.append('image', imageFile);
+    }
+    
+    // Use FormData in the request
+    const response = await axios.post(`${API_URL}/reports`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    
     return response.data.data;
   } catch (error) {
     console.error("Error adding report:", error);
