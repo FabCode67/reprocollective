@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { BarChart3, Home, MapPin, Menu, QrCode, X, Coins, File } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Lightbulb } from 'lucide-react';
+import { HelpingHand } from 'lucide-react';
 
 export default function Sidebar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -41,6 +42,11 @@ export default function Sidebar() {
       name: 'Spotlights',
       icon: <Lightbulb className="mr-2 h-5 w-5" />,
       path: '/admin/spotlight'
+    },
+    {
+      name: 'Philanthropist',
+      icon: <HelpingHand className="mr-2 h-5 w-5" />,
+      path: '/admin/philanthropist'
     },
     {
       name: "Content",

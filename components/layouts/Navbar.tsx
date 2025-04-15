@@ -275,6 +275,18 @@ const Navbar: React.FC = () => {
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
+              <NavigationMenuItem className="w-full lg:w-auto block">
+                <Link href="/philanthropist" passHref legacyBehavior>
+                  <NavigationMenuLink
+                    className={`
+                      ${buttonVariants({ variant: 'ghost' })} 
+                      w-full lg:w-auto text-center
+                    `}
+                  >
+                    Local Philanthropists
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
              
             </NavigationMenuList>
           </NavigationMenu>
