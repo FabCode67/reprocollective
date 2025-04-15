@@ -169,6 +169,15 @@ const Navbar: React.FC = () => {
                       >
                         Contribute Through Locations
                       </button>
+                      <a
+                        href="https://docs.google.com/forms/d/1iryfcNbqPIAM3zrhqYp6dpBML5tVzanURpdKJIAdHFs"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-3 text-white bg-green-600 hover:bg-green-700 rounded-md text-center flex items-center justify-center"
+                      >
+                        <span className="mr-2 bg-white text-green-600 px-2 py-0.5 rounded-full text-xs font-medium">New</span>
+                        Become a Monthly Contributor
+                      </a>
                       <button
                         onClick={() => setShowMobileOptions(false)}
                         className="w-full py-2 text-gray-600 hover:text-gray-800 mt-2"
@@ -222,6 +231,15 @@ const Navbar: React.FC = () => {
                         >
                           Contribute Through Locations
                         </button>
+                        <a
+                          href="https://docs.google.com/forms/d/1iryfcNbqPIAM3zrhqYp6dpBML5tVzanURpdKJIAdHFs"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-orange-100 border-t border-gray-200 mt-1 flex items-center"
+                        >
+                          <span className="mr-2 bg-[#F77665] text-white px-2 py-0.5 rounded-full text-xs">New</span>
+                          Become a Monthly Contributor
+                        </a>
                       </div>
                     </div>
                   )}

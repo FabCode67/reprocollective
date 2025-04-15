@@ -26,8 +26,30 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog";
-import { Loader2, Plus, Trash, MoveUp, MoveDown, User } from "lucide-react";
+import { 
+  Loader2, 
+  Plus, 
+  Trash, 
+  MoveUp, 
+  MoveDown, 
+  User, 
+  Edit, 
+  Eye, 
+  EyeOff, 
+  ImageIcon, 
+  ChevronUp, 
+  ChevronDown, 
+  MoreHorizontal 
+} from "lucide-react";
 import RootLayout from "@/components/layouts/Dashboardlayout";
+import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 // Types
 interface Philanthropist {
@@ -58,6 +80,7 @@ export default function PhilanthropistManagementPage() {
   });
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [expandedBio, setExpandedBio] = useState<string | null>(null);
 
   // Fetch philanthropists on load
   useEffect(() => {
@@ -293,220 +316,397 @@ export default function PhilanthropistManagementPage() {
     }
   };
 
-  return (
-    <RootLayout>
-      <div className="container mx-auto py-8">
-        <h1 className="text-3xl font-bold mb-6">Local Philanthropists Management</h1>
+  // Toggle biography expansion
+  const toggleBioExpansion = (id: string) => {
+    setExpandedBio(expandedBio === id ? null : id);
+  };
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <div>
-              <CardTitle>Philanthropists</CardTitle>
-              <CardDescription>
-                Manage local philanthropists profiles displayed on your website.
-              </CardDescription>
-            </div>
-            <Dialog open={philanthropistDialog} onOpenChange={handleDialogClose}>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus className="mr-2 h-4 w-4" /> Add New Philanthropist
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-lg">
-                <DialogHeader>
-                  <DialogTitle>{currentPhilanthropist.id ? "Edit Philanthropist" : "Add New Philanthropist"}</DialogTitle>
-                  <DialogDescription>
-                    Fill in the details for this local philanthropist.
-                  </DialogDescription>
-                </DialogHeader>
+  // Truncate text for display
+  const truncateText = (text: string, maxLength: number = 100) => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
 
-                <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="philanthropist-name">Name *</Label>
-                    <Input
-                      id="philanthropist-name"
-                      value={currentPhilanthropist.name || ""}
-                      onChange={(e) => setCurrentPhilanthropist({ ...currentPhilanthropist, name: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="philanthropist-biography">Biography *</Label>
-                    <Textarea
-                      id="philanthropist-biography"
-                      value={currentPhilanthropist.biography || ""}
-                      onChange={(e) => setCurrentPhilanthropist({ ...currentPhilanthropist, biography: e.target.value })}
-                      rows={4}
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="philanthropist-contribution">Contribution</Label>
-                    <Textarea
-                      id="philanthropist-contribution"
-                      value={currentPhilanthropist.contribution || ""}
-                      onChange={(e) => setCurrentPhilanthropist({ ...currentPhilanthropist, contribution: e.target.value })}
-                      rows={3}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="philanthropist-contact">Contact Information</Label>
-                    <Input
-                      id="philanthropist-contact"
-                      value={currentPhilanthropist.contactInfo || ""}
-                      onChange={(e) => setCurrentPhilanthropist({ ...currentPhilanthropist, contactInfo: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="philanthropist-image">Profile Image {!currentPhilanthropist.id && '*'}</Label>
-                    <div className="flex items-center gap-2">
-                      <Input
-                        id="philanthropist-image"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        ref={fileInputRef}
-                        required={!currentPhilanthropist.id}
+  // Render the card view for mobile
+  const renderCardView = () => {
+    return (
+      <div className="grid grid-cols-1 gap-4 md:hidden">
+        {philanthropists.map((philanthropist, index) => (
+          <Card key={philanthropist.id} className="overflow-hidden">
+            <CardContent className="p-0">
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    {philanthropist.image ? (
+                      <img 
+                        src={philanthropist.image} 
+                        alt={philanthropist.name} 
+                        className="h-12 w-12 object-cover rounded-full"
                       />
-                    </div>
-                    {previewImage && (
-                      <div className="mt-2">
-                        <p className="text-sm text-gray-500 mb-1">Preview:</p>
-                        <img 
-                          src={previewImage} 
-                          alt="Preview" 
-                          className="h-40 object-cover rounded-md"
-                        />
+                    ) : (
+                      <div className="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center">
+                        <User className="h-6 w-6 text-gray-400" />
                       </div>
                     )}
+                    <div>
+                      <h3 className="font-medium">{philanthropist.name}</h3>
+                      <div className="flex items-center gap-1">
+                        <Badge className="text-xs">
+                          {philanthropist.isActive ? "Active" : "Inactive"}
+                        </Badge>
+                        <span className="text-xs text-gray-500">Order: {philanthropist.order + 1}</span>
+                      </div>
+                    </div>
                   </div>
+                  
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => editPhilanthropist(philanthropist)}>
+                        <Edit className="mr-2 h-4 w-4" />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => togglePhilanthropistActive(philanthropist)}
+                      >
+                        {philanthropist.isActive ? (
+                          <>
+                            <EyeOff className="mr-2 h-4 w-4" />
+                            Deactivate
+                          </>
+                        ) : (
+                          <>
+                            <Eye className="mr-2 h-4 w-4" />
+                            Activate
+                          </>
+                        )}
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem 
+                        onClick={() => movePhilanthropistUp(index)}
+                        disabled={index === 0}
+                        className="text-blue-600"
+                      >
+                        <ChevronUp className="mr-2 h-4 w-4" />
+                        Move Up
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => movePhilanthropistDown(index)}
+                        disabled={index === philanthropists.length - 1}
+                        className="text-blue-600"
+                      >
+                        <ChevronDown className="mr-2 h-4 w-4" />
+                        Move Down
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem 
+                        onClick={() => deletePhilanthropist(philanthropist.id)}
+                        className="text-red-600"
+                      >
+                        <Trash className="mr-2 h-4 w-4" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+                
+                <div className="mt-3">
+                  <div className="text-sm font-medium text-gray-500 mb-1">Biography:</div>
+                  <div className="text-sm">
+                    {expandedBio === philanthropist.id 
+                      ? philanthropist.biography 
+                      : truncateText(philanthropist.biography, 120)}
+                  </div>
+                  {philanthropist.biography.length > 120 && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="p-0 h-6 text-[#F77665] mt-1" 
+                      onClick={() => toggleBioExpansion(philanthropist.id)}
+                    >
+                      {expandedBio === philanthropist.id ? "Show less" : "Read more"}
+                    </Button>
+                  )}
+                </div>
+                
+                {philanthropist.contribution && (
+                  <div className="mt-2">
+                    <div className="text-sm font-medium text-gray-500 mb-1">Contribution:</div>
+                    <div className="text-sm">{truncateText(philanthropist.contribution, 80)}</div>
+                  </div>
+                )}
+                
+                {philanthropist.contactInfo && (
+                  <div className="mt-2">
+                    <div className="text-sm font-medium text-gray-500 mb-1">Contact:</div>
+                    <div className="text-sm">{philanthropist.contactInfo}</div>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  };
 
+  // Render the table view for desktop
+  const renderTableView = () => {
+    return (
+      <div className="hidden md:block overflow-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">Order</TableHead>
+              <TableHead className="w-[80px]">Photo</TableHead>
+              <TableHead className="w-[180px]">Name</TableHead>
+              <TableHead>Biography</TableHead>
+              <TableHead className="w-[100px]">Status</TableHead>
+              <TableHead className="text-right w-[180px]">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {philanthropists.map((philanthropist, index) => (
+              <TableRow key={philanthropist.id}>
+                <TableCell>
                   <div className="flex items-center space-x-2">
-                    <Switch
-                      id="philanthropist-active"
-                      checked={currentPhilanthropist.isActive}
-                      onCheckedChange={(checked) => setCurrentPhilanthropist({ ...currentPhilanthropist, isActive: checked })}
-                    />
-                    <Label htmlFor="philanthropist-active">Active</Label>
+                    <span>{philanthropist.order + 1}</span>
+                    <div className="flex flex-col">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="p-0 h-6" 
+                        onClick={() => movePhilanthropistUp(index)}
+                        disabled={index === 0}
+                      >
+                        <MoveUp className="h-4 w-4" />
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="p-0 h-6" 
+                        onClick={() => movePhilanthropistDown(index)}
+                        disabled={index === philanthropists.length - 1}
+                      >
+                        <MoveDown className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
+                </TableCell>
+                <TableCell>
+                  {philanthropist.image ? (
+                    <img 
+                      src={philanthropist.image} 
+                      alt={philanthropist.name} 
+                      className="h-12 w-12 object-cover rounded-full"
+                    />
+                  ) : (
+                    <div className="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center">
+                      <ImageIcon className="h-6 w-6 text-gray-400" />
+                    </div>
+                  )}
+                </TableCell>
+                <TableCell className="font-medium">{philanthropist.name}</TableCell>
+                <TableCell className="max-w-md">
+                  <div className="line-clamp-2">{philanthropist.biography}</div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      checked={philanthropist.isActive}
+                      onCheckedChange={() => togglePhilanthropistActive(philanthropist)}
+                      className="scale-75 data-[state=checked]:bg-[#F77665]"
+                    />
+                    <span className="text-sm">
+                      {philanthropist.isActive ? "Active" : "Inactive"}
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => editPhilanthropist(philanthropist)}
+                    >
+                      <Edit className="h-4 w-4 mr-1" /> Edit
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-red-500 hover:bg-red-50"
+                      onClick={() => deletePhilanthropist(philanthropist.id)}
+                    >
+                      <Trash className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    );
+  };
+
+  return (
+    <RootLayout>
+      <div className="container max-w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+          <h1 className="text-2xl md:text-3xl font-bold">Local Philanthropists Management</h1>
+          <Dialog open={philanthropistDialog} onOpenChange={handleDialogClose}>
+            <DialogTrigger asChild>
+              <Button className="self-start sm:self-auto bg-[#F77665] hover:bg-[#F77665]/90">
+                <Plus className="mr-2 h-4 w-4" /> Add Philanthropist
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>{currentPhilanthropist.id ? "Edit Philanthropist" : "Add New Philanthropist"}</DialogTitle>
+                <DialogDescription>
+                  Fill in the details for this local philanthropist.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-4 py-4">
+                <div className="space-y-2">
+                  <Label htmlFor="philanthropist-name">Name *</Label>
+                  <Input
+                    id="philanthropist-name"
+                    value={currentPhilanthropist.name || ""}
+                    onChange={(e) => setCurrentPhilanthropist({ ...currentPhilanthropist, name: e.target.value })}
+                    required
+                  />
                 </div>
 
-                <DialogFooter>
-                  <Button variant="outline" onClick={() => handleDialogClose(false)}>Cancel</Button>
-                  <Button
-                    onClick={handlePhilanthropistSubmit}
-                    disabled={
-                      !currentPhilanthropist.name || 
-                      !currentPhilanthropist.biography || 
-                      (!currentPhilanthropist.id && !fileInputRef.current?.files?.length) || 
-                      loading
-                    }
-                  >
-                    {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {currentPhilanthropist.id ? "Update Philanthropist" : "Add Philanthropist"}
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+                <div className="space-y-2">
+                  <Label htmlFor="philanthropist-biography">Biography *</Label>
+                  <Textarea
+                    id="philanthropist-biography"
+                    value={currentPhilanthropist.biography || ""}
+                    onChange={(e) => setCurrentPhilanthropist({ ...currentPhilanthropist, biography: e.target.value })}
+                    rows={4}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="philanthropist-contribution">Contribution</Label>
+                  <Textarea
+                    id="philanthropist-contribution"
+                    value={currentPhilanthropist.contribution || ""}
+                    onChange={(e) => setCurrentPhilanthropist({ ...currentPhilanthropist, contribution: e.target.value })}
+                    rows={3}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="philanthropist-contact">Contact Information</Label>
+                  <Input
+                    id="philanthropist-contact"
+                    value={currentPhilanthropist.contactInfo || ""}
+                    onChange={(e) => setCurrentPhilanthropist({ ...currentPhilanthropist, contactInfo: e.target.value })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="philanthropist-image">Profile Image {!currentPhilanthropist.id && '*'}</Label>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                    <Input
+                      id="philanthropist-image"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      ref={fileInputRef}
+                      required={!currentPhilanthropist.id}
+                    />
+                  </div>
+                  {previewImage && (
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500 mb-1">Preview:</p>
+                      <img 
+                        src={previewImage} 
+                        alt="Preview" 
+                        className="h-40 object-cover rounded-md"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Switch
+                    id="philanthropist-active"
+                    checked={currentPhilanthropist.isActive}
+                    onCheckedChange={(checked) => setCurrentPhilanthropist({ ...currentPhilanthropist, isActive: checked })}
+                    className="scale-75 data-[state=checked]:bg-[#F77665]"
+                  />
+                  <Label htmlFor="philanthropist-active">Active</Label>
+                </div>
+              </div>
+
+              <DialogFooter className="flex flex-col sm:flex-row gap-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => handleDialogClose(false)}
+                  className="w-full sm:w-auto order-2 sm:order-1"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handlePhilanthropistSubmit}
+                  disabled={
+                    !currentPhilanthropist.name || 
+                    !currentPhilanthropist.biography || 
+                    (!currentPhilanthropist.id && !fileInputRef.current?.files?.length) || 
+                    loading
+                  }
+                  className="w-full sm:w-auto order-1 sm:order-2 bg-[#F77665] hover:bg-[#F77665]/90"
+                >
+                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {currentPhilanthropist.id ? "Update Philanthropist" : "Add Philanthropist"}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle>Philanthropists</CardTitle>
+            <CardDescription>
+              Manage local philanthropists profiles displayed on your website.
+            </CardDescription>
           </CardHeader>
 
           <CardContent>
-            {loading && <div className="flex justify-center py-6"><Loader2 className="animate-spin" /></div>}
+            {loading && (
+              <div className="flex justify-center py-6">
+                <Loader2 className="animate-spin h-8 w-8 text-[#F77665]" />
+              </div>
+            )}
 
             {philanthropists.length === 0 && !loading ? (
-              <Alert>
-                <AlertDescription>No philanthropists found. Add your first philanthropist profile to get started.</AlertDescription>
+              <Alert className="bg-[#F77665]/10 border-[#F77665]/20">
+                <AlertDescription>
+                  No philanthropists found. Add your first philanthropist profile to get started.
+                </AlertDescription>
               </Alert>
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Order</TableHead>
-                    <TableHead>Photo</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Biography</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {philanthropists.map((philanthropist, index) => (
-                    <TableRow key={philanthropist.id}>
-                      <TableCell>
-                        <div className="flex items-center space-x-2">
-                          <span>{philanthropist.order + 1}</span>
-                          <div className="flex flex-col">
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="p-0 h-6" 
-                              onClick={() => movePhilanthropistUp(index)}
-                              disabled={index === 0}
-                            >
-                              <MoveUp className="h-4 w-4" />
-                            </Button>
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="p-0 h-6" 
-                              onClick={() => movePhilanthropistDown(index)}
-                              disabled={index === philanthropists.length - 1}
-                            >
-                              <MoveDown className="h-4 w-4" />
-                            </Button>
-                            </div>
-                        </div>
-                        </TableCell>
-                        <TableCell>
-                            {philanthropist.image ? (
-                                <img 
-                                src={philanthropist.image} 
-                                alt={philanthropist.name} 
-                                className="h-12 w-12 object-cover rounded-full"
-                                />
-                            ) : (
-                                <User className="h-12 w-12 text-gray-400" />
-                            )}
-                        </TableCell>
-                        <TableCell>{philanthropist.name}</TableCell>
-                        <TableCell>{philanthropist.biography}</TableCell>
-                        <TableCell>
-                          <Switch
-                            checked={philanthropist.isActive}
-                            onCheckedChange={() => togglePhilanthropistActive(philanthropist)}
-                          />
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => editPhilanthropist(philanthropist)}
-                            >
-                              Edit
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-red-500 hover:bg-red-50"
-                              onClick={() => deletePhilanthropist(philanthropist.id)}
-                            >
-                              <Trash className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-                </Table>
+              <>
+                {/* Card view for mobile */}
+                {renderCardView()}
+                
+                {/* Table view for desktop */}
+                {renderTableView()}
+              </>
             )}
-            </CardContent>
+          </CardContent>
         </Card>
-        </div>
-        </RootLayout>
-    );
+      </div>
+    </RootLayout>
+  );
 }

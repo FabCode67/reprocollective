@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MapPin, Edit, Trash2 } from 'lucide-react';
+import { MapPin, Edit, Trash2, QrCode } from 'lucide-react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import RootLayout from '@/components/layouts/Dashboardlayout';
 import AddLocationDialog from './AddingLoaction';
 import UpdateLocationDialog from './UpdateLocationDialog';
+import QRCodeModal from '@/components/QRCodeModal';
 
 // Define interfaces for type safety
 interface LocationPerformance {
@@ -34,6 +35,7 @@ interface Location {
 export default function LocationsPage() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+  const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [locations, setLocations] = useState<Location[]>([]);
   const [, setPerformanceData] = useState<LocationPerformance[]>([]);
@@ -88,6 +90,16 @@ export default function LocationsPage() {
     if (location) {
       setSelectedLocation(location);
       setIsUpdateDialogOpen(true);
+    }
+  };
+
+  // Handle QR code generation
+  const handleGenerateQRCode = (locationId: string) => {
+    const location = locations.find(loc => loc.id === locationId) || 
+                     mockLocations.find(loc => loc.id === locationId);
+    if (location) {
+      setSelectedLocation(location);
+      setIsQRCodeModalOpen(true);
     }
   };
 
@@ -201,6 +213,14 @@ export default function LocationsPage() {
                           <Button
                             variant="outline"
                             size="sm"
+                            onClick={() => handleGenerateQRCode(location.id)}
+                            className="text-[#F77665] hover:bg-orange-50"
+                          >
+                            <QrCode className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
                             onClick={() => handleUpdateLocation(location.id)}
                           >
                             <Edit className="h-4 w-4" />
@@ -238,6 +258,17 @@ export default function LocationsPage() {
           onClose={() => setIsUpdateDialogOpen(false)}
           onSuccess={handleLocationUpdated}
           location={selectedLocation}
+        />
+      )}
+
+      {/* QR Code Modal */}
+      {selectedLocation && (
+        <QRCodeModal
+          isOpen={isQRCodeModalOpen}
+          onClose={() => setIsQRCodeModalOpen(false)}
+          locationId={selectedLocation.id}
+          locationName={selectedLocation.name}
+          locationAddress={selectedLocation.location}
         />
       )}
     </RootLayout>

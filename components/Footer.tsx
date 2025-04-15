@@ -39,6 +39,16 @@ const Footer = () => {
             <Link href="/terms_of_service" className="text-gray-600 hover:text-[#F77665] transition-colors">
               Terms of Service
             </Link>
+            <a 
+              href="https://docs.google.com/forms/d/1iryfcNbqPIAM3zrhqYp6dpBML5tVzanURpdKJIAdHFs" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[#F77665] font-medium hover:underline transition-colors flex items-center"
+            >
+              <Heart className="mr-1 h-4 w-4" />
+              Become a Monthly Contributor
+              <span className="ml-1 bg-[#F77665] text-white px-2 py-0.5 rounded-full text-xs">New</span>
+            </a>
           </div>
           
           {/* Social icons */}

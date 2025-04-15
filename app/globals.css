@@ -76,6 +76,9 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  
+  /* Brand color */
+  --brand-color: #F77665;
 }
 
 .dark {
@@ -119,9 +122,88 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Improved focus styles for accessibility */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-[#F77665];
+  }
+  
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Mobile-first typography */
+  h1 {
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold mb-4;
+  }
+  
+  h2 {
+    @apply text-xl md:text-2xl lg:text-3xl font-bold mb-3;
+  }
+  
+  h3 {
+    @apply text-lg md:text-xl font-bold mb-2;
+  }
+  
+  p {
+    @apply mb-4 leading-relaxed;
+  }
+  
+  /* Custom utility classes for consistency */
+  .brand-color {
+    color: var(--brand-color);
+  }
+  
+  .bg-brand {
+    background-color: var(--brand-color);
+  }
+  
+  .border-brand {
+    border-color: var(--brand-color);
+  }
+  
+  /* Container with responsive padding */
+  .container {
+    @apply px-4 md:px-6 mx-auto;
+  }
+  
+  /* Card improvements */
+  .card {
+    @apply rounded-lg border border-border shadow-sm transition-shadow hover:shadow-md;
+  }
+  
+  /* Better form elements */
+  input, select, textarea {
+    @apply text-base w-full rounded-md px-3 py-2;
+  }
+  
+  /* Better touch targets for mobile */
+  button, 
+  .button,
+  a.button,
+  [role="button"],
+  [type="button"],
+  [type="submit"] {
+    @apply min-h-10 px-4 py-2;
+  }
 }
 
+/* Helper for responsive tables */
+.table-responsive {
+  @apply w-full overflow-x-auto;
+}
 
+/* Improved modal positioning for mobile */
+@media (max-width: 640px) {
+  [role="dialog"] {
+    @apply p-4;
+  }
+  
+  .dialog-content {
+    @apply p-4 max-w-[calc(100vw-2rem)] max-h-[calc(100vh-4rem)];
+  }
+}
 
 @media print {
   /* Hide navigation and buttons during print */

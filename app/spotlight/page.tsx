@@ -87,7 +87,7 @@ export default function SpotlightsPage() {
       <header className="bg-[#F77665] text-white py-6">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold">Our Spotlights</h1>
-          <p className="mt-2 text-black">Highlighting what matters most</p>
+          <p className="mt-2 text-black">Discover powerful tools and solutions developed by youth-led social enterprises to support Sexual and Reproductive Health</p>
         </div>
       </header>
 

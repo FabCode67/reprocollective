@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "REPROCOLLECTIVE",
-  description: "REPROCOLLECTIVE is a non-profit organization dedicated to providing support and resources for individuals in need.",
+  title: "ReproCollective",
+  description: "ReproCollective is a digital platform that empowers Rwandans and friends of Rwanda to become local philanthropists. We turn everyday gathering places restaurants, hotels, salons, events, even your own business into Contribution Stations that support girls and youth in our communities.",
 };
 
 export default function RootLayout({
