@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Location } from '@/lib/data';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Building2, MapPin, QrCode, CreditCard, Phone, User } from 'lucide-react';
+import { Building2, MapPin, QrCode, Phone, User, AlertTriangle } from 'lucide-react';
 import axios from 'axios';
 import ResultModal from './SuccessAndFailModel';
 
@@ -32,18 +32,12 @@ const DonationModal: React.FC<DonationModalProps> = ({
     onError
 }) => {
     const [donationAmount, setDonationAmount] = useState<string>('');
-    const [paymentMethod, setPaymentMethod] = useState<'mtn' | 'card' | 'bank_transfer'>('mtn');
     const [isProcessing, setIsProcessing] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
     
     // Donor information
     const [donorName, setDonorName] = useState<string>('');
     const [donorPhone, setDonorPhone] = useState<string>('');
-
-    // Additional card information for 'card' payment method
-    const [cardNumber, setCardNumber] = useState<string>('');
-    const [expiryDate, setExpiryDate] = useState<string>('');
-    const [cvv, setCvv] = useState<string>('');
 
     // Result modal states
     const [showResultModal, setShowResultModal] = useState<boolean>(false);
@@ -66,32 +60,11 @@ const DonationModal: React.FC<DonationModalProps> = ({
             return false;
         }
 
-       
+        // Validate phone number
         if (!donorPhone || donorPhone.length < 10) {
             onError('Please enter a valid phone number');
             setErrorMessage('Please enter a valid phone number');
             return false;
-        }
-
-      
-
-        // Additional validation for card payment method
-        if (paymentMethod === 'card') {
-            if (!cardNumber || cardNumber.length < 16) {
-                onError('Please enter a valid card number');
-                setErrorMessage('Please enter a valid card number');
-                return false;
-            }
-            if (!expiryDate || !expiryDate.includes('/')) {
-                onError('Please enter a valid expiry date (MM/YY)');
-                setErrorMessage('Please enter a valid expiry date (MM/YY)');
-                return false;
-            }
-            if (!cvv || cvv.length < 3) {
-                onError('Please enter a valid CVV');
-                setErrorMessage('Please enter a valid CVV');
-                return false;
-            }
         }
 
         return true;
@@ -100,8 +73,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
     // Listen for payment completion messages from the iframe
     React.useEffect(() => {
         const handleMessage = (event: MessageEvent) => {
-            // Verify the origin of the message (should be from your payment provider's domain)
-            // Replace 'flutterwave.com' with the actual domain that will send the message
+            // Verify the origin of the message
             if (event.origin.includes('flutterwave.com')) {
                 try {
                     const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
@@ -160,10 +132,9 @@ const DonationModal: React.FC<DonationModalProps> = ({
                 amount: parseFloat(donationAmount),
                 donorName: donorName ?? 'anonymous',
                 donorPhone,
-                paymentMethod,
-                currency: paymentMethod === 'card' ? 'USD' : 'RWF', // Default currency based on payment method
+                paymentMethod: 'mtn', // Only MTN Mobile Money is supported
+                currency: 'RWF', // Only RWF is supported
                 // Add a redirect URL that your backend will include in the payment flow
-                // This should be a URL that Flutterwave will redirect to after payment
                 redirectUrl: `${window.location.origin}/payment-callback`
             };
 
@@ -178,13 +149,13 @@ const DonationModal: React.FC<DonationModalProps> = ({
                 setTransactionId(response.data.transactionId || '');
                 setFinalAmount(parseFloat(donationAmount));
                 
-                // If there's a payment URL (for card payments or redirects), show it in iframe
+                // If there's a payment URL, show it in iframe
                 if (response.data.paymentUrl) {
                     console.log('Showing payment URL in iframe:', response.data.paymentUrl);
                     setPaymentUrl(response.data.paymentUrl);
                     setShowPaymentIframe(true);
                 } else {
-                    // Otherwise, consider it successful (e.g., for MTN Mobile Money that might not need redirection)
+                    // Otherwise, consider it successful
                     setResultSuccess(true);
                     setResultMessage('Thank you for your generous contribution to REPROCOLLECTIVE!');
                     setShowResultModal(true);
@@ -226,9 +197,6 @@ const DonationModal: React.FC<DonationModalProps> = ({
         setDonationAmount('');
         setDonorName('');
         setDonorPhone('');
-        setCardNumber('');
-        setExpiryDate('');
-        setCvv('');
     };
 
     const handleResultModalClose = () => {
@@ -244,18 +212,25 @@ const DonationModal: React.FC<DonationModalProps> = ({
         setErrorMessage('Payment process was cancelled');
     };
 
+    // Format phone number as the user types
+    const handlePhoneInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // Allow only digits
+        const value = e.target.value.replace(/\D/g, '');
+        setDonorPhone(value);
+    };
+
     return (
         <>
             <Dialog open={isOpen} onOpenChange={onClose}>
-                <DialogContent className="sm:max-w-[425px] bg-white">
+                <DialogContent className="sm:max-w-[425px] max-w-[90vw] bg-white p-4 sm:p-6 rounded-lg">
                     {!showPaymentIframe ? (
                         <>
                             <DialogHeader>
-                                <DialogTitle className="flex items-center">
-                                    <QrCode className="mr-2 text-[#F77665]" />
+                                <DialogTitle className="flex items-center text-lg sm:text-xl">
+                                    <QrCode className="mr-2 text-[#F77665] h-5 w-5 sm:h-6 sm:w-6" />
                                     Donate to REPROCOLLECTIVE
                                 </DialogTitle>
-                                <DialogDescription>
+                                <DialogDescription className="text-sm sm:text-base">
                                     Support our mission through {location.name}
                                 </DialogDescription>
                             </DialogHeader>
@@ -263,170 +238,114 @@ const DonationModal: React.FC<DonationModalProps> = ({
                             <div className="space-y-4 py-4">
                                 {/* Location Details */}
                                 <div className="flex items-center space-x-3 bg-orange-50 p-3 rounded-lg">
-                                    <Building2 className="text-[#F77665]" />
+                                    <Building2 className="text-[#F77665] shrink-0 h-5 w-5" />
                                     <div>
                                         <h4 className="font-semibold">{location.name}</h4>
                                         <p className="text-sm text-gray-600 flex items-center">
-                                            <MapPin className="mr-1 w-4 h-4" /> {location.location}
+                                            <MapPin className="mr-1 w-4 h-4 shrink-0" /> {location.location}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Payment Method Notice */}
+                                <div className="bg-blue-50 p-3 rounded-lg flex items-start space-x-3">
+                                    <AlertTriangle className="text-blue-500 shrink-0 h-5 w-5 mt-0.5" />
+                                    <div>
+                                        <p className="text-sm text-blue-700 font-medium">Payment Information</p>
+                                        <p className="text-xs text-blue-600">
+                                            We currently accept MTN Mobile Money payments in Rwandan Francs (RWF) only.
                                         </p>
                                     </div>
                                 </div>
 
                                 {/* Error message display */}
                                 {errorMessage && (
-                                    <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
-                                        <p className="text-red-700">{errorMessage}</p>
+                                    <div className="bg-red-50 border-l-4 border-red-500 p-3 rounded-r-lg">
+                                        <p className="text-red-700 text-sm">{errorMessage}</p>
                                     </div>
                                 )}
 
                                 {/* Donor Information */}
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="donorName" className="text-right">
-                                        <User className="w-4 h-4 inline mr-1" />
-                                        Name (Optional)
-                                    </Label>
-                                    <Input
-                                        id="donorName"
-                                        placeholder="Your full name"
-                                        className="col-span-3"
-                                        value={donorName}
-                                        onChange={(e) => setDonorName(e.target.value)}
-                                    />
-                                </div>
-
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="donorPhone" className="text-right">
-                                        <Phone className="w-4 h-4 inline mr-1" />
-                                        Phone
-                                    </Label>
-                                    <Input
-                                        id="donorPhone"
-                                        type="tel"
-                                        placeholder="Your phone number"
-                                        className="col-span-3"
-                                        value={donorPhone}
-                                        onChange={(e) => setDonorPhone(e.target.value)}
-                                    />
-                                </div>
-
-                                {/* Payment Method Selection */}
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right">Payment</Label>
-                                    <div className="col-span-3 flex flex-wrap gap-2">
-                                        <Button
-                                            variant={paymentMethod === 'mtn' ? 'default' : 'outline'}
-                                            onClick={() => setPaymentMethod('mtn')}
-                                            className={
-                                                paymentMethod === 'mtn'
-                                                    ? 'bg-[#F77665] hover:bg-[#F77665]'
-                                                    : 'bg-white hover:bg-gray-100 border border-[#F77665]'
-                                            }
-                                        >
-                                            MTN Mobile
-                                        </Button>
-                                        <Button
-                                            variant={paymentMethod === 'card' ? 'default' : 'outline'}
-                                            onClick={() => setPaymentMethod('card')}
-                                            className={
-                                                paymentMethod === 'card'
-                                                    ? 'bg-[#F77665] hover:bg-[#F77665]'
-                                                    : 'bg-white hover:bg-gray-100 border border-[#F77665]'
-                                            }
-                                        >
-                                            Card
-                                        </Button>
-                                        <Button
-                                            variant={paymentMethod === 'bank_transfer' ? 'default' : 'outline'}
-                                            onClick={() => setPaymentMethod('bank_transfer')}
-                                            className={
-                                                paymentMethod === 'bank_transfer'
-                                                    ? 'bg-[#F77665] hover:bg-[#F77665]'
-                                                    : 'bg-white hover:bg-gray-100 border border-[#F77665]'
-                                            }
-                                        >
-                                            Bank Transfer
-                                        </Button>
-                                    </div>
-                                </div>
-
-                                {/* Payment Method Specific Fields */}
-                                {paymentMethod === 'card' && (
-                                    <div className="space-y-3">
-                                        <div className="grid grid-cols-4 items-center gap-4">
-                                            <Label htmlFor="cardNumber" className="text-right">
-                                                <CreditCard className="w-4 h-4 inline mr-1" />
-                                                Card
-                                            </Label>
+                                <div className="space-y-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
+                                        <Label htmlFor="donorName" className="sm:text-right flex items-center">
+                                            <User className="w-4 h-4 inline mr-1 sm:hidden" />
+                                            <span>Name <span className="text-gray-500 text-xs">(Optional)</span></span>
+                                        </Label>
+                                        <div className="sm:col-span-3">
                                             <Input
-                                                id="cardNumber"
-                                                placeholder="1234 5678 9012 3456"
-                                                type="text"
-                                                className="col-span-3"
-                                                value={cardNumber}
-                                                onChange={(e) => setCardNumber(e.target.value)}
-                                            />
-                                        </div>
-                                        <div className="grid grid-cols-4 items-center gap-4">
-                                            <Label htmlFor="expiryDate" className="text-right">
-                                                Expiry
-                                            </Label>
-                                            <Input
-                                                id="expiryDate"
-                                                placeholder="MM/YY"
-                                                className="col-span-1"
-                                                value={expiryDate}
-                                                onChange={(e) => setExpiryDate(e.target.value)}
-                                            />
-                                            <Label htmlFor="cvv" className="text-right">
-                                                CVV
-                                            </Label>
-                                            <Input
-                                                id="cvv"
-                                                type="password"
-                                                placeholder="123"
-                                                className="col-span-1"
-                                                value={cvv}
-                                                onChange={(e) => setCvv(e.target.value)}
-                                                maxLength={4}
+                                                id="donorName"
+                                                placeholder="Your full name"
+                                                className="w-full"
+                                                value={donorName}
+                                                onChange={(e) => setDonorName(e.target.value)}
                                             />
                                         </div>
                                     </div>
-                                )}
 
-                                {/* Donation Amount */}
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="amount" className="text-right">
-                                        Amount
-                                    </Label>
-                                    <Input
-                                        id="amount"
-                                        type="number"
-                                        placeholder="Enter contribution amount"
-                                        className="col-span-3"
-                                        value={donationAmount}
-                                        onChange={(e) => setDonationAmount(e.target.value)}
-                                    />
+                                    <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
+                                        <Label htmlFor="donorPhone" className="sm:text-right flex items-center">
+                                            <Phone className="w-4 h-4 inline mr-1 sm:hidden" />
+                                            <span>Phone <span className="text-red-500">*</span></span>
+                                        </Label>
+                                        <div className="sm:col-span-3">
+                                            <Input
+                                                id="donorPhone"
+                                                type="tel"
+                                                placeholder="Your MTN mobile number"
+                                                className="w-full"
+                                                value={donorPhone}
+                                                onChange={handlePhoneInput}
+                                            />
+                                            <p className="text-xs text-gray-500 mt-1">
+                                                Enter the MTN number that will be used for payment
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Donation Amount */}
+                                    <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
+                                        <Label htmlFor="amount" className="sm:text-right">
+                                            Amount <span className="text-red-500">*</span>
+                                        </Label>
+                                        <div className="sm:col-span-3 relative">
+                                            <Input
+                                                id="amount"
+                                                type="number"
+                                                min="1"
+                                                placeholder="Enter contribution amount"
+                                                className="w-full pr-12"
+                                                value={donationAmount}
+                                                onChange={(e) => setDonationAmount(e.target.value)}
+                                            />
+                                            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">
+                                                RWF
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <Button
-                                onClick={handleDonate}
-                                disabled={isProcessing}
-                                className="w-full bg-[#F77665] hover:bg-[#F77665]"
-                            >
-                                {isProcessing ? 'Processing...' : 'Contribute Now'}
-                            </Button>
-                            
-                            <div className="mt-3 text-center">
-                                <a 
-                                    href="https://docs.google.com/forms/d/1iryfcNbqPIAM3zrhqYp6dpBML5tVzanURpdKJIAdHFs" 
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-[#F77665] text-sm hover:underline flex items-center justify-center"
+                            <div className="space-y-3">
+                                <Button
+                                    onClick={handleDonate}
+                                    disabled={isProcessing}
+                                    className="w-full bg-[#F77665] hover:bg-[#F77665]/90 text-white py-2 h-auto text-base"
                                 >
-                                    <span className="mr-1 bg-[#F77665] text-white px-2 py-0.5 rounded-full text-xs">New</span>
-                                    Become a monthly contributor instead
-                                </a>
+                                    {isProcessing ? 'Processing...' : 'Contribute via MTN Mobile Money'}
+                                </Button>
+                                
+                                <div className="text-center">
+                                    <a 
+                                        href="https://docs.google.com/forms/d/1iryfcNbqPIAM3zrhqYp6dpBML5tVzanURpdKJIAdHFs" 
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-[#F77665] text-sm hover:underline flex items-center justify-center"
+                                    >
+                                        <span className="mr-1 bg-[#F77665] text-white px-2 py-0.5 rounded-full text-xs">New</span>
+                                        Become a monthly contributor instead
+                                    </a>
+                                </div>
                             </div>
                         </>
                     ) : (
@@ -441,7 +360,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                                 </DialogDescription>
                             </DialogHeader>
                             
-                            <div className="w-full h-96 relative">
+                            <div className="w-full h-72 sm:h-96 relative">
                                 <iframe
                                     ref={iframeRef}
                                     src={paymentUrl}

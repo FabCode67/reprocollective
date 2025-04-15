@@ -10,9 +10,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { Loader2 } from 'lucide-react';
+import { Loader2, AlertTriangle, Phone } from 'lucide-react';
 
 interface DonationModalProps {
   isOpen: boolean;
@@ -26,9 +25,8 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
     amount: '',
     donorName: '',
     donorPhone: '',
-    paymentMethod: 'card', // Default to card for easier testing
-    currency: 'RWF',
-    // locationCode: location || 'general',
+    paymentMethod: 'mtn', // Only allow MTN Mobile Money
+    currency: 'RWF', // Only allow RWF
   });
 
   // Payment iframe states
@@ -42,8 +40,11 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData(prev => ({ ...prev, [name]: value }));
+  // Format phone number as the user types
+  const handlePhoneInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Allow only digits
+    const value = e.target.value.replace(/\D/g, '');
+    setFormData(prev => ({ ...prev, donorPhone: value }));
   };
 
   // Reset modal state when it opens/closes
@@ -62,7 +63,6 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
       console.log("Received postMessage event:", event);
       
       // Handle Flutterwave response
-      // Note: You may need to adjust this based on your payment processor's message format
       try {
         if (typeof event.data === 'string' && event.data.includes('flutterwave')) {
           const paymentData = JSON.parse(event.data);
@@ -100,7 +100,6 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
       const handleIframeLoad = () => {
         try {
           // Check if the iframe loaded a success or failure page
-          // This is a fallback mechanism if postMessage doesn't work
           const iframeUrl = iframe.contentWindow?.location.href;
           console.log('Iframe loaded URL:', iframeUrl);
           
@@ -146,8 +145,29 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
     setLoading(false);
   };
 
+  const validateForm = () => {
+    // Validate amount
+    if (!formData.amount || parseFloat(formData.amount) <= 0) {
+      toast(<div className="text-destructive"><strong>Error</strong><p>Please enter a valid amount</p></div>);
+      return false;
+    }
+
+    // Validate phone number (must be at least 10 digits)
+    if (!formData.donorPhone || formData.donorPhone.length < 10) {
+      toast(<div className="text-destructive"><strong>Error</strong><p>Please enter a valid MTN mobile number</p></div>);
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
     setLoading(true);
 
     try {
@@ -260,116 +280,126 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleModalClose}>
-      <DialogContent className="sm:max-w-[425px] md:max-w-[600px] bg-white">
+      <DialogContent className="sm:max-w-[425px] max-w-[90vw] bg-white p-4 sm:p-6 rounded-lg">
         {!showPaymentIframe ? (
           // Payment form content
           <>
             <DialogHeader>
-              <DialogTitle className="text-lg sm:text-xl">Make a Contribution</DialogTitle>
+              <DialogTitle className="text-lg sm:text-xl flex items-center">
+                <Phone className="mr-2 text-[#F77665] h-5 w-5" />
+                Make a Contribution
+              </DialogTitle>
               <DialogDescription className="text-sm sm:text-base">
                 Your support helps us continue our important work. Thank you!
               </DialogDescription>
             </DialogHeader>
             
-            <form onSubmit={handleSubmit} className="space-y-3 py-2 sm:py-4">
-              <div className="grid gap-3 sm:gap-4">
-                <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-1 sm:gap-4">
-                  <Label htmlFor="amount" className="text-sm sm:text-right">
-                    Amount
+            {/* Payment Method Notice */}
+            <div className="bg-blue-50 p-3 rounded-lg flex items-start space-x-3 mt-2">
+              <AlertTriangle className="text-blue-500 shrink-0 h-5 w-5 mt-0.5" />
+              <div>
+                <p className="text-sm text-blue-700 font-medium">Payment Information</p>
+                <p className="text-xs text-blue-600">
+                  We currently accept MTN Mobile Money payments in Rwandan Francs (RWF) only.
+                </p>
+              </div>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="space-y-4 py-2 sm:py-4">
+              <div className="grid gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2">
+                  <Label htmlFor="amount" className="text-sm flex items-center sm:justify-end">
+                    Amount <span className="text-red-500 ml-1">*</span>
                   </Label>
-                  <Input
-                    id="amount"
-                    name="amount"
-                    type="number"
-                    value={formData.amount}
-                    onChange={handleChange}
-                    className="col-span-1 sm:col-span-3 text-sm sm:text-base"
-                    placeholder="0.00"
-                    required
-                  />
+                  <div className="sm:col-span-3 relative">
+                    <Input
+                      id="amount"
+                      name="amount"
+                      type="number"
+                      min="1"
+                      value={formData.amount}
+                      onChange={handleChange}
+                      className="pr-12"
+                      placeholder="Enter amount"
+                      required
+                    />
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-sm">
+                      RWF
+                    </div>
+                  </div>
                 </div>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-1 sm:gap-4">
-                  <Label htmlFor="currency" className="text-sm sm:text-right">
-                    Currency
-                  </Label>
-                  <Select
-                    value={formData.currency}
-                    onValueChange={(value) => handleSelectChange('currency', value)}
-                  >
-                    <SelectTrigger className="col-span-1 sm:col-span-3 text-sm sm:text-base h-9 sm:h-10">
-                      <SelectValue placeholder="Select currency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="RWF">RWF</SelectItem>
-                      <SelectItem value="USD">USD</SelectItem>
-                      <SelectItem value="EUR">EUR</SelectItem>
-                      <SelectItem value="GBP">GBP</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-1 sm:gap-4">
-                  <Label htmlFor="donorName" className="text-sm sm:text-right">
-                    Name (Optional)
+                <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2">
+                  <Label htmlFor="donorName" className="text-sm flex items-center sm:justify-end">
+                    Name <span className="text-gray-500 text-xs">(Optional)</span>
                   </Label>
                   <Input
                     id="donorName"
                     name="donorName"
                     value={formData.donorName}
                     onChange={handleChange}
-                    className="col-span-1 sm:col-span-3 text-sm sm:text-base"
+                    className="sm:col-span-3"
+                    placeholder="Your full name"
                   />
                 </div>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-1 sm:gap-4">
-                  <Label htmlFor="donorPhone" className="text-sm sm:text-right">
-                    Phone
+                <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2">
+                  <Label htmlFor="donorPhone" className="text-sm flex items-center sm:justify-end">
+                    Phone <span className="text-red-500 ml-1">*</span>
                   </Label>
-                  <Input
-                    id="donorPhone"
-                    name="donorPhone"
-                    value={formData.donorPhone}
-                    onChange={handleChange}
-                    className="col-span-1 sm:col-span-3 text-sm sm:text-base"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-4 items-center gap-1 sm:gap-4">
-                  <Label htmlFor="paymentMethod" className="text-sm sm:text-right">
-                    Payment Method
-                  </Label>
-                  <Select
-                    value={formData.paymentMethod}
-                    onValueChange={(value) => handleSelectChange('paymentMethod', value)}
-                  >
-                    <SelectTrigger className="col-span-1 sm:col-span-3 text-sm sm:text-base h-9 sm:h-10">
-                      <SelectValue placeholder="Select payment method" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="mtn">MTN Mobile Money</SelectItem>
-                      <SelectItem value="card">Credit/Debit Card</SelectItem>
-                      <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="sm:col-span-3">
+                    <Input
+                      id="donorPhone"
+                      name="donorPhone"
+                      value={formData.donorPhone}
+                      onChange={handlePhoneInput}
+                      className="w-full"
+                      placeholder="Your MTN mobile number"
+                      required
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Enter the MTN number that will be used for payment
+                    </p>
+                  </div>
                 </div>
               </div>
               
-              <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0 mt-4">
-                <Button type="button" variant="outline" onClick={onClose} className="w-full sm:w-auto text-sm h-9 sm:h-10">
+              <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0 pt-4">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={onClose} 
+                  className="w-full sm:w-auto order-2 sm:order-1"
+                >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={loading} className="w-full sm:w-auto text-sm h-9 sm:h-10">
+                <Button 
+                  type="submit" 
+                  disabled={loading} 
+                  className="w-full sm:w-auto bg-[#F77665] hover:bg-[#F77665]/90 order-1 sm:order-2"
+                >
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Processing...
                     </>
                   ) : (
-                    "Contribute Now"
+                    "Contribute via MTN Mobile Money"
                   )}
                 </Button>
               </DialogFooter>
+              
+              <div className="text-center pt-2">
+                <a 
+                  href="https://docs.google.com/forms/d/1iryfcNbqPIAM3zrhqYp6dpBML5tVzanURpdKJIAdHFs" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#F77665] text-sm hover:underline flex items-center justify-center"
+                >
+                  <span className="mr-1 bg-[#F77665] text-white px-2 py-0.5 rounded-full text-xs">New</span>
+                  Become a monthly contributor instead
+                </a>
+              </div>
             </form>
           </>
         ) : (
@@ -378,15 +408,15 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
             <DialogHeader>
               <DialogTitle className="text-lg sm:text-xl">Complete Your Payment</DialogTitle>
               <DialogDescription className="text-sm sm:text-base">
-                Please complete the payment process below
+                Please complete the MTN Mobile Money payment below
               </DialogDescription>
             </DialogHeader>
             
-            <div className="w-full h-[400px] md:h-[500px] relative border rounded">
+            <div className="w-full h-[300px] sm:h-[400px] relative border rounded">
               {paymentProcessing && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-10">
                   <div className="text-center">
-                    <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+                    <Loader2 className="h-8 w-8 animate-spin mx-auto text-[#F77665]" />
                     <p className="mt-2">Processing payment...</p>
                   </div>
                 </div>
@@ -406,7 +436,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
                 type="button" 
                 variant="outline" 
                 onClick={handleClosePaymentIframe}
-                className="w-full sm:w-auto text-sm h-9 sm:h-10"
+                className="w-full sm:w-auto"
               >
                 Cancel Payment
               </Button>
