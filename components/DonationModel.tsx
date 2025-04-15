@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Location } from '@/lib/data';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Building2, MapPin, QrCode, Phone, User, AlertTriangle } from 'lucide-react';
+import { Building2, MapPin, QrCode, AlertTriangle } from 'lucide-react';
 import axios from 'axios';
 import ResultModal from './SuccessAndFailModel';
 
@@ -222,145 +222,151 @@ const DonationModal: React.FC<DonationModalProps> = ({
     return (
         <>
             <Dialog open={isOpen} onOpenChange={onClose}>
-                <DialogContent className="sm:max-w-[425px] max-w-[90vw] bg-white p-4 sm:p-6 rounded-lg">
+                <DialogContent className="sm:max-w-[425px] max-w-[90vw] max-h-[85vh] bg-white p-3 sm:p-6 rounded-lg overflow-hidden flex flex-col">
                     {!showPaymentIframe ? (
                         <>
-                            <DialogHeader>
-                                <DialogTitle className="flex items-center text-lg sm:text-xl">
-                                    <QrCode className="mr-2 text-[#F77665] h-5 w-5 sm:h-6 sm:w-6" />
+                            <DialogHeader className="pb-1">
+                                <DialogTitle className="text-base sm:text-lg flex items-center">
+                                    <QrCode className="mr-2 text-[#F77665] h-4 w-4 sm:h-5 sm:w-5" />
                                     Donate to REPROCOLLECTIVE
                                 </DialogTitle>
-                                <DialogDescription className="text-sm sm:text-base">
+                                <DialogDescription className="text-xs sm:text-sm">
                                     Support our mission through {location.name}
                                 </DialogDescription>
                             </DialogHeader>
 
-                            <div className="space-y-4 py-4">
-                                {/* Location Details */}
-                                <div className="flex items-center space-x-3 bg-orange-50 p-3 rounded-lg">
-                                    <Building2 className="text-[#F77665] shrink-0 h-5 w-5" />
-                                    <div>
-                                        <h4 className="font-semibold">{location.name}</h4>
-                                        <p className="text-sm text-gray-600 flex items-center">
-                                            <MapPin className="mr-1 w-4 h-4 shrink-0" /> {location.location}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {/* Payment Method Notice */}
-                                <div className="bg-blue-50 p-3 rounded-lg flex items-start space-x-3">
-                                    <AlertTriangle className="text-blue-500 shrink-0 h-5 w-5 mt-0.5" />
-                                    <div>
-                                        <p className="text-sm text-blue-700 font-medium">Payment Information</p>
-                                        <p className="text-xs text-blue-600">
-                                            We currently accept MTN Mobile Money payments in Rwandan Francs (RWF) only.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {/* Error message display */}
-                                {errorMessage && (
-                                    <div className="bg-red-50 border-l-4 border-red-500 p-3 rounded-r-lg">
-                                        <p className="text-red-700 text-sm">{errorMessage}</p>
-                                    </div>
-                                )}
-
-                                {/* Donor Information */}
-                                <div className="space-y-4">
-                                    <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
-                                        <Label htmlFor="donorName" className="sm:text-right flex items-center">
-                                            <User className="w-4 h-4 inline mr-1 sm:hidden" />
-                                            <span>Name <span className="text-gray-500 text-xs">(Optional)</span></span>
-                                        </Label>
-                                        <div className="sm:col-span-3">
-                                            <Input
-                                                id="donorName"
-                                                placeholder="Your full name"
-                                                className="w-full"
-                                                value={donorName}
-                                                onChange={(e) => setDonorName(e.target.value)}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
-                                        <Label htmlFor="donorPhone" className="sm:text-right flex items-center">
-                                            <Phone className="w-4 h-4 inline mr-1 sm:hidden" />
-                                            <span>Phone <span className="text-red-500">*</span></span>
-                                        </Label>
-                                        <div className="sm:col-span-3">
-                                            <Input
-                                                id="donorPhone"
-                                                type="tel"
-                                                placeholder="Your MTN mobile number"
-                                                className="w-full"
-                                                value={donorPhone}
-                                                onChange={handlePhoneInput}
-                                            />
-                                            <p className="text-xs text-gray-500 mt-1">
-                                                Enter the MTN number that will be used for payment
+                            <div className="overflow-y-auto flex-grow pr-1 -mr-1">
+                                <div className="space-y-3 py-2">
+                                    {/* Location Details - Compact Version */}
+                                    <div className="flex items-center space-x-2 bg-orange-50 p-2 rounded-lg">
+                                        <Building2 className="text-[#F77665] shrink-0 h-4 w-4" />
+                                        <div className="truncate">
+                                            <h4 className="font-medium text-sm">{location.name}</h4>
+                                            <p className="text-xs text-gray-600 flex items-center truncate">
+                                                <MapPin className="mr-1 w-3 h-3 shrink-0" /> {location.location}
                                             </p>
                                         </div>
                                     </div>
 
-                                    {/* Donation Amount */}
-                                    <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
-                                        <Label htmlFor="amount" className="sm:text-right">
-                                            Amount <span className="text-red-500">*</span>
-                                        </Label>
-                                        <div className="sm:col-span-3 relative">
+                                    {/* Payment Method Notice - More Compact */}
+                                    <div className="bg-blue-50 p-2 rounded-lg flex items-start space-x-2">
+                                        <AlertTriangle className="text-blue-500 shrink-0 h-4 w-4 mt-0.5" />
+                                        <p className="text-xs text-blue-600">
+                                            We currently accept MTN Mobile Money payments in Rwandan Francs (RWF) only.
+                                        </p>
+                                    </div>
+
+                                    {/* Error message display */}
+                                    {errorMessage && (
+                                        <div className="bg-red-50 border-l-4 border-red-500 p-2 rounded-r-lg">
+                                            <p className="text-red-700 text-xs">{errorMessage}</p>
+                                        </div>
+                                    )}
+
+                                    {/* Donor Information */}
+                                    <div className="space-y-3">
+                                        <div className="grid grid-cols-3 items-center gap-2">
+                                            <Label htmlFor="donorName" className="text-xs">
+                                                Name <span className="text-gray-500 text-xs">(Optional)</span>
+                                            </Label>
                                             <Input
-                                                id="amount"
-                                                type="number"
-                                                min="1"
-                                                placeholder="Enter contribution amount"
-                                                className="w-full pr-12"
-                                                value={donationAmount}
-                                                onChange={(e) => setDonationAmount(e.target.value)}
+                                                id="donorName"
+                                                placeholder="Your name"
+                                                className="col-span-2 h-8 text-sm"
+                                                value={donorName}
+                                                onChange={(e) => setDonorName(e.target.value)}
                                             />
-                                            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">
-                                                RWF
+                                        </div>
+
+                                        <div className="grid grid-cols-3 items-start gap-2">
+                                            <Label htmlFor="donorPhone" className="text-xs pt-1.5">
+                                                Phone <span className="text-red-500">*</span>
+                                            </Label>
+                                            <div className="col-span-2">
+                                                <Input
+                                                    id="donorPhone"
+                                                    type="tel"
+                                                    placeholder="MTN number"
+                                                    className="h-8 text-sm"
+                                                    value={donorPhone}
+                                                    onChange={handlePhoneInput}
+                                                />
+                                                <p className="text-[10px] text-gray-500 mt-0.5">
+                                                    Enter MTN number for payment
+                                                </p>
                                             </div>
                                         </div>
+
+                                        {/* Donation Amount */}
+                                        <div className="grid grid-cols-3 items-center gap-2">
+                                            <Label htmlFor="amount" className="text-xs">
+                                                Amount <span className="text-red-500">*</span>
+                                            </Label>
+                                            <div className="col-span-2 relative">
+                                                <Input
+                                                    id="amount"
+                                                    type="number"
+                                                    min="1"
+                                                    placeholder="Enter amount"
+                                                    className="h-8 text-sm pr-10"
+                                                    value={donationAmount}
+                                                    onChange={(e) => setDonationAmount(e.target.value)}
+                                                />
+                                                <div className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-xs">
+                                                    RWF
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="text-center pt-1">
+                                        <a 
+                                            href="https://docs.google.com/forms/d/1iryfcNbqPIAM3zrhqYp6dpBML5tVzanURpdKJIAdHFs" 
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-[#F77665] text-xs hover:underline inline-flex items-center"
+                                        >
+                                            <span className="mr-1 bg-[#F77665] text-white px-1.5 py-0.5 rounded-full text-[10px]">New</span>
+                                            Become a monthly contributor
+                                        </a>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="space-y-3">
+                            <div className="flex justify-end gap-2 pt-2 border-t mt-2">
+                                <Button
+                                    variant="outline"
+                                    onClick={onClose}
+                                    className="h-8 text-xs px-3"
+                                >
+                                    Cancel
+                                </Button>
                                 <Button
                                     onClick={handleDonate}
                                     disabled={isProcessing}
-                                    className="w-full bg-[#F77665] hover:bg-[#F77665]/90 text-white py-2 h-auto text-base"
+                                    className="h-8 text-xs px-3 bg-[#F77665] hover:bg-[#F77665]/90"
                                 >
-                                    {isProcessing ? 'Processing...' : 'Contribute via MTN Mobile Money'}
+                                    {isProcessing ? (
+                                        <>
+                                            <div className="animate-spin mr-1 h-3 w-3 border-2 border-white border-t-transparent rounded-full"></div> 
+                                            Processing...
+                                        </>
+                                    ) : (
+                                        "Contribute Now"
+                                    )}
                                 </Button>
-                                
-                                <div className="text-center">
-                                    <a 
-                                        href="https://docs.google.com/forms/d/1iryfcNbqPIAM3zrhqYp6dpBML5tVzanURpdKJIAdHFs" 
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-[#F77665] text-sm hover:underline flex items-center justify-center"
-                                    >
-                                        <span className="mr-1 bg-[#F77665] text-white px-2 py-0.5 rounded-full text-xs">New</span>
-                                        Become a monthly contributor instead
-                                    </a>
-                                </div>
                             </div>
                         </>
                     ) : (
                         <>
-                            <DialogHeader>
-                                <DialogTitle className="flex items-center">
-                                    <QrCode className="mr-2 text-[#F77665]" />
-                                    Complete Your Payment
-                                </DialogTitle>
-                                <DialogDescription>
-                                    Please complete the payment process below
+                            <DialogHeader className="pb-2">
+                                <DialogTitle className="text-base sm:text-lg">Payment</DialogTitle>
+                                <DialogDescription className="text-xs sm:text-sm">
+                                    Complete your MTN Mobile Money payment
                                 </DialogDescription>
                             </DialogHeader>
                             
-                            <div className="w-full h-72 sm:h-96 relative">
+                            <div className="w-full h-64 sm:h-72 relative border rounded overflow-hidden flex-grow">
                                 <iframe
                                     ref={iframeRef}
                                     src={paymentUrl}
@@ -370,13 +376,15 @@ const DonationModal: React.FC<DonationModalProps> = ({
                                 />
                             </div>
                             
-                            <Button
-                                onClick={handleClosePaymentIframe}
-                                variant="outline"
-                                className="mt-2"
-                            >
-                                Cancel Payment
-                            </Button>
+                            <div className="flex justify-end mt-2">
+                                <Button
+                                    onClick={handleClosePaymentIframe}
+                                    variant="outline"
+                                    className="h-8 text-xs"
+                                >
+                                    Cancel Payment
+                                </Button>
+                            </div>
                         </>
                     )}
                 </DialogContent>

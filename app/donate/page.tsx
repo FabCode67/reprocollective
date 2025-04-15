@@ -49,7 +49,7 @@ const DonatePageContent = () => {
         const loadedLocations = await getLocationsWithQRCodes();
         setLocations(loadedLocations);
 
-        const locationParam = searchParams.get('location');
+        const locationParam = searchParams.get('id');
         if (locationParam) {
           const parsedLocation = parseLocationFromQRCode(locationParam);
           if (parsedLocation) {
