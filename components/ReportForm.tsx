@@ -158,7 +158,7 @@ export default function ReportForm() {
             )}
           />
           
-          <FormField
+          {/* <FormField
             control={form.control}
             name="padsBought"
             render={({ field }) => (
@@ -170,7 +170,7 @@ export default function ReportForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
         </div>
         
         <div className="grid md:grid-cols-2 gap-6">

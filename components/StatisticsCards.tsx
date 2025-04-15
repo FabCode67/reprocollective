@@ -30,6 +30,12 @@ interface ReportSummary {
   failed: number;
 }
 
+interface Content {
+  section: string;
+  text: string;
+  updatedAt: string;
+}
+
 interface ApiResponse {
   summary: ReportSummary;
   donations: Donation[];
@@ -107,11 +113,45 @@ const StatisticsCards = () => {
       fetchDonations();
     }
     , [startDate, endDate, locationFilter, paymentMethodFilter, statusFilter, searchTerm]);
+
+
+
+
+
+
+     const [, setLoading] = useState(false);
+      const [, setContentSections] = useState<Content[]>([]);
+      const [editingContent, setEditingContent] = useState<{ [key: string]: string }>({});
+    
+      const fetchContent = async () => {
+        try {
+          setLoading(true);
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/content`);
+          const data = await response.json();
+          setContentSections(data.contents);
+    
+          // Initialize editing state
+          const initialEditState: { [key: string]: string } = {};
+          data.contents.forEach((content: Content) => {
+            initialEditState[content.section] = content.text;
+          });
+          setEditingContent(initialEditState);
+        } catch (error) {
+          console.error('Error fetching content:', error);
+    
+        } finally {
+          setLoading(false);
+        }
+      };
+    
+      useEffect(() => {
+        fetchContent();
+      }, []);
   const statsData = [
     {
       title: "Total Contributions",
       period: "2021-2024",
-      value: "1,245,720 Rwf",
+      value: editingContent["money"] + ' Rwf' || "",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
         <rect x="2" y="6" width="20" height="12" rx="2" ry="2" />

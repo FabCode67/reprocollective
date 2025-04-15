@@ -116,12 +116,12 @@ const SlidingHeroImages = () => {
               <p className="text-sm sm:text-base md:text-lg text-white text-center max-w-xl mx-auto mb-6 drop-shadow">
                 {image.description}
               </p>
-              <a
+              {/* <a
                 href={image.ctaLink}
                 className="bg-[#F77665] hover:bg-[#F77665] text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300 inline-block mt-2 transform hover:scale-105"
               >
                 {image.cta}
-              </a>
+              </a> */}
             </div>
           </div>
         ))}
