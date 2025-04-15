@@ -154,8 +154,8 @@ const SlidingHeroImages = () => {
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full transition-all duration-300 ${index === currentIndex
-                ? 'bg-[#F77665] scale-125'
+            className={`w-[0.5px] h-[0.5px] md:w-[0.5px] md:h-[0.5px] rounded-full transition-all duration-300 ${index === currentIndex
+                ? 'bg-[#F77665] '
                 : 'bg-white bg-opacity-70 hover:bg-opacity-100'}`}
             aria-label={`Go to slide ${index + 1}`} />
         ))}

@@ -96,7 +96,7 @@ export default function PhilanthropistsPage() {
                     <p className="text-lg md:text-xl text-white max-w-2xl">
                         Meet the generous individuals who are making a difference in our community through their support and contributions.
                     </p>
-                    <div className="mt-8">
+                    {/* <div className="mt-8">
                         <Link 
                             href="/donate" 
                             className="inline-flex items-center px-6 py-3 rounded-full bg-white text-[#F77665] font-medium hover:bg-gray-100 transition-all transform hover:scale-105"
@@ -104,7 +104,7 @@ export default function PhilanthropistsPage() {
                             <Heart className="mr-2 h-5 w-5" />
                             Become a Supporter
                         </Link>
-                    </div>
+                    </div> */}
                 </div>
             </section>
 
@@ -218,7 +218,7 @@ export default function PhilanthropistsPage() {
                                     
                                     <div className="mt-8">
                                         <Link 
-                                            href="/donate" 
+                                            href="/#location" 
                                             className="inline-flex items-center px-6 py-3 rounded-md bg-[#F77665] text-white font-medium hover:bg-[#F77665]/90 transition-all"
                                         >
                                             Join Our Mission <ArrowRight className="ml-2 h-4 w-4" />
@@ -247,7 +247,7 @@ export default function PhilanthropistsPage() {
                             </div>
                             <h3 className="text-xl font-bold mb-2">Donate</h3>
                             <p className="text-gray-300 mb-4">Support our mission with a one-time or recurring contribution.</p>
-                            <Link href="/donate" className="text-[#F77665] hover:text-[#F77665]/80 font-medium inline-flex items-center">
+                            <Link href="/#location" className="text-[#F77665] hover:text-[#F77665]/80 font-medium inline-flex items-center">
                                 Contribute now <ChevronRight className="ml-1 h-4 w-4" />
                             </Link>
                         </div>
@@ -260,23 +260,12 @@ export default function PhilanthropistsPage() {
                             </div>
                             <h3 className="text-xl font-bold mb-2">Learn More</h3>
                             <p className="text-gray-300 mb-4">Discover how your support makes a difference in our community.</p>
-                            <Link href="/about" className="text-[#F77665] hover:text-[#F77665]/80 font-medium inline-flex items-center">
+                            <Link href="/#about" className="text-[#F77665] hover:text-[#F77665]/80 font-medium inline-flex items-center">
                                 About our mission <ChevronRight className="ml-1 h-4 w-4" />
                             </Link>
                         </div>
                         
-                        <div className="bg-gray-800 p-6 rounded-lg">
-                            <div className="w-16 h-16 bg-[#F77665]/20 text-[#F77665] rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z" />
-                                </svg>
-                            </div>
-                            <h3 className="text-xl font-bold mb-2">Stay Connected</h3>
-                            <p className="text-gray-300 mb-4">Subscribe to our newsletter for updates on our impact and initiatives.</p>
-                            <Link href="#subscribe" className="text-[#F77665] hover:text-[#F77665]/80 font-medium inline-flex items-center">
-                                Subscribe <ChevronRight className="ml-1 h-4 w-4" />
-                            </Link>
-                        </div>
+                      
                     </div>
                     
                     <div className="mt-16">
