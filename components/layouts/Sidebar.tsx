@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { BarChart3, Home, MapPin, Menu, QrCode, X, Coins, File } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Lightbulb } from 'lucide-react';
 
 export default function Sidebar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -22,7 +23,7 @@ export default function Sidebar() {
       path: '/admin' 
     },
     { 
-      name: 'Donor Locations', 
+      name: 'Locations', 
       icon: <MapPin className="mr-2 h-5 w-5" />, 
       path: '/admin/locations' 
     },
@@ -37,10 +38,16 @@ export default function Sidebar() {
       path: "/admin/transactions",
     },
     {
+      name: 'Spotlights',
+      icon: <Lightbulb className="mr-2 h-5 w-5" />,
+      path: '/admin/spotlight'
+    },
+    {
       name: "Content",
       icon: <File className="mr-2 h-5 w-5" />,
       path: "/admin/content",
     }
+
   ];
 
   return (
