@@ -36,17 +36,17 @@ const HomePage: React.FC = () => {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [location, setLocation] = useState<Location[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-    const [, setLoading] = useState(false);
-    const [, setContentSections] = useState<Content[]>([]);
-    const [editingContent, setEditingContent] = useState<{ [key: string]: string }>({});
-    
+  const [, setLoading] = useState(false);
+  const [, setContentSections] = useState<Content[]>([]);
+  const [editingContent, setEditingContent] = useState<{ [key: string]: string }>({});
+
   const fetchContent = async () => {
     try {
       setLoading(true);
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/content`);
       const data = await response.json();
       setContentSections(data.contents);
-      
+
       // Initialize editing state
       const initialEditState: { [key: string]: string } = {};
       data.contents.forEach((content: Content) => {
@@ -55,7 +55,7 @@ const HomePage: React.FC = () => {
       setEditingContent(initialEditState);
     } catch (error) {
       console.error('Error fetching content:', error);
-      
+
     } finally {
       setLoading(false);
     }
@@ -70,9 +70,9 @@ const HomePage: React.FC = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/locations` 
+        `${process.env.NEXT_PUBLIC_API_URL}/locations`
       );
-      const enrichedLocation: EnrichedLocation[] = response.data.map((loc:{
+      const enrichedLocation: EnrichedLocation[] = response.data.map((loc: {
         id: string;
         name: string;
         location: string;
@@ -124,7 +124,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white text-gray-900">
       <Navbar />
-      <DarkHeroImage /> 
+      <DarkHeroImage />
 
       <div id='about' className="container max-w-7xl p-4 mx-auto lg:mt-20 mt-0 flex lg:flex-row flex-col-reverse">
         {/* Location Sidebar */}
@@ -176,7 +176,7 @@ const HomePage: React.FC = () => {
                 <Heart className="mr-3 text-red-500" size={36} />
                 REPROCOLLECTIVE
               </h1>
-              <p dangerouslySetInnerHTML={{ __html: editingContent['home']}}  className="text-base lg:text-lg mb-6 text-gray-700 leading-relaxed">              
+              <p dangerouslySetInnerHTML={{ __html: editingContent['home'] }} className="text-base lg:text-lg mb-6 text-gray-700 leading-relaxed">
               </p>
             </div>
 
@@ -211,15 +211,25 @@ const HomePage: React.FC = () => {
                 className="mt-4 rounded-lg shadow-lg"
               />
             </div>
-
-            <div className="bg-gradient-to-r from-[#F77665] to-[#F77665] text-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl lg:text-2xl font-bold mb-4 flex items-center">
-                <Globe className="mr-3" size={28} />
-                Our Vision
-              </h3>
-              <p className="text-base lg:text-lg leading-relaxed">
-                {editingContent['vision'] || "We envision a world where every contribution, no matter how small, creates ripples of positive transformation. By connecting contributors directly with community needs, we bridge compassion with practical solutions."}
-              </p>
+            <div className="grid lg:grid-cols-2 grid-cols-1 gap-6">
+              <div className="bg-gradient-to-r from-[#F77665] to-[#F77665] text-white p-6 rounded-lg shadow-lg">
+                <h3 className="text-xl lg:text-2xl font-bold mb-4 flex items-center">
+                  <Globe className="mr-3" size={28} />
+                  Our Vision
+                </h3>
+                <p className="text-base lg:text-lg leading-relaxed">
+                  {editingContent['vision'] || "We envision a world where every contribution, no matter how small, creates ripples of positive transformation. By connecting contributors directly with community needs, we bridge compassion with practical solutions."}
+                </p>
+              </div>
+              <div className="bg-gradient-to-r from-[#F77665] to-[#F77665] text-white p-6 rounded-lg shadow-lg">
+                <h3 className="text-xl lg:text-2xl font-bold mb-4 flex items-center">
+                  <Globe className="mr-3" size={28} />
+                  Our Mission
+                </h3>
+                <p className="text-base lg:text-lg leading-relaxed">
+                  {editingContent['about'] || "Our mission is to empower communities through transparent and impactful contributions. By leveraging technology, we ensure that every contribution reaches its intended purpose, fostering trust and collaboration."}
+                </p>
+              </div>
             </div>
           </div>
         </div>
