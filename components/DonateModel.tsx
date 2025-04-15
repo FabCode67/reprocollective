@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
+import { Loader2 } from 'lucide-react';
 
 interface DonationModalProps {
   isOpen: boolean;
@@ -19,20 +20,21 @@ interface DonationModalProps {
   location?: string;
 }
 
-const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location }) => {
+const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     amount: '',
     donorName: '',
     donorPhone: '',
-    paymentMethod: '',
+    paymentMethod: 'card', // Default to card for easier testing
     currency: 'RWF',
-    locationCode: location || '',
+    // locationCode: location || 'general',
   });
 
   // Payment iframe states
   const [showPaymentIframe, setShowPaymentIframe] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState('');
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,96 +46,180 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Listen for payment completion messages from the iframe
+  // Reset modal state when it opens/closes
+  useEffect(() => {
+    if (!isOpen) {
+      // Reset state when modal closes
+      setShowPaymentIframe(false);
+      setPaymentUrl('');
+      setPaymentProcessing(false);
+    }
+  }, [isOpen]);
+
+  // Handle payment processor messages
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      // Verify the origin of the message (replace with your payment provider's domain)
-      if (event.origin.includes('flutterwave.com')) {
-        try {
-          const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-          
-          // Handle payment completion
-          if (data.status === 'successful') {
-            // Hide the payment iframe
-            setShowPaymentIframe(false);
-            
-            // Show success toast
-            toast(
-              <div>
-                <strong>Contribution Successful</strong>
-                <p>Thank you for your generous contribution!</p>
-              </div>
-            );
-            
-            // Close the modal
-            onClose();
-          } else if (data.status === 'failed' || data.status === 'cancelled') {
-            // Hide the payment iframe
-            setShowPaymentIframe(false);
-            
-            // Show failure toast
-            toast(
-              <div className="text-destructive">
-                <strong>Contribution Failed</strong>
-                <p>{data.message || "Payment process failed or was cancelled"}</p>
-              </div>
-            );
+      console.log("Received postMessage event:", event);
+      
+      // Handle Flutterwave response
+      // Note: You may need to adjust this based on your payment processor's message format
+      try {
+        if (typeof event.data === 'string' && event.data.includes('flutterwave')) {
+          const paymentData = JSON.parse(event.data);
+          if (paymentData.status === 'successful') {
+            handlePaymentSuccess();
+          } else if (paymentData.status === 'failed' || paymentData.status === 'cancelled') {
+            handlePaymentFailure(paymentData.message || 'Payment failed');
           }
-        } catch (error) {
-          console.error('Error processing payment message:', error);
         }
+        
+        // Handle redirects from iframe
+        if (event.data && event.data.type === 'payment_status') {
+          if (event.data.status === 'success') {
+            handlePaymentSuccess();
+          } else {
+            handlePaymentFailure(event.data.message || 'Payment process failed');
+          }
+        }
+      } catch (error) {
+        console.error('Error processing message:', error);
       }
     };
 
-    // Add event listener for postMessage from payment iframe
     window.addEventListener('message', handleMessage);
-    
-    // Clean up event listener
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, [onClose]);
+  }, []);
+
+  // Also monitor iframe for load events to handle redirects
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    
+    if (iframe && showPaymentIframe) {
+      const handleIframeLoad = () => {
+        try {
+          // Check if the iframe loaded a success or failure page
+          // This is a fallback mechanism if postMessage doesn't work
+          const iframeUrl = iframe.contentWindow?.location.href;
+          console.log('Iframe loaded URL:', iframeUrl);
+          
+          if (iframeUrl && iframeUrl.includes('payment_success')) {
+            handlePaymentSuccess();
+          } else if (iframeUrl && iframeUrl.includes('payment_failure')) {
+            handlePaymentFailure('Payment process failed');
+          }
+        } catch (e) {
+          // Cross-origin restrictions might prevent reading the URL
+          console.log('Cannot access iframe URL due to cross-origin restrictions', e);
+        }
+      };
+      
+      iframe.addEventListener('load', handleIframeLoad);
+      return () => {
+        iframe.removeEventListener('load', handleIframeLoad);
+      };
+    }
+  }, [iframeRef.current, showPaymentIframe]);
+
+  const handlePaymentSuccess = () => {
+    setPaymentProcessing(false);
+    setShowPaymentIframe(false);
+    toast(
+      <div>
+        <strong>Contribution Successful</strong>
+        <p>Thank you for your generous contribution!</p>
+      </div>
+    );
+    onClose();
+  };
+
+  const handlePaymentFailure = (message: string) => {
+    setPaymentProcessing(false);
+    setShowPaymentIframe(false);
+    toast(
+      <div className="text-destructive">
+        <strong>Contribution Failed</strong>
+        <p>{message}</p>
+      </div>
+    );
+    setLoading(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // Include redirectUrl in the payment data
-      const paymentData = {
+      // Allow client-side redirects to be intercepted with an iframe
+      const formDataWithOptions = {
         ...formData,
-        // This will be used for the payment gateway to know where to redirect or send messages
-        redirectUrl: `${window.location.origin}/payment-callback`,
+        amount: parseFloat(formData.amount), // Convert string to number
+        returnResponseOnly: true, // Tell API to return URL instead of redirecting
+        callbackUrl: `${window.location.origin}/payment-callback`,
       };
       
+      console.log('Submitting payment data:', formDataWithOptions);
+      
+      // Use Fetch API with options to handle CORS
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/initiate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        body: JSON.stringify(paymentData),
+        body: JSON.stringify(formDataWithOptions),
+        redirect: 'follow', // Important: Let Fetch handle redirects
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to process donation');
-      }
-
-      // Handle successful payment initiation
-      if (data.redirectUrl) {
-        // Instead of redirecting to a new page, show in iframe
-        setPaymentUrl(data.redirectUrl);
+      
+      console.log('Response status:', response.status);
+      
+      // Check if we got a redirect response
+      if (response.redirected) {
+        console.log('Got redirect to:', response.url);
+        setPaymentUrl(response.url);
         setShowPaymentIframe(true);
+        setPaymentProcessing(true);
+        return;
+      }
+      
+      // Handle JSON response
+      let responseData;
+      try {
+        responseData = await response.json();
+        console.log('Response data:', responseData);
+      } catch (err) {
+        // If response is not JSON, try to get the text
+        const textResponse = await response.text();
+        console.log('Raw response:', err);
+        
+        // Check if text contains a URL
+        if (textResponse.includes('http')) {
+          const urlMatch = textResponse.match(/(https?:\/\/[^\s"']+)/);
+          if (urlMatch && urlMatch[0]) {
+            setPaymentUrl(urlMatch[0]);
+            setShowPaymentIframe(true);
+            setPaymentProcessing(true);
+            return;
+          }
+        }
+        
+        throw new Error('Unexpected response format');
+      }
+      
+      // If we have a successful JSON response with a redirectUrl
+      if (responseData.redirectUrl || responseData.paymentUrl || responseData.checkoutUrl) {
+        const url = responseData.redirectUrl || responseData.paymentUrl || responseData.checkoutUrl;
+        console.log('Setting payment URL from response:', url);
+        setPaymentUrl(url);
+        setShowPaymentIframe(true);
+        setPaymentProcessing(true);
+      } else if (responseData.success) {
+        // For payment methods that don't require redirect
+        handlePaymentSuccess();
       } else {
-        // If no redirect needed (like for some mobile money options)
-        toast(
-          <div>
-            <strong>Contribution Successful</strong>
-            <p>Thank you for your generous contribution!</p>
-          </div>
-        );
-        onClose();
+        // Handle API errors
+        throw new Error(responseData.message || responseData.error || 'Payment initiation failed');
       }
     } catch (error) {
       console.error('Error processing donation:', error);
@@ -149,6 +235,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
 
   const handleClosePaymentIframe = () => {
     setShowPaymentIframe(false);
+    setPaymentProcessing(false);
     setLoading(false);
     toast(
       <div>
@@ -158,17 +245,22 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
     );
   };
 
-  // Handle dialog close when payment iframe is showing
-  const handleDialogClose = () => {
-    if (showPaymentIframe) {
-      handleClosePaymentIframe();
+  // Combined handler for closing modal
+  const handleModalClose = () => {
+    if (paymentProcessing) {
+      // Show confirmation before closing during payment
+      if (window.confirm('Are you sure you want to cancel the payment process?')) {
+        setPaymentProcessing(false);
+        onClose();
+      }
+    } else {
+      onClose();
     }
-    onClose();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleDialogClose}>
-      <DialogContent className="sm:max-w-[425px] bg-white">
+    <Dialog open={isOpen} onOpenChange={handleModalClose}>
+      <DialogContent className="sm:max-w-[425px] md:max-w-[600px] bg-white">
         {!showPaymentIframe ? (
           // Payment form content
           <>
@@ -210,6 +302,7 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="RWF">RWF</SelectItem>
+                      <SelectItem value="USD">USD</SelectItem>
                       <SelectItem value="EUR">EUR</SelectItem>
                       <SelectItem value="GBP">GBP</SelectItem>
                     </SelectContent>
@@ -267,7 +360,14 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
                   Cancel
                 </Button>
                 <Button type="submit" disabled={loading} className="w-full sm:w-auto text-sm h-9 sm:h-10">
-                  {loading ? "Processing..." : "Contribute Now"}
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    "Contribute Now"
+                  )}
                 </Button>
               </DialogFooter>
             </form>
@@ -282,13 +382,22 @@ const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose, location
               </DialogDescription>
             </DialogHeader>
             
-            <div className="w-full h-96 relative">
+            <div className="w-full h-[400px] md:h-[500px] relative border rounded">
+              {paymentProcessing && (
+                <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-10">
+                  <div className="text-center">
+                    <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+                    <p className="mt-2">Processing payment...</p>
+                  </div>
+                </div>
+              )}
               <iframe
                 ref={iframeRef}
                 src={paymentUrl}
                 className="w-full h-full border-0"
                 allow="payment"
                 title="Payment Gateway"
+                onLoad={() => setPaymentProcessing(false)}
               />
             </div>
             

@@ -8,9 +8,9 @@ import {
 } from '@/components/ui/navigation-menu';
 import { buttonVariants } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import DonationModal from '../DonateModel';
+import DonationModal from '../DonateModel'; // Make sure this imports the updated version
 import Image from 'next/image';
-import { Menu, X } from 'lucide-react'; // Import icons for the hamburger menu
+import { Menu, X } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,6 +28,17 @@ const Navbar: React.FC = () => {
     setShowMobileOptions(false);
     setIsMenuOpen(false); // Close mobile menu when opening donation modal
   };
+
+  // Handle success and failure callbacks for donation modal
+  // const handleDonationSuccess = (amount?: number, transactionId?: string) => {
+  //   console.log(`Donation successful: ${amount} with transaction ID: ${transactionId}`);
+  //   // You can add additional logic here
+  // };
+
+  // const handleDonationError = (errorMessage: string) => {
+  //   console.error(`Donation error: ${errorMessage}`);
+  //   // You can add additional error handling here
+  // };
 
   // Handle locations navigation
   const handleLocationsClick = () => {
@@ -105,6 +116,7 @@ const Navbar: React.FC = () => {
   return (
     <>
       <nav className="fixed top-0 left-0 w-full bg-white shadow-lg z-50">
+        {/* Nav content same as before */}
         <div className="container max-w-7xl mx-auto flex justify-between items-center p-4">
           {/* Logo */}
           <Link href="/" className="flex items-center">
@@ -131,17 +143,6 @@ const Navbar: React.FC = () => {
 
           {/* Mobile Actions */}
           <div className="lg:hidden flex items-center my-auto gap-4">
-            {/* Report button */}
-            {/* <button
-              onClick={() => {
-                router.push('/report');
-              }}
-              className="text-gray-600 hover:text-gray-900 focus:outline-none"
-            >
-              Report
-            </button> */}
-            
-            {/* Contribute button for mobile */}
             <div className="relative" ref={mobileOptionsRef}>
               <button
                 onClick={toggleMobileOptions}
@@ -262,18 +263,6 @@ const Navbar: React.FC = () => {
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
-              {/* <NavigationMenuItem className="w-full lg:w-auto block">
-                <Link href="/login" passHref legacyBehavior>
-                  <NavigationMenuLink
-                    className={`
-                      ${buttonVariants({ variant: 'ghost' })} 
-                      w-full lg:w-auto text-center
-                    `}
-                  >
-                    Login
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem> */}
               <NavigationMenuItem className="w-full lg:w-auto block">
                 <Link href="/spotlight" passHref legacyBehavior>
                   <NavigationMenuLink
@@ -291,11 +280,15 @@ const Navbar: React.FC = () => {
           </NavigationMenu>
         </div>
       </nav>
-      {/* Donation Modal Component */}
-      <DonationModal 
-        isOpen={isDonationModalOpen} 
-        onClose={closeDonationModal}
-      />
+
+      {/* Donation Modal Component with required props */}
+      {isDonationModalOpen && (
+        <DonationModal 
+          isOpen={isDonationModalOpen} 
+          onClose={closeDonationModal}
+          location="general"  // If no specific location is selected
+        />
+      )}
     </>
   );
 };
