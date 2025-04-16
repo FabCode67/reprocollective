@@ -245,7 +245,7 @@ export default function PhilanthropistsPage() {
                             <div className="w-16 h-16 bg-[#F77665]/20 text-[#F77665] rounded-full flex items-center justify-center mx-auto mb-4">
                                 <Heart className="h-8 w-8" />
                             </div>
-                            <h3 className="text-xl font-bold mb-2">Donate</h3>
+                            <h3 className="text-xl font-bold mb-2">Contribute</h3>
                             <p className="text-gray-300 mb-4">Support our mission with a one-time or recurring contribution.</p>
                             <Link href="/#location" className="text-[#F77665] hover:text-[#F77665]/80 font-medium inline-flex items-center">
                                 Contribute now <ChevronRight className="ml-1 h-4 w-4" />

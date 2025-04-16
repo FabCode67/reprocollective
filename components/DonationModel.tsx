@@ -228,7 +228,7 @@ const DonationModal: React.FC<DonationModalProps> = ({
                             <DialogHeader className="pb-1">
                                 <DialogTitle className="text-base sm:text-lg flex items-center">
                                     <QrCode className="mr-2 text-[#F77665] h-4 w-4 sm:h-5 sm:w-5" />
-                                    Donate to REPROCOLLECTIVE
+                                    Contribute to REPROCOLLECTIVE
                                 </DialogTitle>
                                 <DialogDescription className="text-xs sm:text-sm">
                                     Support our mission through {location.name}
