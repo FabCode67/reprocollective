@@ -128,7 +128,7 @@ export default function PhilanthropistsPage() {
                                             src={philanthropist.image}
                                             alt={philanthropist.name}
                                             fill
-                                            className="object-cover"
+                                            className="object-contain"
                                         />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center bg-gray-100">
@@ -182,7 +182,7 @@ export default function PhilanthropistsPage() {
                                         <Image 
                                             src={selectedPhilanthropist.image}
                                             alt={selectedPhilanthropist.name}
-                                            className="object-cover"
+                                            className="object-contain"
                                             fill
                                         />
                                     ) : (
